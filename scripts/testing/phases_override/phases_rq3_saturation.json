@@ -1,0 +1,62 @@
+{
+  "phases": [
+    {
+      "name": "baseline",
+      "duration_s": 60,
+      "rate_per_client": 1.0,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 0.1,
+      "mix": {
+        "content_lookup": 0.6,
+        "feed_ranking": 0.25,
+        "service_pressure": 0.15
+      }
+    },
+    {
+      "name": "compute_plateau",
+      "duration_s": 600,
+      "rate_per_client": 1.5,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 1.0,
+      "mix": {
+        "service_pressure": 1.0
+      }
+    },
+    {
+      "name": "recovery_gap",
+      "duration_s": 120,
+      "rate_per_client": 0.5,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 0.05,
+      "mix": {
+        "content_lookup": 0.6,
+        "feed_ranking": 0.25,
+        "service_pressure": 0.15
+      }
+    },
+    {
+      "name": "demand_drop",
+      "duration_s": 420,
+      "rate_per_client": 1.0,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 0.1,
+      "mix": {
+        "content_lookup": 0.6,
+        "feed_ranking": 0.25,
+        "service_pressure": 0.15
+      }
+    },
+    {
+      "name": "idle_tail",
+      "duration_s": 420,
+      "rate_per_client": 0.05,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 0.05,
+      "mix": {
+        "content_lookup": 0.6,
+        "feed_ranking": 0.25,
+        "service_pressure": 0.15
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Edge service platform: SDN-controlled containerised edge services with metadata-driven scaling"
+abstract: >-
+  Reproduction artefact for a Master's thesis on efficient storage and resource
+  management at the network edge. Contains the SDN controller, the Dockerised edge
+  and storage servers, the topology and workload tooling, and the configuration of
+  the experiment campaigns. Campaign outputs are not included.
+authors:
+  - family-names: Oriakhi
+    given-names: Pedro Ojo
+repository-code: "https://github.com/poioe20p/edge_service_platform"
+license: MIT
+version: 1.0.0
+date-released: "2026-11-01"
+keywords:
+  - edge computing
+  - software-defined networking
+  - container orchestration
+  - auto-scaling
+  - MongoDB

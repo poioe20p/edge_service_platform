@@ -1,0 +1,78 @@
+# RQ2 v5 W3 campaign batch (56 runs) — contract: docs/operation/testing/experiment/v5/rq2/experiment_plan.md
+# format: <mode> <label> <seed> <edge_cpus> <storage_cpus>
+# regime-major blocks: mx (28) then db (28); per-seed mode order identical to v4 (paired comparability).
+# mx seat: ec=0.15 sc=0.05 (v4 seat). db seat: ec=1.20 sc=0.09 (D22 frozen).
+
+# ── mx block — seeds 45 46 47 48 42 43 44 (v4 seed iteration) ──
+# seed 45 — order: none both comp stor
+none rq2v5_none_mx_45 45 0.15 0.05
+both rq2v5_both_mx_45 45 0.15 0.05
+comp rq2v5_comp_mx_45 45 0.15 0.05
+stor rq2v5_stor_mx_45 45 0.15 0.05
+# seed 46 — order: both comp stor none
+both rq2v5_both_mx_46 46 0.15 0.05
+comp rq2v5_comp_mx_46 46 0.15 0.05
+stor rq2v5_stor_mx_46 46 0.15 0.05
+none rq2v5_none_mx_46 46 0.15 0.05
+# seed 47 — order: comp stor none both
+comp rq2v5_comp_mx_47 47 0.15 0.05
+stor rq2v5_stor_mx_47 47 0.15 0.05
+none rq2v5_none_mx_47 47 0.15 0.05
+both rq2v5_both_mx_47 47 0.15 0.05
+# seed 48 — order: stor none both comp
+stor rq2v5_stor_mx_48 48 0.15 0.05
+none rq2v5_none_mx_48 48 0.15 0.05
+both rq2v5_both_mx_48 48 0.15 0.05
+comp rq2v5_comp_mx_48 48 0.15 0.05
+# seed 42 — order: both comp stor none
+both rq2v5_both_mx_42 42 0.15 0.05
+comp rq2v5_comp_mx_42 42 0.15 0.05
+stor rq2v5_stor_mx_42 42 0.15 0.05
+none rq2v5_none_mx_42 42 0.15 0.05
+# seed 43 — order: comp stor none both
+comp rq2v5_comp_mx_43 43 0.15 0.05
+stor rq2v5_stor_mx_43 43 0.15 0.05
+none rq2v5_none_mx_43 43 0.15 0.05
+both rq2v5_both_mx_43 43 0.15 0.05
+# seed 44 — order: stor none both comp
+stor rq2v5_stor_mx_44 44 0.15 0.05
+none rq2v5_none_mx_44 44 0.15 0.05
+both rq2v5_both_mx_44 44 0.15 0.05
+comp rq2v5_comp_mx_44 44 0.15 0.05
+
+# ── db block — seeds 43 44 45 46 47 48 42 (v4 seed iteration) ──
+# seed 43 — order: comp stor none both
+comp rq2v5_comp_db_43 43 1.20 0.09
+stor rq2v5_stor_db_43 43 1.20 0.09
+none rq2v5_none_db_43 43 1.20 0.09
+both rq2v5_both_db_43 43 1.20 0.09
+# seed 44 — order: stor none both comp
+stor rq2v5_stor_db_44 44 1.20 0.09
+none rq2v5_none_db_44 44 1.20 0.09
+both rq2v5_both_db_44 44 1.20 0.09
+comp rq2v5_comp_db_44 44 1.20 0.09
+# seed 45 — order: none both comp stor
+none rq2v5_none_db_45 45 1.20 0.09
+both rq2v5_both_db_45 45 1.20 0.09
+comp rq2v5_comp_db_45 45 1.20 0.09
+stor rq2v5_stor_db_45 45 1.20 0.09
+# seed 46 — order: both comp stor none
+both rq2v5_both_db_46 46 1.20 0.09
+comp rq2v5_comp_db_46 46 1.20 0.09
+stor rq2v5_stor_db_46 46 1.20 0.09
+none rq2v5_none_db_46 46 1.20 0.09
+# seed 47 — order: comp stor none both
+comp rq2v5_comp_db_47 47 1.20 0.09
+stor rq2v5_stor_db_47 47 1.20 0.09
+none rq2v5_none_db_47 47 1.20 0.09
+both rq2v5_both_db_47 47 1.20 0.09
+# seed 48 — order: stor none both comp
+stor rq2v5_stor_db_48 48 1.20 0.09
+none rq2v5_none_db_48 48 1.20 0.09
+both rq2v5_both_db_48 48 1.20 0.09
+comp rq2v5_comp_db_48 48 1.20 0.09
+# seed 42 — order: both comp stor none
+both rq2v5_both_db_42 42 1.20 0.09
+comp rq2v5_comp_db_42 42 1.20 0.09
+stor rq2v5_stor_db_42 42 1.20 0.09
+none rq2v5_none_db_42 42 1.20 0.09

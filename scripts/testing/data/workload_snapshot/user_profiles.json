@@ -1,0 +1,6150 @@
+[
+  {
+    "_id": "lan1::user::001",
+    "followed_content": [
+      "lan1::content::2772",
+      "lan1::content::2234",
+      "lan1::content::357",
+      "lan1::content::2419"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 289.86,
+        "video": 167.88,
+        "podcast": 112.47,
+        "image_gallery": 266.98,
+        "event": 17.26,
+        "tool": 67.78,
+        "review": 117.48,
+        "discussion": 159.89,
+        "curated_list": 44.25
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "sports",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan1::user::002",
+    "followed_content": [
+      "lan1::content::1379",
+      "lan1::content::419",
+      "lan1::content::380",
+      "lan1::content::1557",
+      "lan1::content::397"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 261.54,
+        "video": 356.37,
+        "podcast": 123.49,
+        "image_gallery": 96.08,
+        "event": 54.05,
+        "tool": 53.72,
+        "review": 158.34,
+        "discussion": 57.34,
+        "curated_list": 52.25
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "health",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::003",
+    "followed_content": [
+      "lan1::content::327",
+      "lan2::content::1139",
+      "lan2::content::1557",
+      "lan1::content::954",
+      "lan1::content::414",
+      "lan2::content::1858"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 194.28,
+        "video": 310.19,
+        "podcast": 284.8,
+        "image_gallery": 319.77,
+        "event": 66.78,
+        "tool": 62.52,
+        "review": 129.37,
+        "discussion": 75.95,
+        "curated_list": 61.74
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "finance",
+      "technology",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan1::user::004",
+    "followed_content": [
+      "lan2::content::1293",
+      "lan2::content::1644",
+      "lan2::content::1097",
+      "lan2::content::272",
+      "lan2::content::865",
+      "lan2::content::2324",
+      "lan2::content::2941",
+      "lan2::content::1289",
+      "lan2::content::871",
+      "lan2::content::2685",
+      "lan2::content::2045",
+      "lan2::content::1621"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 498.11,
+        "video": 535.71,
+        "podcast": 94.29,
+        "image_gallery": 131.66,
+        "event": 78.32,
+        "tool": 132.41,
+        "review": 132.05,
+        "discussion": 134.26,
+        "curated_list": 84.19
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "featured",
+      "finance",
+      "entertainment",
+      "news",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::005",
+    "followed_content": [
+      "lan1::content::450",
+      "lan1::content::627",
+      "lan1::content::2571"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 171.99,
+        "video": 558.29,
+        "podcast": 203.14,
+        "image_gallery": 222.36,
+        "event": 65.65,
+        "tool": 118.93,
+        "review": 57.71,
+        "discussion": 161.71,
+        "curated_list": 123.67
+      }
+    },
+    "subscribed_tags": [
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::006",
+    "followed_content": [
+      "lan2::content::648",
+      "lan1::content::457",
+      "lan2::content::1859",
+      "lan1::content::1203",
+      "lan1::content::1781",
+      "lan2::content::014"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 491.73,
+        "video": 329.07,
+        "podcast": 213.35,
+        "image_gallery": 305.32,
+        "event": 27.99,
+        "tool": 174.88,
+        "review": 100.91,
+        "discussion": 211.3,
+        "curated_list": 78.34
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "featured",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan1::user::007",
+    "followed_content": [
+      "lan1::content::1260",
+      "lan1::content::981",
+      "lan1::content::238",
+      "lan1::content::987",
+      "lan1::content::2324"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 526.13,
+        "video": 201.39,
+        "podcast": 176.64,
+        "image_gallery": 105.61,
+        "event": 79.65,
+        "tool": 175.51,
+        "review": 39.26,
+        "discussion": 144.56,
+        "curated_list": 80.48
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan1::user::008",
+    "followed_content": [
+      "lan1::content::2921",
+      "lan1::content::1277",
+      "lan1::content::1635",
+      "lan1::content::2752"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 392.45,
+        "video": 412.86,
+        "podcast": 184.22,
+        "image_gallery": 124.77,
+        "event": 34.1,
+        "tool": 94.24,
+        "review": 108.25,
+        "discussion": 90.63,
+        "curated_list": 44.22
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::009",
+    "followed_content": [
+      "lan1::content::1354",
+      "lan1::content::291",
+      "lan1::content::2106"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 207.1,
+        "video": 551.39,
+        "podcast": 111.42,
+        "image_gallery": 128.96,
+        "event": 94.52,
+        "tool": 138.5,
+        "review": 90.9,
+        "discussion": 212.62,
+        "curated_list": 108.82
+      }
+    },
+    "subscribed_tags": [
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan1::user::010",
+    "followed_content": [
+      "lan1::content::1684",
+      "lan1::content::1913",
+      "lan1::content::2987",
+      "lan1::content::222",
+      "lan1::content::2759",
+      "lan1::content::2677"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 542.87,
+        "video": 209.05,
+        "podcast": 156.63,
+        "image_gallery": 205.54,
+        "event": 88.24,
+        "tool": 77.24,
+        "review": 48.53,
+        "discussion": 138.69,
+        "curated_list": 66.41
+      }
+    },
+    "subscribed_tags": [
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan1::user::011",
+    "followed_content": [
+      "lan1::content::208",
+      "lan1::content::2672",
+      "lan1::content::2215"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 476.21,
+        "video": 731.4,
+        "podcast": 282.33,
+        "image_gallery": 394.02,
+        "event": 29.14,
+        "tool": 122.27,
+        "review": 52.06,
+        "discussion": 128.23,
+        "curated_list": 26.45
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::012",
+    "followed_content": [
+      "lan1::content::635",
+      "lan1::content::778",
+      "lan1::content::1216",
+      "lan1::content::892",
+      "lan1::content::240",
+      "lan1::content::2373"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 431.08,
+        "video": 186.57,
+        "podcast": 135.27,
+        "image_gallery": 98.55,
+        "event": 55.53,
+        "tool": 204.68,
+        "review": 99.67,
+        "discussion": 52.51,
+        "curated_list": 75.86
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::013",
+    "followed_content": [
+      "lan1::content::1009",
+      "lan1::content::2372",
+      "lan1::content::2436",
+      "lan1::content::163",
+      "lan1::content::2537",
+      "lan1::content::336",
+      "lan1::content::1718",
+      "lan1::content::2693",
+      "lan1::content::2391",
+      "lan1::content::2316"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 335.25,
+        "video": 710.82,
+        "podcast": 109.02,
+        "image_gallery": 344.99,
+        "event": 35.29,
+        "tool": 105.2,
+        "review": 120.75,
+        "discussion": 106.0,
+        "curated_list": 54.78
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "technology",
+      "finance",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::014",
+    "followed_content": [
+      "lan2::content::301",
+      "lan2::content::2203",
+      "lan2::content::874",
+      "lan2::content::2073"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 219.34,
+        "video": 709.96,
+        "podcast": 271.41,
+        "image_gallery": 405.33,
+        "event": 46.41,
+        "tool": 59.97,
+        "review": 145.06,
+        "discussion": 194.78,
+        "curated_list": 87.28
+      }
+    },
+    "subscribed_tags": [
+      "news",
+      "education",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::015",
+    "followed_content": [
+      "lan1::content::2267",
+      "lan2::content::1155",
+      "lan2::content::2478",
+      "lan1::content::637",
+      "lan2::content::1116",
+      "lan2::content::863"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 327.43,
+        "video": 300.67,
+        "podcast": 277.96,
+        "image_gallery": 98.8,
+        "event": 68.91,
+        "tool": 187.58,
+        "review": 26.61,
+        "discussion": 113.38,
+        "curated_list": 34.39
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "news",
+      "archived",
+      "sports",
+      "technology",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::016",
+    "followed_content": [
+      "lan2::content::611",
+      "lan1::content::309",
+      "lan2::content::2235",
+      "lan1::content::2831",
+      "lan2::content::1513",
+      "lan2::content::148"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 118.82,
+        "video": 368.79,
+        "podcast": 283.94,
+        "image_gallery": 439.71,
+        "event": 18.39,
+        "tool": 97.98,
+        "review": 122.31,
+        "discussion": 186.73,
+        "curated_list": 58.9
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "education",
+      "featured",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::017",
+    "followed_content": [
+      "lan2::content::1689",
+      "lan2::content::102",
+      "lan2::content::735",
+      "lan2::content::1361",
+      "lan2::content::1687"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 461.01,
+        "video": 668.44,
+        "podcast": 254.58,
+        "image_gallery": 178.72,
+        "event": 81.93,
+        "tool": 50.54,
+        "review": 150.83,
+        "discussion": 228.89,
+        "curated_list": 44.47
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "science",
+      "finance",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan1::user::018",
+    "followed_content": [
+      "lan1::content::1633",
+      "lan1::content::1345",
+      "lan1::content::1142",
+      "lan1::content::285",
+      "lan1::content::1144"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 258.02,
+        "video": 455.64,
+        "podcast": 223.08,
+        "image_gallery": 392.15,
+        "event": 43.15,
+        "tool": 35.24,
+        "review": 151.56,
+        "discussion": 97.47,
+        "curated_list": 83.86
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "sports",
+      "finance",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::019",
+    "followed_content": [
+      "lan2::content::1578",
+      "lan2::content::2095",
+      "lan2::content::779",
+      "lan1::content::2484",
+      "lan2::content::1044",
+      "lan2::content::474",
+      "lan2::content::2362",
+      "lan1::content::1788"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 131.49,
+        "video": 548.54,
+        "podcast": 139.25,
+        "image_gallery": 196.15,
+        "event": 87.08,
+        "tool": 166.75,
+        "review": 65.05,
+        "discussion": 108.04,
+        "curated_list": 64.92
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "trending",
+      "health",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::020",
+    "followed_content": [
+      "lan1::content::2775",
+      "lan1::content::713",
+      "lan1::content::2522",
+      "lan1::content::2332",
+      "lan1::content::1233",
+      "lan1::content::1664"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 346.57,
+        "video": 150.24,
+        "podcast": 128.86,
+        "image_gallery": 239.06,
+        "event": 64.3,
+        "tool": 154.39,
+        "review": 89.75,
+        "discussion": 137.28,
+        "curated_list": 43.51
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::021",
+    "followed_content": [
+      "lan1::content::383",
+      "lan1::content::963",
+      "lan1::content::2756",
+      "lan1::content::1272",
+      "lan1::content::921"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 462.95,
+        "video": 238.41,
+        "podcast": 71.09,
+        "image_gallery": 444.06,
+        "event": 66.96,
+        "tool": 176.01,
+        "review": 88.31,
+        "discussion": 234.95,
+        "curated_list": 83.32
+      }
+    },
+    "subscribed_tags": [
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan1::user::022",
+    "followed_content": [
+      "lan1::content::1742",
+      "lan2::content::897",
+      "lan1::content::437",
+      "lan2::content::721"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 512.86,
+        "video": 222.82,
+        "podcast": 92.0,
+        "image_gallery": 251.92,
+        "event": 60.15,
+        "tool": 136.2,
+        "review": 67.59,
+        "discussion": 206.16,
+        "curated_list": 68.68
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "health",
+      "finance",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::023",
+    "followed_content": [
+      "lan2::content::1985",
+      "lan1::content::2612",
+      "lan2::content::2568",
+      "lan2::content::2136",
+      "lan1::content::1136"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 421.1,
+        "video": 290.7,
+        "podcast": 140.6,
+        "image_gallery": 410.42,
+        "event": 21.85,
+        "tool": 58.66,
+        "review": 77.46,
+        "discussion": 73.62,
+        "curated_list": 43.53
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "education",
+      "science",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan1::user::024",
+    "followed_content": [
+      "lan1::content::1721",
+      "lan1::content::1596",
+      "lan1::content::2393",
+      "lan1::content::2849"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 108.79,
+        "video": 678.39,
+        "podcast": 198.17,
+        "image_gallery": 256.48,
+        "event": 95.13,
+        "tool": 86.74,
+        "review": 78.5,
+        "discussion": 236.16,
+        "curated_list": 111.93
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::025",
+    "followed_content": [
+      "lan1::content::1990",
+      "lan1::content::119",
+      "lan1::content::1593",
+      "lan1::content::1377",
+      "lan1::content::2740",
+      "lan1::content::2782"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 459.16,
+        "video": 584.51,
+        "podcast": 261.72,
+        "image_gallery": 420.23,
+        "event": 98.36,
+        "tool": 131.48,
+        "review": 156.04,
+        "discussion": 170.22,
+        "curated_list": 92.93
+      }
+    },
+    "subscribed_tags": [
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::026",
+    "followed_content": [
+      "lan1::content::1553",
+      "lan1::content::1341",
+      "lan1::content::867",
+      "lan1::content::1863",
+      "lan1::content::1339"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 251.88,
+        "video": 677.78,
+        "podcast": 126.78,
+        "image_gallery": 431.95,
+        "event": 50.83,
+        "tool": 188.63,
+        "review": 90.55,
+        "discussion": 204.79,
+        "curated_list": 25.73
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::027",
+    "followed_content": [
+      "lan2::content::084",
+      "lan2::content::2545",
+      "lan2::content::625",
+      "lan2::content::978",
+      "lan2::content::518",
+      "lan2::content::1940",
+      "lan2::content::2743"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 151.48,
+        "video": 718.65,
+        "podcast": 171.61,
+        "image_gallery": 174.81,
+        "event": 46.36,
+        "tool": 145.12,
+        "review": 164.56,
+        "discussion": 198.04,
+        "curated_list": 105.56
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "technology",
+      "news",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::028",
+    "followed_content": [
+      "lan1::content::2359",
+      "lan1::content::2775",
+      "lan1::content::1538",
+      "lan1::content::1625",
+      "lan1::content::2929"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 189.25,
+        "video": 505.26,
+        "podcast": 259.34,
+        "image_gallery": 169.85,
+        "event": 74.26,
+        "tool": 87.3,
+        "review": 122.64,
+        "discussion": 217.22,
+        "curated_list": 107.58
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::029",
+    "followed_content": [
+      "lan2::content::1398",
+      "lan1::content::2073",
+      "lan1::content::2653",
+      "lan2::content::052"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 295.09,
+        "video": 367.31,
+        "podcast": 273.98,
+        "image_gallery": 250.1,
+        "event": 28.0,
+        "tool": 63.47,
+        "review": 98.26,
+        "discussion": 183.1,
+        "curated_list": 87.75
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "featured",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::030",
+    "followed_content": [
+      "lan2::content::355",
+      "lan2::content::1143",
+      "lan2::content::1847",
+      "lan2::content::999",
+      "lan2::content::1904",
+      "lan2::content::2335",
+      "lan2::content::2500",
+      "lan2::content::2737",
+      "lan2::content::1553",
+      "lan2::content::1378",
+      "lan2::content::118",
+      "lan2::content::2025"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 482.93,
+        "video": 259.1,
+        "podcast": 110.91,
+        "image_gallery": 375.2,
+        "event": 43.93,
+        "tool": 197.26,
+        "review": 125.18,
+        "discussion": 100.78,
+        "curated_list": 21.12
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "health",
+      "trending",
+      "sports",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::031",
+    "followed_content": [
+      "lan2::content::1951",
+      "lan2::content::2646",
+      "lan2::content::2916",
+      "lan2::content::2011",
+      "lan2::content::1836",
+      "lan2::content::071",
+      "lan2::content::382",
+      "lan2::content::1206",
+      "lan2::content::908",
+      "lan2::content::1657",
+      "lan2::content::2834"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 209.49,
+        "video": 548.38,
+        "podcast": 148.56,
+        "image_gallery": 284.78,
+        "event": 44.22,
+        "tool": 219.36,
+        "review": 102.56,
+        "discussion": 117.4,
+        "curated_list": 69.91
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "health",
+      "education",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::032",
+    "followed_content": [
+      "lan1::content::490",
+      "lan1::content::2195",
+      "lan1::content::2827",
+      "lan1::content::759",
+      "lan1::content::785"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 197.37,
+        "video": 440.52,
+        "podcast": 233.9,
+        "image_gallery": 441.34,
+        "event": 59.59,
+        "tool": 83.77,
+        "review": 35.08,
+        "discussion": 82.71,
+        "curated_list": 45.02
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::033",
+    "followed_content": [
+      "lan1::content::187",
+      "lan1::content::224",
+      "lan1::content::2267",
+      "lan1::content::1197",
+      "lan1::content::2857"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 524.84,
+        "video": 532.72,
+        "podcast": 240.67,
+        "image_gallery": 117.96,
+        "event": 16.04,
+        "tool": 84.02,
+        "review": 91.81,
+        "discussion": 114.96,
+        "curated_list": 126.2
+      }
+    },
+    "subscribed_tags": [
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan1::user::034",
+    "followed_content": [
+      "lan1::content::2364",
+      "lan1::content::2579",
+      "lan1::content::2812"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 124.12,
+        "video": 239.52,
+        "podcast": 195.08,
+        "image_gallery": 192.42,
+        "event": 99.48,
+        "tool": 52.51,
+        "review": 134.67,
+        "discussion": 173.39,
+        "curated_list": 106.98
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan1::user::035",
+    "followed_content": [
+      "lan1::content::1251",
+      "lan1::content::2330",
+      "lan1::content::2544",
+      "lan1::content::247",
+      "lan1::content::2498",
+      "lan1::content::407"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 526.42,
+        "video": 274.67,
+        "podcast": 110.65,
+        "image_gallery": 324.36,
+        "event": 28.35,
+        "tool": 63.02,
+        "review": 31.26,
+        "discussion": 40.59,
+        "curated_list": 69.56
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan1::user::036",
+    "followed_content": [
+      "lan2::content::2416",
+      "lan2::content::2561",
+      "lan1::content::957",
+      "lan1::content::292",
+      "lan2::content::1084",
+      "lan1::content::2816",
+      "lan2::content::2709"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 391.44,
+        "video": 695.05,
+        "podcast": 258.39,
+        "image_gallery": 106.42,
+        "event": 29.1,
+        "tool": 88.45,
+        "review": 132.34,
+        "discussion": 165.23,
+        "curated_list": 51.75
+      }
+    },
+    "subscribed_tags": [
+      "news",
+      "finance",
+      "sports",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::037",
+    "followed_content": [
+      "lan1::content::330",
+      "lan2::content::1321",
+      "lan1::content::164",
+      "lan1::content::1794",
+      "lan1::content::2450",
+      "lan2::content::1770"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 532.86,
+        "video": 651.58,
+        "podcast": 198.05,
+        "image_gallery": 431.79,
+        "event": 99.96,
+        "tool": 157.73,
+        "review": 60.43,
+        "discussion": 48.85,
+        "curated_list": 103.19
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::038",
+    "followed_content": [
+      "lan2::content::1426",
+      "lan1::content::2015",
+      "lan1::content::1926",
+      "lan1::content::2601",
+      "lan2::content::1673",
+      "lan1::content::374"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 285.24,
+        "video": 447.28,
+        "podcast": 219.02,
+        "image_gallery": 228.17,
+        "event": 79.64,
+        "tool": 36.97,
+        "review": 33.21,
+        "discussion": 95.53,
+        "curated_list": 32.75
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::039",
+    "followed_content": [
+      "lan1::content::2124",
+      "lan1::content::1482",
+      "lan1::content::2551",
+      "lan1::content::2042",
+      "lan1::content::2562"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 298.92,
+        "video": 180.97,
+        "podcast": 124.09,
+        "image_gallery": 128.47,
+        "event": 39.48,
+        "tool": 197.36,
+        "review": 92.71,
+        "discussion": 46.35,
+        "curated_list": 89.3
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "featured",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::040",
+    "followed_content": [
+      "lan1::content::921",
+      "lan2::content::1891",
+      "lan2::content::482",
+      "lan1::content::465"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 328.99,
+        "video": 314.05,
+        "podcast": 260.33,
+        "image_gallery": 442.69,
+        "event": 35.72,
+        "tool": 134.74,
+        "review": 77.54,
+        "discussion": 242.81,
+        "curated_list": 75.91
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "featured",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan1::user::041",
+    "followed_content": [
+      "lan1::content::1159",
+      "lan2::content::2376",
+      "lan2::content::1223",
+      "lan2::content::2704",
+      "lan1::content::2974",
+      "lan2::content::2405"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 255.31,
+        "video": 481.15,
+        "podcast": 190.42,
+        "image_gallery": 248.48,
+        "event": 42.35,
+        "tool": 65.84,
+        "review": 124.62,
+        "discussion": 165.8,
+        "curated_list": 45.69
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "health",
+      "entertainment",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::042",
+    "followed_content": [
+      "lan1::content::2029",
+      "lan1::content::152",
+      "lan1::content::518",
+      "lan1::content::2058",
+      "lan1::content::2418"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 249.4,
+        "video": 210.22,
+        "podcast": 262.81,
+        "image_gallery": 116.89,
+        "event": 92.39,
+        "tool": 32.92,
+        "review": 41.62,
+        "discussion": 231.61,
+        "curated_list": 126.7
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "education",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::043",
+    "followed_content": [
+      "lan1::content::1346",
+      "lan1::content::2763",
+      "lan1::content::2186"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 271.0,
+        "video": 340.0,
+        "podcast": 232.49,
+        "image_gallery": 360.98,
+        "event": 89.15,
+        "tool": 36.82,
+        "review": 30.26,
+        "discussion": 178.86,
+        "curated_list": 121.3
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::044",
+    "followed_content": [
+      "lan1::content::189",
+      "lan2::content::1536",
+      "lan2::content::230",
+      "lan2::content::1469",
+      "lan1::content::1329",
+      "lan2::content::1202"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 354.67,
+        "video": 625.51,
+        "podcast": 100.8,
+        "image_gallery": 109.22,
+        "event": 89.02,
+        "tool": 147.74,
+        "review": 56.12,
+        "discussion": 240.82,
+        "curated_list": 35.74
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "health",
+      "archived",
+      "trending",
+      "education",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::045",
+    "followed_content": [
+      "lan1::content::1179",
+      "lan1::content::2776",
+      "lan1::content::2239",
+      "lan1::content::648",
+      "lan1::content::303",
+      "lan1::content::1810"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 525.36,
+        "video": 742.59,
+        "podcast": 131.8,
+        "image_gallery": 435.95,
+        "event": 73.68,
+        "tool": 116.8,
+        "review": 65.32,
+        "discussion": 259.86,
+        "curated_list": 113.87
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan1::user::046",
+    "followed_content": [
+      "lan1::content::090",
+      "lan1::content::2697",
+      "lan1::content::1622",
+      "lan1::content::1125",
+      "lan1::content::034"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 354.67,
+        "video": 561.48,
+        "podcast": 238.72,
+        "image_gallery": 98.15,
+        "event": 66.54,
+        "tool": 124.38,
+        "review": 155.62,
+        "discussion": 102.96,
+        "curated_list": 107.87
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::047",
+    "followed_content": [
+      "lan2::content::162",
+      "lan1::content::398",
+      "lan1::content::2574",
+      "lan2::content::2648",
+      "lan2::content::2571"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 429.56,
+        "video": 204.08,
+        "podcast": 130.83,
+        "image_gallery": 356.57,
+        "event": 29.93,
+        "tool": 55.11,
+        "review": 100.91,
+        "discussion": 253.73,
+        "curated_list": 78.39
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "premium",
+      "archived",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan1::user::048",
+    "followed_content": [
+      "lan2::content::309",
+      "lan2::content::577",
+      "lan2::content::925",
+      "lan2::content::2771",
+      "lan2::content::2967",
+      "lan2::content::2763",
+      "lan2::content::1628",
+      "lan2::content::2283",
+      "lan2::content::1499"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 140.64,
+        "video": 386.74,
+        "podcast": 123.47,
+        "image_gallery": 125.73,
+        "event": 46.33,
+        "tool": 172.31,
+        "review": 59.32,
+        "discussion": 123.83,
+        "curated_list": 90.24
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "education",
+      "archived",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::049",
+    "followed_content": [
+      "lan1::content::2499",
+      "lan1::content::907",
+      "lan1::content::2653",
+      "lan1::content::259",
+      "lan1::content::2603"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 470.73,
+        "video": 695.63,
+        "podcast": 132.53,
+        "image_gallery": 231.07,
+        "event": 26.88,
+        "tool": 209.79,
+        "review": 65.65,
+        "discussion": 148.38,
+        "curated_list": 30.69
+      }
+    },
+    "subscribed_tags": [
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::050",
+    "followed_content": [
+      "lan2::content::406",
+      "lan2::content::2522",
+      "lan2::content::135",
+      "lan2::content::2828",
+      "lan1::content::2977",
+      "lan1::content::1700",
+      "lan1::content::633",
+      "lan2::content::1146",
+      "lan2::content::1672",
+      "lan2::content::2683",
+      "lan2::content::2005"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 127.25,
+        "video": 315.53,
+        "podcast": 292.37,
+        "image_gallery": 431.13,
+        "event": 85.06,
+        "tool": 47.42,
+        "review": 51.82,
+        "discussion": 180.69,
+        "curated_list": 126.82
+      }
+    },
+    "subscribed_tags": [
+      "health",
+      "education",
+      "entertainment",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::051",
+    "followed_content": [
+      "lan1::content::282",
+      "lan1::content::2271",
+      "lan1::content::849",
+      "lan1::content::2402"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 197.18,
+        "video": 671.82,
+        "podcast": 138.85,
+        "image_gallery": 134.6,
+        "event": 91.55,
+        "tool": 30.54,
+        "review": 148.76,
+        "discussion": 71.83,
+        "curated_list": 34.3
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::052",
+    "followed_content": [
+      "lan1::content::540",
+      "lan1::content::061",
+      "lan1::content::1468"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 455.49,
+        "video": 292.76,
+        "podcast": 137.71,
+        "image_gallery": 144.47,
+        "event": 19.45,
+        "tool": 170.93,
+        "review": 98.91,
+        "discussion": 204.05,
+        "curated_list": 72.39
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::053",
+    "followed_content": [
+      "lan2::content::2979",
+      "lan2::content::2699",
+      "lan2::content::2136",
+      "lan2::content::1236"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 306.12,
+        "video": 728.42,
+        "podcast": 74.6,
+        "image_gallery": 257.22,
+        "event": 49.14,
+        "tool": 160.36,
+        "review": 93.54,
+        "discussion": 240.13,
+        "curated_list": 28.08
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "featured",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan1::user::054",
+    "followed_content": [
+      "lan1::content::1561",
+      "lan1::content::2447",
+      "lan1::content::2174",
+      "lan1::content::1208",
+      "lan1::content::1859"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 327.5,
+        "video": 408.12,
+        "podcast": 250.34,
+        "image_gallery": 122.33,
+        "event": 70.65,
+        "tool": 196.76,
+        "review": 102.7,
+        "discussion": 230.41,
+        "curated_list": 67.31
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::055",
+    "followed_content": [
+      "lan2::content::374",
+      "lan2::content::1943",
+      "lan2::content::2814",
+      "lan2::content::1534",
+      "lan2::content::275",
+      "lan2::content::626",
+      "lan1::content::2725",
+      "lan1::content::1045"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 363.91,
+        "video": 486.95,
+        "podcast": 139.12,
+        "image_gallery": 125.23,
+        "event": 45.06,
+        "tool": 156.41,
+        "review": 132.54,
+        "discussion": 230.98,
+        "curated_list": 99.32
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "education",
+      "health",
+      "trending",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::056",
+    "followed_content": [
+      "lan2::content::1142",
+      "lan2::content::2352",
+      "lan2::content::2279",
+      "lan1::content::444",
+      "lan2::content::471",
+      "lan2::content::1506",
+      "lan1::content::1435"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 113.03,
+        "video": 313.96,
+        "podcast": 242.98,
+        "image_gallery": 420.97,
+        "event": 44.84,
+        "tool": 64.47,
+        "review": 41.49,
+        "discussion": 184.62,
+        "curated_list": 27.65
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "entertainment",
+      "technology",
+      "featured",
+      "finance",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::057",
+    "followed_content": [
+      "lan1::content::1397",
+      "lan1::content::645",
+      "lan1::content::1516",
+      "lan1::content::1277",
+      "lan1::content::2956",
+      "lan1::content::1329",
+      "lan1::content::2325"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 368.3,
+        "video": 680.01,
+        "podcast": 97.34,
+        "image_gallery": 359.14,
+        "event": 19.23,
+        "tool": 45.5,
+        "review": 86.47,
+        "discussion": 133.28,
+        "curated_list": 86.78
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "featured",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan1::user::058",
+    "followed_content": [
+      "lan1::content::455",
+      "lan1::content::1161",
+      "lan1::content::2778",
+      "lan1::content::2780",
+      "lan1::content::2430",
+      "lan1::content::1994"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 337.12,
+        "video": 335.05,
+        "podcast": 112.92,
+        "image_gallery": 444.24,
+        "event": 19.66,
+        "tool": 68.84,
+        "review": 161.8,
+        "discussion": 208.82,
+        "curated_list": 104.06
+      }
+    },
+    "subscribed_tags": [
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::059",
+    "followed_content": [
+      "lan1::content::720",
+      "lan1::content::530",
+      "lan1::content::1558",
+      "lan1::content::2182",
+      "lan1::content::2883",
+      "lan1::content::943"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 325.12,
+        "video": 650.01,
+        "podcast": 253.49,
+        "image_gallery": 106.67,
+        "event": 88.25,
+        "tool": 38.04,
+        "review": 22.81,
+        "discussion": 242.66,
+        "curated_list": 114.83
+      }
+    },
+    "subscribed_tags": [
+      "news"
+    ]
+  },
+  {
+    "_id": "lan1::user::060",
+    "followed_content": [
+      "lan1::content::1331",
+      "lan1::content::704",
+      "lan1::content::2532",
+      "lan1::content::1885"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 474.41,
+        "video": 701.86,
+        "podcast": 81.15,
+        "image_gallery": 392.46,
+        "event": 35.68,
+        "tool": 141.89,
+        "review": 98.59,
+        "discussion": 127.07,
+        "curated_list": 54.13
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "premium",
+      "health",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan1::user::061",
+    "followed_content": [
+      "lan1::content::2174",
+      "lan1::content::2089",
+      "lan1::content::795"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 507.67,
+        "video": 359.63,
+        "podcast": 234.57,
+        "image_gallery": 383.01,
+        "event": 84.28,
+        "tool": 74.89,
+        "review": 41.97,
+        "discussion": 83.4,
+        "curated_list": 86.26
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::062",
+    "followed_content": [
+      "lan2::content::2634",
+      "lan1::content::2790",
+      "lan2::content::2559",
+      "lan2::content::1324",
+      "lan1::content::2374",
+      "lan1::content::2313",
+      "lan1::content::1839",
+      "lan2::content::2603"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 458.35,
+        "video": 504.85,
+        "podcast": 144.47,
+        "image_gallery": 107.45,
+        "event": 54.25,
+        "tool": 37.15,
+        "review": 75.31,
+        "discussion": 103.16,
+        "curated_list": 90.91
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "premium",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::063",
+    "followed_content": [
+      "lan2::content::2670",
+      "lan2::content::1317",
+      "lan2::content::772",
+      "lan2::content::2054",
+      "lan2::content::618",
+      "lan1::content::2342",
+      "lan2::content::2479",
+      "lan1::content::1843",
+      "lan2::content::1949",
+      "lan1::content::169"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 418.43,
+        "video": 744.59,
+        "podcast": 185.78,
+        "image_gallery": 305.63,
+        "event": 45.93,
+        "tool": 204.41,
+        "review": 78.11,
+        "discussion": 210.38,
+        "curated_list": 94.68
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "archived",
+      "featured",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::064",
+    "followed_content": [
+      "lan1::content::1164",
+      "lan1::content::1033",
+      "lan1::content::2965",
+      "lan1::content::2690",
+      "lan1::content::2469",
+      "lan1::content::616"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 250.01,
+        "video": 499.64,
+        "podcast": 93.94,
+        "image_gallery": 209.43,
+        "event": 97.25,
+        "tool": 162.71,
+        "review": 78.79,
+        "discussion": 170.91,
+        "curated_list": 123.18
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::065",
+    "followed_content": [
+      "lan1::content::2647",
+      "lan1::content::2747",
+      "lan2::content::1735"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 108.2,
+        "video": 335.32,
+        "podcast": 288.28,
+        "image_gallery": 206.44,
+        "event": 80.12,
+        "tool": 66.48,
+        "review": 170.0,
+        "discussion": 74.09,
+        "curated_list": 52.54
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::066",
+    "followed_content": [
+      "lan1::content::632",
+      "lan1::content::665",
+      "lan1::content::741",
+      "lan1::content::2838",
+      "lan1::content::2559",
+      "lan1::content::679",
+      "lan1::content::2954"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 296.95,
+        "video": 396.52,
+        "podcast": 222.33,
+        "image_gallery": 167.89,
+        "event": 52.76,
+        "tool": 84.14,
+        "review": 132.28,
+        "discussion": 138.76,
+        "curated_list": 78.74
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "entertainment",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::067",
+    "followed_content": [
+      "lan1::content::1892",
+      "lan1::content::1155",
+      "lan1::content::1565",
+      "lan1::content::2060",
+      "lan1::content::2161",
+      "lan1::content::1715"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 534.82,
+        "video": 640.13,
+        "podcast": 252.3,
+        "image_gallery": 131.21,
+        "event": 36.25,
+        "tool": 151.82,
+        "review": 151.12,
+        "discussion": 162.0,
+        "curated_list": 31.28
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::068",
+    "followed_content": [
+      "lan1::content::604",
+      "lan1::content::1792",
+      "lan1::content::376",
+      "lan1::content::910",
+      "lan1::content::1848",
+      "lan1::content::1432",
+      "lan1::content::110",
+      "lan1::content::1700"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 123.97,
+        "video": 451.2,
+        "podcast": 116.59,
+        "image_gallery": 447.97,
+        "event": 46.87,
+        "tool": 35.36,
+        "review": 159.62,
+        "discussion": 224.62,
+        "curated_list": 91.5
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "technology",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::069",
+    "followed_content": [
+      "lan2::content::1838",
+      "lan2::content::2521",
+      "lan1::content::1922",
+      "lan2::content::022",
+      "lan1::content::2890"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 475.73,
+        "video": 479.28,
+        "podcast": 234.54,
+        "image_gallery": 275.28,
+        "event": 24.45,
+        "tool": 84.74,
+        "review": 65.17,
+        "discussion": 50.5,
+        "curated_list": 66.18
+      }
+    },
+    "subscribed_tags": [
+      "news",
+      "sports",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::070",
+    "followed_content": [
+      "lan1::content::2356",
+      "lan1::content::991",
+      "lan1::content::2944",
+      "lan1::content::589",
+      "lan1::content::1194",
+      "lan1::content::1759",
+      "lan1::content::007",
+      "lan1::content::2519"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 258.77,
+        "video": 492.4,
+        "podcast": 104.96,
+        "image_gallery": 327.24,
+        "event": 59.5,
+        "tool": 98.51,
+        "review": 163.01,
+        "discussion": 159.7,
+        "curated_list": 106.51
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "archived",
+      "education",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan1::user::071",
+    "followed_content": [
+      "lan2::content::1530",
+      "lan1::content::2604",
+      "lan1::content::1585"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 260.69,
+        "video": 190.54,
+        "podcast": 117.87,
+        "image_gallery": 323.13,
+        "event": 23.81,
+        "tool": 140.56,
+        "review": 133.5,
+        "discussion": 69.35,
+        "curated_list": 58.75
+      }
+    },
+    "subscribed_tags": [
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::072",
+    "followed_content": [
+      "lan1::content::2588",
+      "lan1::content::747",
+      "lan1::content::553",
+      "lan1::content::259",
+      "lan1::content::2933",
+      "lan1::content::1875"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 116.64,
+        "video": 270.95,
+        "podcast": 249.87,
+        "image_gallery": 407.74,
+        "event": 41.83,
+        "tool": 88.91,
+        "review": 79.73,
+        "discussion": 219.39,
+        "curated_list": 72.07
+      }
+    },
+    "subscribed_tags": [
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan1::user::073",
+    "followed_content": [
+      "lan1::content::2686",
+      "lan1::content::1360",
+      "lan1::content::1120"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 156.01,
+        "video": 370.81,
+        "podcast": 273.48,
+        "image_gallery": 355.02,
+        "event": 91.04,
+        "tool": 103.46,
+        "review": 166.06,
+        "discussion": 149.16,
+        "curated_list": 74.73
+      }
+    },
+    "subscribed_tags": [
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan1::user::074",
+    "followed_content": [
+      "lan2::content::2235",
+      "lan2::content::1204",
+      "lan2::content::1316",
+      "lan2::content::421",
+      "lan2::content::328",
+      "lan2::content::1344",
+      "lan2::content::2708"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 233.04,
+        "video": 417.55,
+        "podcast": 232.24,
+        "image_gallery": 141.66,
+        "event": 52.73,
+        "tool": 114.95,
+        "review": 129.02,
+        "discussion": 240.55,
+        "curated_list": 87.63
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "technology",
+      "health",
+      "premium",
+      "trending",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan1::user::075",
+    "followed_content": [
+      "lan1::content::1489",
+      "lan1::content::2102",
+      "lan1::content::2783",
+      "lan1::content::656",
+      "lan1::content::128",
+      "lan1::content::585"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 481.9,
+        "video": 556.85,
+        "podcast": 165.16,
+        "image_gallery": 126.71,
+        "event": 35.06,
+        "tool": 152.58,
+        "review": 74.32,
+        "discussion": 248.88,
+        "curated_list": 23.56
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::076",
+    "followed_content": [
+      "lan1::content::2351",
+      "lan1::content::564",
+      "lan1::content::2169"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 265.13,
+        "video": 338.63,
+        "podcast": 126.89,
+        "image_gallery": 435.39,
+        "event": 17.2,
+        "tool": 65.35,
+        "review": 97.66,
+        "discussion": 240.98,
+        "curated_list": 32.95
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan1::user::077",
+    "followed_content": [
+      "lan1::content::304",
+      "lan1::content::1852",
+      "lan1::content::708",
+      "lan1::content::2922",
+      "lan1::content::1824"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 548.77,
+        "video": 636.31,
+        "podcast": 292.21,
+        "image_gallery": 445.03,
+        "event": 71.77,
+        "tool": 164.81,
+        "review": 102.5,
+        "discussion": 103.88,
+        "curated_list": 53.0
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "trending",
+      "sports",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::078",
+    "followed_content": [
+      "lan1::content::824",
+      "lan1::content::569",
+      "lan1::content::970"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 455.67,
+        "video": 165.77,
+        "podcast": 192.97,
+        "image_gallery": 216.5,
+        "event": 83.31,
+        "tool": 134.81,
+        "review": 111.79,
+        "discussion": 58.97,
+        "curated_list": 54.02
+      }
+    },
+    "subscribed_tags": [
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::079",
+    "followed_content": [
+      "lan2::content::304",
+      "lan2::content::1844",
+      "lan2::content::1909",
+      "lan2::content::2786",
+      "lan2::content::2120",
+      "lan2::content::1412",
+      "lan2::content::526",
+      "lan2::content::2259",
+      "lan2::content::2621",
+      "lan2::content::2408",
+      "lan2::content::746"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 445.5,
+        "video": 227.42,
+        "podcast": 180.69,
+        "image_gallery": 401.24,
+        "event": 85.67,
+        "tool": 128.44,
+        "review": 65.62,
+        "discussion": 75.63,
+        "curated_list": 122.82
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "featured",
+      "health",
+      "trending",
+      "technology",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan1::user::080",
+    "followed_content": [
+      "lan1::content::513",
+      "lan1::content::2561",
+      "lan1::content::1241",
+      "lan1::content::2517",
+      "lan1::content::2186"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 142.04,
+        "video": 534.59,
+        "podcast": 202.03,
+        "image_gallery": 294.84,
+        "event": 29.55,
+        "tool": 148.65,
+        "review": 155.3,
+        "discussion": 114.28,
+        "curated_list": 121.63
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan1::user::081",
+    "followed_content": [
+      "lan1::content::2668",
+      "lan1::content::864",
+      "lan1::content::2344",
+      "lan1::content::1707",
+      "lan1::content::2532"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 387.55,
+        "video": 448.82,
+        "podcast": 210.52,
+        "image_gallery": 187.18,
+        "event": 96.32,
+        "tool": 121.76,
+        "review": 140.7,
+        "discussion": 190.7,
+        "curated_list": 52.72
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::082",
+    "followed_content": [
+      "lan1::content::1903",
+      "lan1::content::836",
+      "lan1::content::1394",
+      "lan1::content::2485",
+      "lan1::content::589",
+      "lan1::content::1281"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 487.67,
+        "video": 341.59,
+        "podcast": 297.13,
+        "image_gallery": 207.79,
+        "event": 48.89,
+        "tool": 174.53,
+        "review": 97.25,
+        "discussion": 63.36,
+        "curated_list": 46.59
+      }
+    },
+    "subscribed_tags": [
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::083",
+    "followed_content": [
+      "lan1::content::1574",
+      "lan1::content::2521",
+      "lan1::content::1713",
+      "lan1::content::1017",
+      "lan1::content::655"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 466.07,
+        "video": 710.25,
+        "podcast": 233.07,
+        "image_gallery": 150.24,
+        "event": 28.54,
+        "tool": 219.23,
+        "review": 90.02,
+        "discussion": 233.4,
+        "curated_list": 74.71
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::084",
+    "followed_content": [
+      "lan1::content::2390",
+      "lan2::content::208",
+      "lan1::content::1446",
+      "lan1::content::200"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 228.59,
+        "video": 154.91,
+        "podcast": 85.8,
+        "image_gallery": 129.56,
+        "event": 37.48,
+        "tool": 99.5,
+        "review": 80.49,
+        "discussion": 49.95,
+        "curated_list": 25.63
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::085",
+    "followed_content": [
+      "lan1::content::2553",
+      "lan1::content::2503",
+      "lan1::content::1146",
+      "lan2::content::1614",
+      "lan2::content::487",
+      "lan1::content::2787",
+      "lan2::content::397",
+      "lan2::content::528"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 371.11,
+        "video": 390.83,
+        "podcast": 69.66,
+        "image_gallery": 94.4,
+        "event": 75.66,
+        "tool": 182.75,
+        "review": 97.9,
+        "discussion": 72.77,
+        "curated_list": 118.24
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "sports",
+      "technology",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::086",
+    "followed_content": [
+      "lan2::content::2181",
+      "lan1::content::2432",
+      "lan1::content::1378",
+      "lan1::content::2078",
+      "lan1::content::2088"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 265.76,
+        "video": 554.28,
+        "podcast": 295.18,
+        "image_gallery": 295.97,
+        "event": 82.72,
+        "tool": 167.81,
+        "review": 123.21,
+        "discussion": 45.86,
+        "curated_list": 72.2
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::087",
+    "followed_content": [
+      "lan1::content::1558",
+      "lan2::content::130",
+      "lan1::content::2789",
+      "lan2::content::782",
+      "lan2::content::078",
+      "lan2::content::993",
+      "lan1::content::606",
+      "lan2::content::2870",
+      "lan2::content::2346",
+      "lan2::content::451"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 492.77,
+        "video": 591.5,
+        "podcast": 74.95,
+        "image_gallery": 131.09,
+        "event": 32.62,
+        "tool": 91.76,
+        "review": 119.33,
+        "discussion": 155.6,
+        "curated_list": 54.51
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "finance",
+      "news",
+      "education",
+      "science",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan1::user::088",
+    "followed_content": [
+      "lan1::content::2499",
+      "lan1::content::1984",
+      "lan1::content::788",
+      "lan1::content::1010",
+      "lan1::content::1143"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 351.14,
+        "video": 284.92,
+        "podcast": 293.5,
+        "image_gallery": 190.12,
+        "event": 39.57,
+        "tool": 69.38,
+        "review": 125.75,
+        "discussion": 109.75,
+        "curated_list": 58.37
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan1::user::089",
+    "followed_content": [
+      "lan2::content::600",
+      "lan2::content::1190",
+      "lan2::content::173",
+      "lan2::content::1179",
+      "lan2::content::2926",
+      "lan2::content::324",
+      "lan2::content::1419",
+      "lan2::content::1812",
+      "lan2::content::2687",
+      "lan2::content::1051",
+      "lan2::content::1963",
+      "lan2::content::877"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 190.93,
+        "video": 473.15,
+        "podcast": 283.93,
+        "image_gallery": 337.58,
+        "event": 26.67,
+        "tool": 146.98,
+        "review": 108.02,
+        "discussion": 93.34,
+        "curated_list": 93.68
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "archived",
+      "technology",
+      "featured",
+      "health",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan1::user::090",
+    "followed_content": [
+      "lan1::content::2939",
+      "lan1::content::1935",
+      "lan1::content::412",
+      "lan1::content::2791",
+      "lan1::content::564"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 102.33,
+        "video": 480.21,
+        "podcast": 282.98,
+        "image_gallery": 230.56,
+        "event": 94.48,
+        "tool": 196.9,
+        "review": 91.62,
+        "discussion": 83.88,
+        "curated_list": 126.03
+      }
+    },
+    "subscribed_tags": [
+      "news"
+    ]
+  },
+  {
+    "_id": "lan1::user::091",
+    "followed_content": [
+      "lan1::content::2192",
+      "lan1::content::2962",
+      "lan1::content::153",
+      "lan1::content::718"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 288.05,
+        "video": 652.56,
+        "podcast": 284.14,
+        "image_gallery": 93.45,
+        "event": 86.08,
+        "tool": 179.71,
+        "review": 47.95,
+        "discussion": 204.78,
+        "curated_list": 115.95
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan1::user::092",
+    "followed_content": [
+      "lan1::content::1373",
+      "lan1::content::1166",
+      "lan1::content::1862"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 545.09,
+        "video": 475.98,
+        "podcast": 178.54,
+        "image_gallery": 427.27,
+        "event": 87.34,
+        "tool": 118.92,
+        "review": 48.92,
+        "discussion": 64.78,
+        "curated_list": 37.87
+      }
+    },
+    "subscribed_tags": [
+      "news"
+    ]
+  },
+  {
+    "_id": "lan1::user::093",
+    "followed_content": [
+      "lan1::content::1209",
+      "lan1::content::2326",
+      "lan1::content::2763",
+      "lan1::content::792",
+      "lan1::content::719"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 374.93,
+        "video": 533.24,
+        "podcast": 157.32,
+        "image_gallery": 238.25,
+        "event": 42.87,
+        "tool": 106.16,
+        "review": 34.31,
+        "discussion": 255.97,
+        "curated_list": 72.52
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan1::user::094",
+    "followed_content": [
+      "lan2::content::1237",
+      "lan2::content::2386",
+      "lan2::content::2961",
+      "lan2::content::2347",
+      "lan2::content::047",
+      "lan2::content::1072",
+      "lan2::content::2678",
+      "lan2::content::1473"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 411.75,
+        "video": 187.27,
+        "podcast": 88.37,
+        "image_gallery": 193.52,
+        "event": 49.46,
+        "tool": 125.48,
+        "review": 154.27,
+        "discussion": 194.78,
+        "curated_list": 54.21
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "health",
+      "finance",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan1::user::095",
+    "followed_content": [
+      "lan1::content::1959",
+      "lan1::content::628",
+      "lan1::content::1864",
+      "lan1::content::2482"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 268.13,
+        "video": 571.16,
+        "podcast": 279.07,
+        "image_gallery": 360.22,
+        "event": 83.17,
+        "tool": 186.86,
+        "review": 134.28,
+        "discussion": 189.68,
+        "curated_list": 85.54
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::096",
+    "followed_content": [
+      "lan1::content::2071",
+      "lan1::content::829",
+      "lan1::content::2346",
+      "lan1::content::2199",
+      "lan1::content::614",
+      "lan1::content::674",
+      "lan1::content::1344",
+      "lan1::content::2132"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 298.83,
+        "video": 558.18,
+        "podcast": 232.06,
+        "image_gallery": 260.87,
+        "event": 91.41,
+        "tool": 114.64,
+        "review": 28.35,
+        "discussion": 69.03,
+        "curated_list": 65.7
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "entertainment",
+      "technology",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan1::user::097",
+    "followed_content": [
+      "lan1::content::893",
+      "lan1::content::2369",
+      "lan1::content::300",
+      "lan1::content::186"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 290.66,
+        "video": 570.23,
+        "podcast": 189.88,
+        "image_gallery": 102.29,
+        "event": 91.01,
+        "tool": 217.37,
+        "review": 90.81,
+        "discussion": 103.16,
+        "curated_list": 39.8
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "sports",
+      "news",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::098",
+    "followed_content": [
+      "lan1::content::1539",
+      "lan1::content::329",
+      "lan1::content::2797",
+      "lan1::content::2711",
+      "lan1::content::2209",
+      "lan1::content::545"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 394.09,
+        "video": 358.66,
+        "podcast": 102.83,
+        "image_gallery": 278.79,
+        "event": 59.95,
+        "tool": 168.29,
+        "review": 53.4,
+        "discussion": 40.76,
+        "curated_list": 22.5
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::099",
+    "followed_content": [
+      "lan2::content::1130",
+      "lan1::content::1887",
+      "lan1::content::636",
+      "lan1::content::1418"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 114.5,
+        "video": 546.12,
+        "podcast": 207.58,
+        "image_gallery": 426.41,
+        "event": 90.57,
+        "tool": 75.73,
+        "review": 30.09,
+        "discussion": 170.67,
+        "curated_list": 69.11
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan1::user::100",
+    "followed_content": [
+      "lan1::content::890",
+      "lan1::content::232",
+      "lan1::content::574",
+      "lan1::content::2064",
+      "lan1::content::1185",
+      "lan1::content::960",
+      "lan1::content::2997",
+      "lan1::content::2360"
+    ],
+    "home_region": "lan1",
+    "profile_config": {
+      "email": "ops-lan1@example.com",
+      "relevance_override": {
+        "article": 243.51,
+        "video": 508.75,
+        "podcast": 221.41,
+        "image_gallery": 198.65,
+        "event": 40.65,
+        "tool": 57.22,
+        "review": 119.03,
+        "discussion": 88.63,
+        "curated_list": 53.06
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "news",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::001",
+    "followed_content": [
+      "lan1::content::2149",
+      "lan1::content::1306",
+      "lan1::content::2853",
+      "lan1::content::1706",
+      "lan1::content::1673",
+      "lan1::content::612",
+      "lan1::content::1229"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 269.41,
+        "video": 602.65,
+        "podcast": 173.64,
+        "image_gallery": 394.26,
+        "event": 40.56,
+        "tool": 164.44,
+        "review": 140.87,
+        "discussion": 241.24,
+        "curated_list": 81.86
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "education",
+      "news",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::002",
+    "followed_content": [
+      "lan2::content::1520",
+      "lan1::content::781",
+      "lan1::content::2968",
+      "lan1::content::2194",
+      "lan1::content::379",
+      "lan2::content::1843"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 493.13,
+        "video": 262.9,
+        "podcast": 242.81,
+        "image_gallery": 347.99,
+        "event": 62.5,
+        "tool": 121.08,
+        "review": 150.42,
+        "discussion": 113.25,
+        "curated_list": 125.27
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "science",
+      "health",
+      "finance",
+      "sports",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::003",
+    "followed_content": [
+      "lan2::content::994",
+      "lan2::content::2850",
+      "lan2::content::2476",
+      "lan2::content::2883",
+      "lan2::content::838",
+      "lan2::content::1625"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 511.81,
+        "video": 481.25,
+        "podcast": 246.12,
+        "image_gallery": 220.84,
+        "event": 60.36,
+        "tool": 98.26,
+        "review": 59.23,
+        "discussion": 152.82,
+        "curated_list": 74.7
+      }
+    },
+    "subscribed_tags": [
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan2::user::004",
+    "followed_content": [
+      "lan2::content::188",
+      "lan2::content::2305",
+      "lan2::content::907",
+      "lan2::content::598",
+      "lan2::content::067",
+      "lan2::content::1069"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 348.99,
+        "video": 500.42,
+        "podcast": 232.8,
+        "image_gallery": 189.22,
+        "event": 31.68,
+        "tool": 73.7,
+        "review": 105.47,
+        "discussion": 94.06,
+        "curated_list": 80.57
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::005",
+    "followed_content": [
+      "lan1::content::2951",
+      "lan2::content::574",
+      "lan1::content::2239",
+      "lan1::content::2221",
+      "lan1::content::754",
+      "lan1::content::2629",
+      "lan1::content::2001",
+      "lan2::content::694"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 161.87,
+        "video": 528.42,
+        "podcast": 76.31,
+        "image_gallery": 135.88,
+        "event": 33.59,
+        "tool": 116.64,
+        "review": 29.07,
+        "discussion": 180.3,
+        "curated_list": 122.73
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "education",
+      "premium",
+      "trending",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan2::user::006",
+    "followed_content": [
+      "lan2::content::1126",
+      "lan2::content::2195",
+      "lan2::content::1175",
+      "lan2::content::071",
+      "lan2::content::2058",
+      "lan2::content::2859",
+      "lan2::content::2761",
+      "lan2::content::1764",
+      "lan2::content::735",
+      "lan2::content::439",
+      "lan2::content::395"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 335.97,
+        "video": 294.58,
+        "podcast": 208.75,
+        "image_gallery": 173.39,
+        "event": 45.13,
+        "tool": 181.04,
+        "review": 31.85,
+        "discussion": 251.05,
+        "curated_list": 70.49
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "news",
+      "premium",
+      "featured",
+      "health",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::007",
+    "followed_content": [
+      "lan2::content::2678",
+      "lan2::content::2662",
+      "lan2::content::130"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 142.08,
+        "video": 377.56,
+        "podcast": 192.65,
+        "image_gallery": 100.76,
+        "event": 15.8,
+        "tool": 62.56,
+        "review": 94.98,
+        "discussion": 135.46,
+        "curated_list": 106.28
+      }
+    },
+    "subscribed_tags": [
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::008",
+    "followed_content": [
+      "lan2::content::1948",
+      "lan2::content::1111",
+      "lan2::content::191",
+      "lan2::content::305",
+      "lan2::content::2804",
+      "lan2::content::1149",
+      "lan2::content::2225",
+      "lan2::content::2309"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 396.15,
+        "video": 257.61,
+        "podcast": 264.1,
+        "image_gallery": 85.79,
+        "event": 32.61,
+        "tool": 57.4,
+        "review": 143.1,
+        "discussion": 220.6,
+        "curated_list": 122.18
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "news",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::009",
+    "followed_content": [
+      "lan2::content::2215",
+      "lan2::content::1573",
+      "lan1::content::574",
+      "lan2::content::1359",
+      "lan2::content::2774",
+      "lan1::content::2824"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 296.69,
+        "video": 653.2,
+        "podcast": 141.74,
+        "image_gallery": 364.53,
+        "event": 96.16,
+        "tool": 105.37,
+        "review": 136.03,
+        "discussion": 46.52,
+        "curated_list": 50.07
+      }
+    },
+    "subscribed_tags": [
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::010",
+    "followed_content": [
+      "lan2::content::2707",
+      "lan2::content::1557",
+      "lan2::content::352",
+      "lan2::content::2534",
+      "lan2::content::1210",
+      "lan2::content::1010",
+      "lan2::content::2921",
+      "lan2::content::302",
+      "lan2::content::337",
+      "lan2::content::1098"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 169.4,
+        "video": 577.01,
+        "podcast": 212.14,
+        "image_gallery": 353.67,
+        "event": 41.92,
+        "tool": 50.24,
+        "review": 20.78,
+        "discussion": 107.82,
+        "curated_list": 59.59
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "entertainment",
+      "featured",
+      "health",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::011",
+    "followed_content": [
+      "lan2::content::2282",
+      "lan2::content::2273",
+      "lan2::content::2099",
+      "lan2::content::1672",
+      "lan2::content::424",
+      "lan2::content::108"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 140.33,
+        "video": 482.53,
+        "podcast": 203.26,
+        "image_gallery": 370.24,
+        "event": 88.42,
+        "tool": 32.34,
+        "review": 82.07,
+        "discussion": 211.42,
+        "curated_list": 99.73
+      }
+    },
+    "subscribed_tags": [
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::012",
+    "followed_content": [
+      "lan1::content::1234",
+      "lan1::content::2020",
+      "lan1::content::1100",
+      "lan2::content::569",
+      "lan2::content::1102"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 224.18,
+        "video": 329.85,
+        "podcast": 247.84,
+        "image_gallery": 213.62,
+        "event": 95.26,
+        "tool": 166.97,
+        "review": 94.37,
+        "discussion": 175.67,
+        "curated_list": 70.36
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "featured",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan2::user::013",
+    "followed_content": [
+      "lan2::content::1350",
+      "lan2::content::1804",
+      "lan2::content::1372",
+      "lan2::content::1764",
+      "lan2::content::2667",
+      "lan2::content::2435"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 161.26,
+        "video": 342.4,
+        "podcast": 287.35,
+        "image_gallery": 154.32,
+        "event": 41.71,
+        "tool": 213.27,
+        "review": 165.31,
+        "discussion": 104.12,
+        "curated_list": 96.45
+      }
+    },
+    "subscribed_tags": [
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::014",
+    "followed_content": [
+      "lan2::content::1496",
+      "lan2::content::467",
+      "lan2::content::2310",
+      "lan2::content::819",
+      "lan2::content::2426",
+      "lan2::content::2235"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 180.97,
+        "video": 610.57,
+        "podcast": 66.46,
+        "image_gallery": 349.07,
+        "event": 95.15,
+        "tool": 69.83,
+        "review": 139.65,
+        "discussion": 222.88,
+        "curated_list": 27.61
+      }
+    },
+    "subscribed_tags": [
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::015",
+    "followed_content": [
+      "lan2::content::2930",
+      "lan2::content::1734",
+      "lan2::content::1545",
+      "lan2::content::303",
+      "lan2::content::1840"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 545.82,
+        "video": 437.54,
+        "podcast": 156.19,
+        "image_gallery": 267.45,
+        "event": 93.23,
+        "tool": 161.42,
+        "review": 101.55,
+        "discussion": 213.96,
+        "curated_list": 59.55
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "education",
+      "science",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::016",
+    "followed_content": [
+      "lan2::content::2510",
+      "lan1::content::2775",
+      "lan1::content::2643",
+      "lan2::content::2651",
+      "lan1::content::2650",
+      "lan1::content::182",
+      "lan1::content::2307"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 216.43,
+        "video": 456.41,
+        "podcast": 184.51,
+        "image_gallery": 294.79,
+        "event": 63.9,
+        "tool": 114.7,
+        "review": 78.67,
+        "discussion": 209.92,
+        "curated_list": 84.74
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "premium",
+      "technology",
+      "archived",
+      "finance",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::017",
+    "followed_content": [
+      "lan2::content::352",
+      "lan2::content::476",
+      "lan2::content::2991",
+      "lan2::content::581",
+      "lan2::content::1427",
+      "lan2::content::1278"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 254.38,
+        "video": 620.56,
+        "podcast": 185.07,
+        "image_gallery": 208.87,
+        "event": 23.3,
+        "tool": 167.18,
+        "review": 87.87,
+        "discussion": 54.78,
+        "curated_list": 24.92
+      }
+    },
+    "subscribed_tags": [
+      "news",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan2::user::018",
+    "followed_content": [
+      "lan1::content::656",
+      "lan2::content::1000",
+      "lan2::content::2114",
+      "lan1::content::2261",
+      "lan1::content::715"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 458.99,
+        "video": 527.86,
+        "podcast": 104.73,
+        "image_gallery": 323.2,
+        "event": 48.62,
+        "tool": 170.1,
+        "review": 152.46,
+        "discussion": 138.91,
+        "curated_list": 67.25
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "premium",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::019",
+    "followed_content": [
+      "lan2::content::2365",
+      "lan2::content::417",
+      "lan2::content::2200"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 184.13,
+        "video": 345.59,
+        "podcast": 169.81,
+        "image_gallery": 177.07,
+        "event": 88.32,
+        "tool": 130.27,
+        "review": 115.87,
+        "discussion": 171.33,
+        "curated_list": 87.24
+      }
+    },
+    "subscribed_tags": [
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::020",
+    "followed_content": [
+      "lan1::content::549",
+      "lan1::content::2753",
+      "lan1::content::1283",
+      "lan2::content::348",
+      "lan2::content::2418",
+      "lan2::content::2517"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 267.99,
+        "video": 234.82,
+        "podcast": 153.23,
+        "image_gallery": 300.68,
+        "event": 63.86,
+        "tool": 110.38,
+        "review": 93.0,
+        "discussion": 158.22,
+        "curated_list": 121.11
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "education",
+      "trending",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan2::user::021",
+    "followed_content": [
+      "lan2::content::1848",
+      "lan2::content::2538",
+      "lan2::content::220",
+      "lan2::content::1471",
+      "lan2::content::040",
+      "lan2::content::1985",
+      "lan2::content::560",
+      "lan2::content::800"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 466.85,
+        "video": 728.3,
+        "podcast": 181.31,
+        "image_gallery": 263.14,
+        "event": 73.2,
+        "tool": 108.97,
+        "review": 145.98,
+        "discussion": 147.51,
+        "curated_list": 29.09
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "science",
+      "education",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::022",
+    "followed_content": [
+      "lan2::content::2203",
+      "lan2::content::1183",
+      "lan2::content::689",
+      "lan2::content::1874"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 354.54,
+        "video": 613.53,
+        "podcast": 178.88,
+        "image_gallery": 269.0,
+        "event": 63.68,
+        "tool": 80.9,
+        "review": 101.47,
+        "discussion": 258.0,
+        "curated_list": 79.62
+      }
+    },
+    "subscribed_tags": [
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::023",
+    "followed_content": [
+      "lan2::content::133",
+      "lan1::content::1843",
+      "lan1::content::1428",
+      "lan1::content::1077",
+      "lan2::content::1220"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 194.45,
+        "video": 592.57,
+        "podcast": 225.39,
+        "image_gallery": 398.59,
+        "event": 66.87,
+        "tool": 111.35,
+        "review": 112.42,
+        "discussion": 212.67,
+        "curated_list": 109.49
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "finance",
+      "health",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::024",
+    "followed_content": [
+      "lan2::content::1186",
+      "lan2::content::2346",
+      "lan2::content::1096",
+      "lan2::content::2108",
+      "lan2::content::2783",
+      "lan2::content::391"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 161.02,
+        "video": 600.06,
+        "podcast": 158.78,
+        "image_gallery": 101.94,
+        "event": 38.57,
+        "tool": 154.62,
+        "review": 125.21,
+        "discussion": 69.19,
+        "curated_list": 36.09
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "sports",
+      "trending",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan2::user::025",
+    "followed_content": [
+      "lan2::content::2366",
+      "lan2::content::2591",
+      "lan2::content::1101",
+      "lan2::content::2572"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 286.4,
+        "video": 421.2,
+        "podcast": 212.07,
+        "image_gallery": 405.65,
+        "event": 22.91,
+        "tool": 127.97,
+        "review": 61.73,
+        "discussion": 245.99,
+        "curated_list": 60.6
+      }
+    },
+    "subscribed_tags": [
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::026",
+    "followed_content": [
+      "lan1::content::2190",
+      "lan1::content::1630",
+      "lan1::content::893",
+      "lan1::content::1760",
+      "lan1::content::868",
+      "lan1::content::2027",
+      "lan1::content::1100",
+      "lan1::content::1323",
+      "lan1::content::1162",
+      "lan1::content::1384",
+      "lan1::content::2242",
+      "lan1::content::2368"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 158.77,
+        "video": 661.45,
+        "podcast": 249.19,
+        "image_gallery": 410.84,
+        "event": 79.79,
+        "tool": 38.73,
+        "review": 113.93,
+        "discussion": 224.07,
+        "curated_list": 21.79
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "news",
+      "technology",
+      "education",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::027",
+    "followed_content": [
+      "lan1::content::1123",
+      "lan1::content::1026",
+      "lan1::content::1477",
+      "lan1::content::652",
+      "lan2::content::2663",
+      "lan1::content::338",
+      "lan1::content::383",
+      "lan1::content::2682",
+      "lan2::content::541",
+      "lan2::content::1237",
+      "lan1::content::1524"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 416.66,
+        "video": 150.65,
+        "podcast": 174.43,
+        "image_gallery": 129.1,
+        "event": 34.23,
+        "tool": 159.2,
+        "review": 21.39,
+        "discussion": 193.03,
+        "curated_list": 109.88
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "archived",
+      "news",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::028",
+    "followed_content": [
+      "lan1::content::2774",
+      "lan1::content::562",
+      "lan1::content::1568",
+      "lan1::content::1226",
+      "lan1::content::586",
+      "lan1::content::546",
+      "lan1::content::1506",
+      "lan2::content::1284",
+      "lan2::content::420",
+      "lan1::content::2628",
+      "lan2::content::423"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 486.98,
+        "video": 202.01,
+        "podcast": 84.11,
+        "image_gallery": 358.4,
+        "event": 65.11,
+        "tool": 102.97,
+        "review": 164.49,
+        "discussion": 109.19,
+        "curated_list": 35.38
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "science",
+      "education",
+      "technology",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::029",
+    "followed_content": [
+      "lan2::content::2829",
+      "lan2::content::110",
+      "lan2::content::2697",
+      "lan2::content::1236",
+      "lan2::content::842"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 332.99,
+        "video": 455.71,
+        "podcast": 239.48,
+        "image_gallery": 189.35,
+        "event": 19.64,
+        "tool": 200.6,
+        "review": 163.2,
+        "discussion": 148.88,
+        "curated_list": 32.4
+      }
+    },
+    "subscribed_tags": [
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::030",
+    "followed_content": [
+      "lan2::content::1480",
+      "lan1::content::541",
+      "lan2::content::1297"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 264.44,
+        "video": 559.77,
+        "podcast": 243.05,
+        "image_gallery": 433.15,
+        "event": 80.48,
+        "tool": 33.17,
+        "review": 30.13,
+        "discussion": 97.68,
+        "curated_list": 24.38
+      }
+    },
+    "subscribed_tags": [
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan2::user::031",
+    "followed_content": [
+      "lan2::content::1735",
+      "lan2::content::2875",
+      "lan2::content::1648",
+      "lan2::content::338",
+      "lan2::content::2624",
+      "lan2::content::2198"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 341.94,
+        "video": 241.61,
+        "podcast": 80.06,
+        "image_gallery": 109.24,
+        "event": 93.28,
+        "tool": 215.12,
+        "review": 43.31,
+        "discussion": 111.89,
+        "curated_list": 84.51
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::032",
+    "followed_content": [
+      "lan2::content::1780",
+      "lan2::content::476",
+      "lan2::content::1858",
+      "lan2::content::2508"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 373.97,
+        "video": 335.57,
+        "podcast": 238.01,
+        "image_gallery": 354.04,
+        "event": 25.15,
+        "tool": 164.5,
+        "review": 125.22,
+        "discussion": 76.04,
+        "curated_list": 124.83
+      }
+    },
+    "subscribed_tags": [
+      "sports",
+      "health",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::033",
+    "followed_content": [
+      "lan2::content::484",
+      "lan2::content::121",
+      "lan2::content::1373",
+      "lan2::content::1759",
+      "lan2::content::1115"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 335.73,
+        "video": 307.77,
+        "podcast": 294.01,
+        "image_gallery": 312.19,
+        "event": 57.17,
+        "tool": 127.05,
+        "review": 28.32,
+        "discussion": 229.06,
+        "curated_list": 38.36
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::034",
+    "followed_content": [
+      "lan2::content::936",
+      "lan2::content::2085",
+      "lan2::content::011"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 119.82,
+        "video": 667.76,
+        "podcast": 118.69,
+        "image_gallery": 254.55,
+        "event": 47.55,
+        "tool": 58.52,
+        "review": 159.67,
+        "discussion": 228.65,
+        "curated_list": 80.82
+      }
+    },
+    "subscribed_tags": [
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::035",
+    "followed_content": [
+      "lan1::content::1112",
+      "lan1::content::320",
+      "lan1::content::2342",
+      "lan1::content::1528",
+      "lan1::content::490",
+      "lan1::content::2057",
+      "lan1::content::2758",
+      "lan1::content::216"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 180.7,
+        "video": 632.6,
+        "podcast": 295.54,
+        "image_gallery": 433.01,
+        "event": 20.86,
+        "tool": 118.37,
+        "review": 62.35,
+        "discussion": 225.87,
+        "curated_list": 56.0
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "health",
+      "finance",
+      "entertainment",
+      "trending",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan2::user::036",
+    "followed_content": [
+      "lan1::content::1509",
+      "lan2::content::1901",
+      "lan2::content::2551",
+      "lan1::content::2021",
+      "lan1::content::2424",
+      "lan2::content::994"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 519.58,
+        "video": 164.35,
+        "podcast": 189.97,
+        "image_gallery": 315.3,
+        "event": 73.94,
+        "tool": 31.82,
+        "review": 70.25,
+        "discussion": 206.96,
+        "curated_list": 61.39
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "finance",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::037",
+    "followed_content": [
+      "lan2::content::584",
+      "lan2::content::2915",
+      "lan2::content::1147",
+      "lan2::content::382"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 119.76,
+        "video": 288.88,
+        "podcast": 262.92,
+        "image_gallery": 232.83,
+        "event": 91.12,
+        "tool": 117.11,
+        "review": 132.18,
+        "discussion": 167.77,
+        "curated_list": 75.6
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "finance",
+      "featured",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::038",
+    "followed_content": [
+      "lan2::content::970",
+      "lan2::content::1195",
+      "lan2::content::1070",
+      "lan2::content::1291",
+      "lan2::content::1610"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 415.33,
+        "video": 591.21,
+        "podcast": 136.33,
+        "image_gallery": 180.62,
+        "event": 21.35,
+        "tool": 68.52,
+        "review": 136.99,
+        "discussion": 168.64,
+        "curated_list": 37.1
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "trending",
+      "premium",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan2::user::039",
+    "followed_content": [
+      "lan2::content::851",
+      "lan2::content::1852",
+      "lan2::content::1263",
+      "lan2::content::1898",
+      "lan2::content::1086"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 483.62,
+        "video": 204.25,
+        "podcast": 253.82,
+        "image_gallery": 192.56,
+        "event": 74.9,
+        "tool": 144.63,
+        "review": 52.25,
+        "discussion": 228.45,
+        "curated_list": 36.32
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::040",
+    "followed_content": [
+      "lan2::content::128",
+      "lan2::content::1657",
+      "lan2::content::1853",
+      "lan2::content::2278",
+      "lan2::content::2254"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 212.43,
+        "video": 427.23,
+        "podcast": 252.94,
+        "image_gallery": 131.72,
+        "event": 16.02,
+        "tool": 187.77,
+        "review": 167.39,
+        "discussion": 68.76,
+        "curated_list": 110.6
+      }
+    },
+    "subscribed_tags": [
+      "health",
+      "featured",
+      "news",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::041",
+    "followed_content": [
+      "lan2::content::090",
+      "lan2::content::265",
+      "lan2::content::810"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 506.12,
+        "video": 416.06,
+        "podcast": 90.91,
+        "image_gallery": 414.88,
+        "event": 85.5,
+        "tool": 92.99,
+        "review": 26.4,
+        "discussion": 141.42,
+        "curated_list": 38.48
+      }
+    },
+    "subscribed_tags": [
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::042",
+    "followed_content": [
+      "lan2::content::767",
+      "lan2::content::1127",
+      "lan2::content::1147",
+      "lan2::content::1827",
+      "lan2::content::609"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 115.59,
+        "video": 521.51,
+        "podcast": 118.99,
+        "image_gallery": 189.19,
+        "event": 50.02,
+        "tool": 134.63,
+        "review": 29.15,
+        "discussion": 101.55,
+        "curated_list": 35.1
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "news",
+      "health",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::043",
+    "followed_content": [
+      "lan2::content::1567",
+      "lan1::content::1471",
+      "lan2::content::2922"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 254.82,
+        "video": 489.39,
+        "podcast": 137.19,
+        "image_gallery": 180.06,
+        "event": 17.22,
+        "tool": 143.45,
+        "review": 24.4,
+        "discussion": 218.35,
+        "curated_list": 50.9
+      }
+    },
+    "subscribed_tags": [
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::044",
+    "followed_content": [
+      "lan1::content::1016",
+      "lan1::content::2691",
+      "lan1::content::988",
+      "lan1::content::1092"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 340.16,
+        "video": 624.74,
+        "podcast": 236.89,
+        "image_gallery": 362.7,
+        "event": 95.56,
+        "tool": 139.38,
+        "review": 167.4,
+        "discussion": 125.45,
+        "curated_list": 122.87
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "entertainment",
+      "trending",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::045",
+    "followed_content": [
+      "lan1::content::1470",
+      "lan1::content::2424",
+      "lan1::content::116",
+      "lan1::content::2882",
+      "lan1::content::2870",
+      "lan1::content::1441",
+      "lan1::content::2326",
+      "lan1::content::2309",
+      "lan1::content::583",
+      "lan1::content::2307",
+      "lan1::content::772"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 476.51,
+        "video": 636.24,
+        "podcast": 292.89,
+        "image_gallery": 280.59,
+        "event": 29.92,
+        "tool": 37.21,
+        "review": 28.43,
+        "discussion": 172.37,
+        "curated_list": 22.19
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "finance",
+      "trending",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::046",
+    "followed_content": [
+      "lan2::content::1326",
+      "lan2::content::244",
+      "lan2::content::2937",
+      "lan1::content::090",
+      "lan2::content::727"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 532.25,
+        "video": 374.15,
+        "podcast": 286.06,
+        "image_gallery": 226.37,
+        "event": 23.59,
+        "tool": 87.34,
+        "review": 40.47,
+        "discussion": 74.65,
+        "curated_list": 124.36
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::047",
+    "followed_content": [
+      "lan1::content::1550",
+      "lan1::content::2821",
+      "lan2::content::2727",
+      "lan2::content::2413",
+      "lan2::content::1462",
+      "lan1::content::1257",
+      "lan2::content::915",
+      "lan1::content::719"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 181.94,
+        "video": 340.93,
+        "podcast": 254.11,
+        "image_gallery": 306.21,
+        "event": 69.37,
+        "tool": 49.78,
+        "review": 94.43,
+        "discussion": 112.86,
+        "curated_list": 28.56
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "entertainment",
+      "science",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan2::user::048",
+    "followed_content": [
+      "lan2::content::2904",
+      "lan2::content::2745",
+      "lan1::content::2618"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 300.98,
+        "video": 309.13,
+        "podcast": 119.89,
+        "image_gallery": 105.08,
+        "event": 36.82,
+        "tool": 50.53,
+        "review": 20.19,
+        "discussion": 124.91,
+        "curated_list": 100.58
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::049",
+    "followed_content": [
+      "lan2::content::2368",
+      "lan2::content::2667",
+      "lan2::content::2815",
+      "lan2::content::924",
+      "lan2::content::667",
+      "lan2::content::1849",
+      "lan2::content::302",
+      "lan2::content::137",
+      "lan2::content::1208"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 109.04,
+        "video": 306.68,
+        "podcast": 85.13,
+        "image_gallery": 206.47,
+        "event": 90.47,
+        "tool": 60.57,
+        "review": 31.25,
+        "discussion": 247.2,
+        "curated_list": 127.58
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "health",
+      "entertainment",
+      "featured",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::050",
+    "followed_content": [
+      "lan2::content::2488",
+      "lan2::content::1779",
+      "lan2::content::644",
+      "lan2::content::220"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 145.57,
+        "video": 273.33,
+        "podcast": 105.6,
+        "image_gallery": 337.96,
+        "event": 76.37,
+        "tool": 168.7,
+        "review": 59.79,
+        "discussion": 101.94,
+        "curated_list": 46.13
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan2::user::051",
+    "followed_content": [
+      "lan2::content::359",
+      "lan2::content::1207",
+      "lan2::content::2712",
+      "lan2::content::2561",
+      "lan2::content::2459",
+      "lan2::content::1968"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 189.85,
+        "video": 165.44,
+        "podcast": 101.0,
+        "image_gallery": 187.97,
+        "event": 21.96,
+        "tool": 190.32,
+        "review": 66.25,
+        "discussion": 127.44,
+        "curated_list": 73.8
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan2::user::052",
+    "followed_content": [
+      "lan2::content::1514",
+      "lan2::content::765",
+      "lan2::content::1826",
+      "lan2::content::183",
+      "lan2::content::1079",
+      "lan2::content::1802",
+      "lan2::content::1905"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 218.53,
+        "video": 652.25,
+        "podcast": 195.42,
+        "image_gallery": 135.92,
+        "event": 74.2,
+        "tool": 48.37,
+        "review": 120.22,
+        "discussion": 217.8,
+        "curated_list": 65.54
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "featured",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::053",
+    "followed_content": [
+      "lan2::content::1945",
+      "lan1::content::1951",
+      "lan1::content::966",
+      "lan2::content::2815",
+      "lan1::content::1225",
+      "lan1::content::2346",
+      "lan2::content::2194"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 177.8,
+        "video": 740.62,
+        "podcast": 293.32,
+        "image_gallery": 379.13,
+        "event": 25.73,
+        "tool": 110.44,
+        "review": 168.24,
+        "discussion": 135.79,
+        "curated_list": 129.7
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "news",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::054",
+    "followed_content": [
+      "lan1::content::2869",
+      "lan1::content::2407",
+      "lan2::content::2129",
+      "lan1::content::051",
+      "lan2::content::1132",
+      "lan2::content::1877",
+      "lan2::content::1336",
+      "lan1::content::2553"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 516.22,
+        "video": 487.61,
+        "podcast": 84.24,
+        "image_gallery": 185.85,
+        "event": 60.53,
+        "tool": 95.34,
+        "review": 81.63,
+        "discussion": 124.27,
+        "curated_list": 73.41
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "technology",
+      "premium",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::055",
+    "followed_content": [
+      "lan2::content::2789",
+      "lan2::content::2842",
+      "lan2::content::1646",
+      "lan2::content::159",
+      "lan2::content::1622",
+      "lan2::content::1358",
+      "lan2::content::2829",
+      "lan2::content::974"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 122.18,
+        "video": 435.13,
+        "podcast": 124.46,
+        "image_gallery": 217.8,
+        "event": 43.72,
+        "tool": 180.79,
+        "review": 66.64,
+        "discussion": 225.43,
+        "curated_list": 114.41
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "sports",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::056",
+    "followed_content": [
+      "lan2::content::1104",
+      "lan2::content::1708",
+      "lan1::content::2645",
+      "lan1::content::366",
+      "lan1::content::2478",
+      "lan2::content::2986"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 441.77,
+        "video": 670.31,
+        "podcast": 257.04,
+        "image_gallery": 270.65,
+        "event": 28.51,
+        "tool": 89.11,
+        "review": 96.02,
+        "discussion": 69.84,
+        "curated_list": 113.64
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "sports",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan2::user::057",
+    "followed_content": [
+      "lan1::content::1509",
+      "lan1::content::1902",
+      "lan1::content::2069",
+      "lan1::content::1123",
+      "lan1::content::816",
+      "lan2::content::2887",
+      "lan1::content::1626",
+      "lan2::content::208",
+      "lan2::content::1477"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 364.1,
+        "video": 359.86,
+        "podcast": 99.24,
+        "image_gallery": 410.96,
+        "event": 78.66,
+        "tool": 160.88,
+        "review": 62.76,
+        "discussion": 125.04,
+        "curated_list": 37.92
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "finance",
+      "premium",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan2::user::058",
+    "followed_content": [
+      "lan1::content::037",
+      "lan2::content::2669",
+      "lan2::content::2103",
+      "lan1::content::2795",
+      "lan2::content::1678",
+      "lan1::content::083"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 200.7,
+        "video": 515.01,
+        "podcast": 286.32,
+        "image_gallery": 343.71,
+        "event": 75.3,
+        "tool": 82.32,
+        "review": 154.32,
+        "discussion": 227.35,
+        "curated_list": 70.49
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "premium",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan2::user::059",
+    "followed_content": [
+      "lan2::content::2096",
+      "lan2::content::2395",
+      "lan2::content::420",
+      "lan2::content::031",
+      "lan1::content::1533",
+      "lan1::content::2714"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 316.78,
+        "video": 351.77,
+        "podcast": 126.36,
+        "image_gallery": 200.3,
+        "event": 38.54,
+        "tool": 154.66,
+        "review": 162.83,
+        "discussion": 183.32,
+        "curated_list": 40.72
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan2::user::060",
+    "followed_content": [
+      "lan2::content::2706",
+      "lan1::content::2955",
+      "lan2::content::1310",
+      "lan2::content::2789",
+      "lan2::content::574",
+      "lan1::content::105"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 282.07,
+        "video": 592.04,
+        "podcast": 199.93,
+        "image_gallery": 448.06,
+        "event": 84.36,
+        "tool": 95.2,
+        "review": 127.01,
+        "discussion": 190.99,
+        "curated_list": 90.21
+      }
+    },
+    "subscribed_tags": [
+      "news"
+    ]
+  },
+  {
+    "_id": "lan2::user::061",
+    "followed_content": [
+      "lan2::content::400",
+      "lan2::content::1204",
+      "lan1::content::525",
+      "lan2::content::1929"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 526.12,
+        "video": 689.75,
+        "podcast": 217.06,
+        "image_gallery": 162.23,
+        "event": 33.98,
+        "tool": 195.57,
+        "review": 83.07,
+        "discussion": 235.11,
+        "curated_list": 60.89
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::062",
+    "followed_content": [
+      "lan2::content::491",
+      "lan1::content::2171",
+      "lan2::content::2050",
+      "lan1::content::1564",
+      "lan1::content::2789"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 161.81,
+        "video": 270.18,
+        "podcast": 158.21,
+        "image_gallery": 290.68,
+        "event": 92.06,
+        "tool": 116.94,
+        "review": 67.46,
+        "discussion": 197.45,
+        "curated_list": 105.68
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "education",
+      "news",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan2::user::063",
+    "followed_content": [
+      "lan2::content::1852",
+      "lan2::content::1121",
+      "lan2::content::858"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 442.54,
+        "video": 251.16,
+        "podcast": 243.48,
+        "image_gallery": 261.14,
+        "event": 79.9,
+        "tool": 46.73,
+        "review": 112.17,
+        "discussion": 179.37,
+        "curated_list": 64.37
+      }
+    },
+    "subscribed_tags": [
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::064",
+    "followed_content": [
+      "lan1::content::2176",
+      "lan1::content::781",
+      "lan1::content::074",
+      "lan1::content::2772",
+      "lan1::content::017",
+      "lan1::content::2567",
+      "lan1::content::1020",
+      "lan1::content::927"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 412.09,
+        "video": 356.61,
+        "podcast": 90.94,
+        "image_gallery": 221.91,
+        "event": 65.04,
+        "tool": 61.73,
+        "review": 143.58,
+        "discussion": 105.6,
+        "curated_list": 51.99
+      }
+    },
+    "subscribed_tags": [
+      "news",
+      "archived",
+      "featured",
+      "finance",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::065",
+    "followed_content": [
+      "lan1::content::1472",
+      "lan1::content::772",
+      "lan1::content::676",
+      "lan1::content::1653",
+      "lan1::content::079",
+      "lan1::content::936",
+      "lan1::content::919"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 427.23,
+        "video": 228.72,
+        "podcast": 236.18,
+        "image_gallery": 298.19,
+        "event": 29.36,
+        "tool": 99.65,
+        "review": 117.58,
+        "discussion": 48.22,
+        "curated_list": 116.42
+      }
+    },
+    "subscribed_tags": [
+      "health",
+      "premium",
+      "science",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::066",
+    "followed_content": [
+      "lan2::content::081",
+      "lan2::content::2678",
+      "lan1::content::198"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 287.55,
+        "video": 378.15,
+        "podcast": 191.35,
+        "image_gallery": 255.53,
+        "event": 28.02,
+        "tool": 162.09,
+        "review": 114.55,
+        "discussion": 106.25,
+        "curated_list": 92.78
+      }
+    },
+    "subscribed_tags": [
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::067",
+    "followed_content": [
+      "lan2::content::2945",
+      "lan1::content::483",
+      "lan2::content::2096",
+      "lan1::content::2531"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 323.98,
+        "video": 515.4,
+        "podcast": 246.71,
+        "image_gallery": 387.65,
+        "event": 97.72,
+        "tool": 98.01,
+        "review": 81.46,
+        "discussion": 75.28,
+        "curated_list": 80.3
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "archived",
+      "science",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::068",
+    "followed_content": [
+      "lan2::content::2352",
+      "lan2::content::2741",
+      "lan2::content::2024",
+      "lan2::content::611",
+      "lan2::content::369",
+      "lan2::content::2096"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 133.77,
+        "video": 584.15,
+        "podcast": 277.15,
+        "image_gallery": 318.4,
+        "event": 53.82,
+        "tool": 215.69,
+        "review": 59.62,
+        "discussion": 51.02,
+        "curated_list": 109.45
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "entertainment",
+      "finance",
+      "news",
+      "featured",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::069",
+    "followed_content": [
+      "lan2::content::188",
+      "lan2::content::040",
+      "lan2::content::567",
+      "lan2::content::2718",
+      "lan2::content::2651",
+      "lan2::content::699",
+      "lan2::content::1347",
+      "lan2::content::1465",
+      "lan2::content::1793",
+      "lan2::content::2547",
+      "lan2::content::1099",
+      "lan2::content::381"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 267.68,
+        "video": 355.63,
+        "podcast": 87.32,
+        "image_gallery": 228.09,
+        "event": 53.81,
+        "tool": 188.78,
+        "review": 123.49,
+        "discussion": 145.21,
+        "curated_list": 66.39
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "premium",
+      "archived",
+      "health",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::070",
+    "followed_content": [
+      "lan2::content::1978",
+      "lan2::content::2331",
+      "lan2::content::2779",
+      "lan2::content::1795",
+      "lan2::content::743",
+      "lan2::content::2504",
+      "lan2::content::1556",
+      "lan2::content::1469",
+      "lan2::content::2505",
+      "lan2::content::119"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 488.16,
+        "video": 677.97,
+        "podcast": 234.55,
+        "image_gallery": 409.95,
+        "event": 56.06,
+        "tool": 122.74,
+        "review": 153.14,
+        "discussion": 136.95,
+        "curated_list": 26.97
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "science",
+      "news",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::071",
+    "followed_content": [
+      "lan2::content::2965",
+      "lan2::content::918",
+      "lan1::content::1386",
+      "lan1::content::2143",
+      "lan1::content::2820",
+      "lan1::content::2127",
+      "lan2::content::2744",
+      "lan2::content::2315"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 166.89,
+        "video": 645.86,
+        "podcast": 274.09,
+        "image_gallery": 306.78,
+        "event": 15.99,
+        "tool": 207.53,
+        "review": 95.84,
+        "discussion": 143.24,
+        "curated_list": 74.54
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "premium",
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan2::user::072",
+    "followed_content": [
+      "lan2::content::207",
+      "lan2::content::2077",
+      "lan2::content::913",
+      "lan2::content::2255",
+      "lan2::content::2636"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 270.39,
+        "video": 640.26,
+        "podcast": 78.92,
+        "image_gallery": 244.35,
+        "event": 63.71,
+        "tool": 46.72,
+        "review": 94.77,
+        "discussion": 109.53,
+        "curated_list": 127.87
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::073",
+    "followed_content": [
+      "lan2::content::001",
+      "lan2::content::373",
+      "lan2::content::2475",
+      "lan2::content::2536",
+      "lan2::content::2612",
+      "lan2::content::1248",
+      "lan2::content::2083",
+      "lan2::content::2304"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 193.08,
+        "video": 552.88,
+        "podcast": 288.09,
+        "image_gallery": 214.44,
+        "event": 19.61,
+        "tool": 72.35,
+        "review": 88.17,
+        "discussion": 163.23,
+        "curated_list": 88.17
+      }
+    },
+    "subscribed_tags": [
+      "technology",
+      "health",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::074",
+    "followed_content": [
+      "lan2::content::009",
+      "lan2::content::1399",
+      "lan2::content::1455",
+      "lan2::content::2596"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 534.0,
+        "video": 325.19,
+        "podcast": 185.28,
+        "image_gallery": 339.78,
+        "event": 18.89,
+        "tool": 61.19,
+        "review": 41.07,
+        "discussion": 197.71,
+        "curated_list": 99.37
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan2::user::075",
+    "followed_content": [
+      "lan2::content::884",
+      "lan2::content::1873",
+      "lan2::content::781",
+      "lan2::content::2936",
+      "lan2::content::1385",
+      "lan2::content::442"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 440.72,
+        "video": 177.9,
+        "podcast": 211.98,
+        "image_gallery": 328.69,
+        "event": 25.47,
+        "tool": 199.43,
+        "review": 88.61,
+        "discussion": 169.65,
+        "curated_list": 75.46
+      }
+    },
+    "subscribed_tags": [
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::076",
+    "followed_content": [
+      "lan1::content::2083",
+      "lan1::content::726",
+      "lan1::content::2834",
+      "lan1::content::2370",
+      "lan1::content::712",
+      "lan1::content::2993",
+      "lan1::content::526",
+      "lan1::content::425",
+      "lan1::content::1587"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 395.88,
+        "video": 513.7,
+        "podcast": 137.24,
+        "image_gallery": 406.11,
+        "event": 50.59,
+        "tool": 145.71,
+        "review": 123.88,
+        "discussion": 94.61,
+        "curated_list": 63.77
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "news",
+      "archived",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::077",
+    "followed_content": [
+      "lan2::content::2874",
+      "lan2::content::2244",
+      "lan2::content::1286",
+      "lan2::content::2916",
+      "lan2::content::2268"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 384.66,
+        "video": 270.53,
+        "podcast": 209.8,
+        "image_gallery": 187.51,
+        "event": 44.35,
+        "tool": 157.75,
+        "review": 167.2,
+        "discussion": 183.02,
+        "curated_list": 125.42
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "science"
+    ]
+  },
+  {
+    "_id": "lan2::user::078",
+    "followed_content": [
+      "lan2::content::2388",
+      "lan2::content::2338",
+      "lan2::content::2733",
+      "lan2::content::2909",
+      "lan2::content::1710",
+      "lan2::content::2762"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 436.54,
+        "video": 654.83,
+        "podcast": 128.62,
+        "image_gallery": 393.5,
+        "event": 83.71,
+        "tool": 129.32,
+        "review": 23.79,
+        "discussion": 71.97,
+        "curated_list": 93.73
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::079",
+    "followed_content": [
+      "lan2::content::255",
+      "lan2::content::2829",
+      "lan2::content::1209",
+      "lan2::content::836"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 439.12,
+        "video": 169.38,
+        "podcast": 255.37,
+        "image_gallery": 117.92,
+        "event": 88.78,
+        "tool": 170.5,
+        "review": 149.73,
+        "discussion": 203.33,
+        "curated_list": 81.74
+      }
+    },
+    "subscribed_tags": [
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::080",
+    "followed_content": [
+      "lan2::content::1588",
+      "lan2::content::1707",
+      "lan2::content::2807",
+      "lan2::content::1281",
+      "lan2::content::2262",
+      "lan2::content::221"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 105.83,
+        "video": 300.8,
+        "podcast": 208.93,
+        "image_gallery": 368.94,
+        "event": 88.96,
+        "tool": 187.7,
+        "review": 156.72,
+        "discussion": 195.02,
+        "curated_list": 91.24
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::081",
+    "followed_content": [
+      "lan2::content::766",
+      "lan2::content::712",
+      "lan2::content::2105",
+      "lan2::content::489"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 269.74,
+        "video": 407.1,
+        "podcast": 193.58,
+        "image_gallery": 128.12,
+        "event": 64.64,
+        "tool": 78.45,
+        "review": 69.58,
+        "discussion": 196.13,
+        "curated_list": 37.03
+      }
+    },
+    "subscribed_tags": [
+      "archived",
+      "finance",
+      "sports"
+    ]
+  },
+  {
+    "_id": "lan2::user::082",
+    "followed_content": [
+      "lan2::content::2010",
+      "lan2::content::2346",
+      "lan2::content::2254",
+      "lan2::content::1467",
+      "lan2::content::299"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 452.81,
+        "video": 340.72,
+        "podcast": 112.79,
+        "image_gallery": 148.03,
+        "event": 20.79,
+        "tool": 125.98,
+        "review": 82.39,
+        "discussion": 158.15,
+        "curated_list": 30.11
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan2::user::083",
+    "followed_content": [
+      "lan2::content::1203",
+      "lan2::content::895",
+      "lan2::content::2533",
+      "lan2::content::2173",
+      "lan2::content::1946"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 548.48,
+        "video": 644.21,
+        "podcast": 295.47,
+        "image_gallery": 83.26,
+        "event": 71.86,
+        "tool": 114.68,
+        "review": 155.67,
+        "discussion": 175.01,
+        "curated_list": 88.32
+      }
+    },
+    "subscribed_tags": [
+      "premium"
+    ]
+  },
+  {
+    "_id": "lan2::user::084",
+    "followed_content": [
+      "lan1::content::1826",
+      "lan1::content::1994",
+      "lan1::content::2084",
+      "lan2::content::1536",
+      "lan1::content::2107",
+      "lan2::content::2118"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 526.7,
+        "video": 250.44,
+        "podcast": 289.51,
+        "image_gallery": 279.05,
+        "event": 15.62,
+        "tool": 42.44,
+        "review": 120.55,
+        "discussion": 210.19,
+        "curated_list": 115.14
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "health",
+      "technology",
+      "premium",
+      "sports",
+      "education"
+    ]
+  },
+  {
+    "_id": "lan2::user::085",
+    "followed_content": [
+      "lan2::content::2649",
+      "lan2::content::296",
+      "lan2::content::2811",
+      "lan2::content::630",
+      "lan2::content::098",
+      "lan2::content::1881"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 422.59,
+        "video": 172.73,
+        "podcast": 77.58,
+        "image_gallery": 145.86,
+        "event": 36.41,
+        "tool": 43.38,
+        "review": 143.24,
+        "discussion": 240.42,
+        "curated_list": 64.84
+      }
+    },
+    "subscribed_tags": [
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::086",
+    "followed_content": [
+      "lan2::content::2191",
+      "lan2::content::025",
+      "lan2::content::2628"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 424.13,
+        "video": 187.94,
+        "podcast": 239.03,
+        "image_gallery": 96.84,
+        "event": 87.1,
+        "tool": 97.96,
+        "review": 95.43,
+        "discussion": 103.76,
+        "curated_list": 95.45
+      }
+    },
+    "subscribed_tags": [
+      "health",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::087",
+    "followed_content": [
+      "lan2::content::2236",
+      "lan2::content::1602",
+      "lan1::content::591",
+      "lan2::content::559",
+      "lan1::content::1221",
+      "lan1::content::1209",
+      "lan2::content::901",
+      "lan1::content::2598"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 102.26,
+        "video": 507.99,
+        "podcast": 188.92,
+        "image_gallery": 430.38,
+        "event": 40.9,
+        "tool": 172.18,
+        "review": 155.53,
+        "discussion": 115.65,
+        "curated_list": 65.39
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "health",
+      "premium",
+      "news"
+    ]
+  },
+  {
+    "_id": "lan2::user::088",
+    "followed_content": [
+      "lan2::content::743",
+      "lan1::content::223",
+      "lan2::content::470",
+      "lan2::content::796",
+      "lan1::content::2749",
+      "lan1::content::2324"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 212.81,
+        "video": 268.45,
+        "podcast": 199.34,
+        "image_gallery": 432.07,
+        "event": 45.36,
+        "tool": 157.55,
+        "review": 55.18,
+        "discussion": 102.73,
+        "curated_list": 27.68
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "archived",
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::089",
+    "followed_content": [
+      "lan2::content::2841",
+      "lan2::content::2393",
+      "lan2::content::625",
+      "lan2::content::2317",
+      "lan2::content::2322"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 264.02,
+        "video": 339.8,
+        "podcast": 162.79,
+        "image_gallery": 81.79,
+        "event": 35.92,
+        "tool": 72.09,
+        "review": 130.97,
+        "discussion": 135.95,
+        "curated_list": 112.41
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "entertainment"
+    ]
+  },
+  {
+    "_id": "lan2::user::090",
+    "followed_content": [
+      "lan2::content::1995",
+      "lan2::content::2260",
+      "lan2::content::446",
+      "lan2::content::720",
+      "lan2::content::2645"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 372.98,
+        "video": 655.08,
+        "podcast": 266.09,
+        "image_gallery": 131.8,
+        "event": 60.78,
+        "tool": 80.01,
+        "review": 152.95,
+        "discussion": 56.82,
+        "curated_list": 28.29
+      }
+    },
+    "subscribed_tags": [
+      "education",
+      "archived"
+    ]
+  },
+  {
+    "_id": "lan2::user::091",
+    "followed_content": [
+      "lan2::content::151",
+      "lan2::content::2260",
+      "lan2::content::1068",
+      "lan2::content::2227"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 502.29,
+        "video": 473.81,
+        "podcast": 216.94,
+        "image_gallery": 134.99,
+        "event": 48.36,
+        "tool": 199.37,
+        "review": 108.44,
+        "discussion": 228.58,
+        "curated_list": 34.73
+      }
+    },
+    "subscribed_tags": [
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::092",
+    "followed_content": [
+      "lan2::content::2715",
+      "lan2::content::979",
+      "lan2::content::2516"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 407.87,
+        "video": 604.32,
+        "podcast": 93.69,
+        "image_gallery": 138.91,
+        "event": 63.14,
+        "tool": 137.5,
+        "review": 150.83,
+        "discussion": 72.16,
+        "curated_list": 100.52
+      }
+    },
+    "subscribed_tags": [
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::093",
+    "followed_content": [
+      "lan1::content::1924",
+      "lan2::content::2739",
+      "lan1::content::1480",
+      "lan1::content::847",
+      "lan1::content::1590",
+      "lan2::content::176",
+      "lan1::content::2122"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 475.69,
+        "video": 307.99,
+        "podcast": 190.64,
+        "image_gallery": 144.32,
+        "event": 70.56,
+        "tool": 99.41,
+        "review": 118.0,
+        "discussion": 223.8,
+        "curated_list": 76.83
+      }
+    },
+    "subscribed_tags": [
+      "finance",
+      "education",
+      "archived",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::094",
+    "followed_content": [
+      "lan2::content::1995",
+      "lan2::content::1975",
+      "lan2::content::2475",
+      "lan2::content::028",
+      "lan2::content::2056"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 496.92,
+        "video": 413.94,
+        "podcast": 115.2,
+        "image_gallery": 270.38,
+        "event": 38.87,
+        "tool": 58.55,
+        "review": 43.6,
+        "discussion": 172.44,
+        "curated_list": 109.87
+      }
+    },
+    "subscribed_tags": [
+      "featured"
+    ]
+  },
+  {
+    "_id": "lan2::user::095",
+    "followed_content": [
+      "lan1::content::524",
+      "lan2::content::092",
+      "lan1::content::2350",
+      "lan2::content::661",
+      "lan1::content::999",
+      "lan1::content::177",
+      "lan2::content::2652",
+      "lan2::content::1684"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 125.16,
+        "video": 304.96,
+        "podcast": 103.21,
+        "image_gallery": 434.55,
+        "event": 65.95,
+        "tool": 137.08,
+        "review": 22.79,
+        "discussion": 198.3,
+        "curated_list": 92.79
+      }
+    },
+    "subscribed_tags": [
+      "entertainment",
+      "technology",
+      "education",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::096",
+    "followed_content": [
+      "lan2::content::1973",
+      "lan2::content::699",
+      "lan2::content::899",
+      "lan2::content::1683",
+      "lan2::content::2462",
+      "lan2::content::585"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 457.58,
+        "video": 642.27,
+        "podcast": 103.65,
+        "image_gallery": 324.07,
+        "event": 37.48,
+        "tool": 167.6,
+        "review": 71.4,
+        "discussion": 139.76,
+        "curated_list": 84.97
+      }
+    },
+    "subscribed_tags": [
+      "finance"
+    ]
+  },
+  {
+    "_id": "lan2::user::097",
+    "followed_content": [
+      "lan2::content::613",
+      "lan2::content::2481",
+      "lan2::content::395",
+      "lan2::content::727",
+      "lan2::content::1950",
+      "lan2::content::2519"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 369.92,
+        "video": 676.65,
+        "podcast": 187.54,
+        "image_gallery": 358.38,
+        "event": 22.92,
+        "tool": 155.28,
+        "review": 155.3,
+        "discussion": 158.64,
+        "curated_list": 20.13
+      }
+    },
+    "subscribed_tags": [
+      "science",
+      "technology"
+    ]
+  },
+  {
+    "_id": "lan2::user::098",
+    "followed_content": [
+      "lan2::content::1758",
+      "lan2::content::940",
+      "lan2::content::1975",
+      "lan2::content::1562",
+      "lan2::content::1436",
+      "lan2::content::2413",
+      "lan2::content::2854",
+      "lan2::content::2360",
+      "lan2::content::401",
+      "lan2::content::1743"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 160.25,
+        "video": 436.28,
+        "podcast": 115.8,
+        "image_gallery": 397.85,
+        "event": 39.08,
+        "tool": 196.59,
+        "review": 81.3,
+        "discussion": 81.58,
+        "curated_list": 98.01
+      }
+    },
+    "subscribed_tags": [
+      "premium",
+      "health",
+      "featured",
+      "archived",
+      "entertainment",
+      "trending"
+    ]
+  },
+  {
+    "_id": "lan2::user::099",
+    "followed_content": [
+      "lan2::content::1675",
+      "lan2::content::1484",
+      "lan1::content::634",
+      "lan1::content::2669",
+      "lan2::content::437",
+      "lan1::content::1746"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 354.1,
+        "video": 517.13,
+        "podcast": 298.03,
+        "image_gallery": 227.06,
+        "event": 32.31,
+        "tool": 134.9,
+        "review": 103.63,
+        "discussion": 79.32,
+        "curated_list": 81.5
+      }
+    },
+    "subscribed_tags": [
+      "featured",
+      "news",
+      "health"
+    ]
+  },
+  {
+    "_id": "lan2::user::100",
+    "followed_content": [
+      "lan2::content::566",
+      "lan2::content::2701",
+      "lan2::content::488",
+      "lan2::content::942",
+      "lan2::content::1830",
+      "lan2::content::2865"
+    ],
+    "home_region": "lan2",
+    "profile_config": {
+      "email": "ops-lan2@example.com",
+      "relevance_override": {
+        "article": 527.16,
+        "video": 210.17,
+        "podcast": 182.0,
+        "image_gallery": 370.85,
+        "event": 83.07,
+        "tool": 146.66,
+        "review": 122.68,
+        "discussion": 51.45,
+        "curated_list": 62.8
+      }
+    },
+    "subscribed_tags": [
+      "trending",
+      "entertainment"
+    ]
+  }
+]

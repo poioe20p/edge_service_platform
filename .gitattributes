@@ -1,0 +1,14 @@
+# Normalise line endings: the shell scripts are executed on Linux and must not
+# carry CRLF.
+* text=auto eol=lf
+
+*.py       text eol=lf
+*.sh       text eol=lf
+*.env      text eol=lf
+*.json     text eol=lf
+*.md       text eol=lf
+Dockerfile text eol=lf
+
+*.png binary
+*.pdf binary
+*.jpg binary

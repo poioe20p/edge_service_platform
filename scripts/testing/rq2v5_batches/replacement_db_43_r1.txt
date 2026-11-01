@@ -1,0 +1,6 @@
+# RQ2 v5 W3 replacement batch (incident-class spare, contract §7)
+# Author sign-off 2026-10-18: one spare run for rq2v5_stor_db_43
+#   (OOM at episode onset — edge python3 killed at 370 MB anon-RSS inside the
+#   384 m cap, completion 48.7 %; the OOM'd original stays on disk as evidence).
+# format: <mode> <label> <seed> <edge_cpus> <storage_cpus>
+stor rq2v5_stor_db_43_r1 43 1.20 0.09

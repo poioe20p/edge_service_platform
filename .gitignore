@@ -1,0 +1,17 @@
+# Run outputs
+scripts/testing/metrics/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
