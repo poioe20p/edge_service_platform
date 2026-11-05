@@ -57,12 +57,10 @@ _W_STORAGE_HOPS        = float(os.environ.get("W_STORAGE_HOPS",        "0.3"))
 _VIP_IDLE_TIMEOUT = int(os.environ.get("VIP_IDLE_TIMEOUT", "30"))
 _VIP_HARD_TIMEOUT = int(os.environ.get("VIP_HARD_TIMEOUT", "120"))
 
-# Idle timeout for VIP_DATA forward flows, per-client and per-connection.
-# Default 10 is the historical value; under load requests queue at the edge
-# (observed p50 2-6 s), an in-flight connection idle past the timeout loses its
-# forward flow, and the late response can no longer be forwarded — the
-# connection dies.  A longer idle lets queued-but-alive connections survive to
-# be served.  hard_timeout stays per-branch.
+# Idle timeout for VIP_DATA forward rules.  A connection idle past it loses its
+# forward rule and the late response can no longer be forwarded, so it is kept
+# well above the 2-6 s p50 of a request segment (see docs/request-path.md).
+# hard_timeout stays per-branch.
 _VIP_DATA_IDLE_TIMEOUT = int(os.environ.get("VIP_DATA_IDLE_TIMEOUT", "10"))
 
 # Per-connection VIP_DATA flow matching.

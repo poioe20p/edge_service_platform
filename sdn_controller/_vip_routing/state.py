@@ -5,10 +5,15 @@ read/write its instance attributes directly.  No state is moved off the
 controller object.
 """
 
-import logging
+import threading
 import time
 
-from .config import WarmLease, ClientVipBinding, logger
+from .config import (
+    WarmLease, ClientVipBinding, logger,
+    _W_CPU, _W_RAM, _W_REQUESTS, _W_HOPS,
+    _VIP_IDLE_TIMEOUT, _VIP_HARD_TIMEOUT,
+    _ROUTER_OVS_PORT,
+)
 from . import flows
 from ..scaling_config import (
     _VIP_WARM_SERVER_SECONDS,
@@ -54,7 +59,6 @@ def init_vip_routing_state(controller) -> None:
     controller._rr_storage_idx: dict[str, int] = {}
     controller._warm_rr_idx: int = 0
 
-    import threading
     controller._warm_lock = threading.Lock()
     controller._warm_server_leases: dict[str, WarmLease] = {}
     controller._warm_storage_leases: dict[str, dict[str, WarmLease]] = {
@@ -80,11 +84,6 @@ def init_vip_routing_state(controller) -> None:
     controller._vip_data_conn_map: dict[tuple[str, str, str, int], str] = {}
     controller._vip_data_conn_lock = threading.Lock()
 
-    from .config import (
-        _W_CPU, _W_RAM, _W_REQUESTS, _W_HOPS,
-        _VIP_IDLE_TIMEOUT, _VIP_HARD_TIMEOUT,
-        _ROUTER_OVS_PORT,
-    )
     logger.debug(
         "vip routing mixin: w_cpu=%.2f w_ram=%.2f w_req=%.2f w_hops=%.2f "
         "idle_timeout=%ds hard_timeout=%ds router_port=%d warm_storage=%.1fs warm_server=%.1fs",
@@ -266,7 +265,7 @@ def drop_backend_caches(controller, mac: str) -> None:
     """Drop the cached telemetry summary + discovery stamp for a removed node.
 
     For removal paths that never unregistered through the VIP helpers
-    (standby-reserve loss, selective-storage cleanup): the MAC is
+    (standby-reserve loss): the MAC is
     allocator-recycled, so the previous container's stats must not survive.
     """
     controller._server_stats.pop(mac, None)

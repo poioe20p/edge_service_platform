@@ -26,7 +26,7 @@ Usage
 -----
     python3 poll_container_events.py \
         --interval 1.0 \
-        --filter-regex '^(edge_|sel_sync_|nat-router|osken|local_state_)' \
+        --filter-regex '^(edge_|nat-router|osken|local_state_)' \
         --phase-file metrics/<run>/current_phase.txt \
         --output     metrics/<run>/container_events.csv
 """
@@ -122,8 +122,8 @@ def main() -> int:
     parser.add_argument(
         "--filter-regex",
         # Workload + supporting nodes so run state reconstructs from one CSV: edge_*
-        # (compute/storage), sel_sync_* (Tier 1), nat-router/osken* (net/control).
-        default=r"^(edge_|sel_sync_|nat-router|osken|local_state_)",
+        # (compute/storage), nat-router/osken* (net/control).
+        default=r"^(edge_|nat-router|osken|local_state_)",
         help="Only track containers whose name matches this regex.",
     )
     parser.add_argument(

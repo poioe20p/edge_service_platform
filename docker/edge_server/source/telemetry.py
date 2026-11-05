@@ -298,13 +298,8 @@ def init_telemetry(
         g.time_db_read_s = 0.0
         g.time_db_write_s = 0.0
         g.time_db_cmd_count = 0
-        g.tier1_point_read_count = 0
-        g.tier1_point_hit_count = 0
+        # Pre-initialised so handlers can append without nil-checks.
         g.request_lease_outcomes: list[dict] = []
-        # Populated by platform_cache._CachedCollection; pre-initialised so
-        # handlers can append without nil-checks.
-        g.access_records: list[dict] = [] # [{"owner_lan": str, "collection": str, "doc_id": str}]
-        g.op_counts: dict[str, dict[str, dict[str, int]]] = {} # {owner_lan: {collection: {op_type: count}}}
 
     @app.after_request
     def _emit_metric(response):
@@ -319,16 +314,12 @@ def init_telemetry(
             request_type="write" if request.method in ("POST", "PUT", "PATCH", "DELETE") else "read",
             get_drain_state=_get_state,
         )
-        # Tier 1 selective-sync signal: empty when the request never touched a
-        # wrapped collection, so control-plane and non-DB routes pay nothing.
+        # Per-LAN database time, accumulated by the data path per LAN.
         event["time_db_ms_per_lan"] = {
             lan: elapsed_s * 1000.0
             for lan, elapsed_s in getattr(g, "time_db_per_lan", {}).items()
         }
         event["request_lease_outcomes"] = getattr(g, "request_lease_outcomes", [])
-        event["access_records"] = getattr(g, "access_records", [])
-        event["op_counts"] = getattr(g, "op_counts", {})
-        print(f"Sending telemetry event: {event}")
         _sender.send(event)
         _last_sent[0] = time.monotonic()
         return response

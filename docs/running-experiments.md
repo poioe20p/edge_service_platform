@@ -11,12 +11,11 @@ graph LR
     E["controller env<br/>base + arm override"] --> R
     W["workload corpus<br/>content_items · user_profiles"] --> R
     R --> F["metrics/TS_LABEL/"]
-    F --> A["analysis tools"]
 ```
 
-`run_experiment.sh` snapshots the three inputs it was given — the phase profile, the
-merged controller environment, and the fault plan if any — into the run folder before
-the first request. That is what makes a run self-describing after the fact.
+`run_experiment.sh` snapshots the two inputs it was given — the phase profile and the
+merged controller environment — into the run folder before the first request. That is
+what makes a run self-describing after the fact.
 
 ## Phases
 
@@ -34,13 +33,15 @@ request mix.
 
 The shape is deliberate: a short baseline, a long sustained plateau that forces
 scale-up, a deliberately thin phase that lets the platform recover, then a drop and a
-tail long enough for scale-down guards to expire. `cross_region_ratio` is what drives
-Tier 1 promotion (see [storage-and-selective-sync.md](storage-and-selective-sync.md));
-it is `0` in the canonical profile and raised by the arm that needs it.
+tail long enough for scale-down guards to expire. `cross_region_ratio` sets the
+fraction of `content_lookup` requests a client sends to the peer LAN's content
+region; it is `0` in every shipped profile, so every shipped workload is LAN-local.
 
-Alternative profiles live in `scripts/testing/phases_override/` and are selected per
-launcher via `PHASES_CONFIG`. The canonical file is edited in place when a campaign
-needs a different workload — it is never copied to a variant name.
+`phases.json` is the canonical phase profile and the one the readiness-admission
+campaign ran with. The profiles the other campaigns ran are in
+`scripts/testing/phases_campaigns/`, one file per campaign, each a verbatim copy of the
+`phases_snapshot.json` its runs recorded. A new workload edits `phases.json` in place
+and passes it through `PHASES_CONFIG`; it is never copied to a variant name.
 
 ## Controller configuration
 
@@ -53,67 +54,103 @@ override  scripts/testing/controller_env_overrides/current_state_integrated.env
 
 `build_network_setup.sh` merges them and validates the result, then passes the merged
 file to both controllers. A campaign arm adds a third file through
-`OSKEN_ENV_OVERRIDE_FILE`; **only one override is honoured**, so a launcher that needs
-two contributions merges them itself and passes the result.
+`OSKEN_ENV_OVERRIDE_FILE`; **only one override is honoured**, so an arm that needs two
+contributions merges them itself and passes the result.
 
 Provenance is printed at build time and recorded in `controller_env_snapshot.env`, so a
 run always says which base, which override, and which arm produced it.
 
 ## Launching
 
-Each launcher fixes the constants of its campaign and forwards everything else:
+A run is started through the generic driver, which fixes nothing of its own: the phase
+profile and the arm are the two inputs that select a treatment.
 
 ```bash
-# RQ1 — stress plateau phases, telemetry arm from controller_env_overrides/
-bash testing/rq1_launch_run.sh rq1_delayed my-label 2001
+# RQ1 — the load rise, telemetry arm "delayed push"
+PHASES_CONFIG=testing/phases_campaigns/rq1_load_rise.json \
+OSKEN_ENV_OVERRIDE_FILE=testing/controller_env_overrides/rq1_delayed.env \
+  make setup_network create_clients setup_test_data run_experiment \
+       RUN_LABEL=rq1-delayed
 
-# RQ3 — saturation phases, direct vs discovery admission
-bash testing/rq3sat_launch_run.sh rq3sat_direct my-label 3001
+# RQ2 — the data-access press, storage-first action
+PHASES_CONFIG=testing/phases_campaigns/rq2_data_access_press.json \
+OSKEN_ENV_OVERRIDE_FILE=testing/controller_env_overrides/rq2v4_mode_stor.env \
+  make setup_network create_clients setup_test_data run_experiment \
+       RUN_LABEL=rq2-storage
 
-# RQ2 — policy arm, modes come from rq2v4_mode_*.env
-bash testing/rq2v5_launch_run.sh both my-label 2001
+# RQ3 — the admission plateau, discovery mode
+PHASES_CONFIG=testing/phases.json \
+OSKEN_ENV_OVERRIDE_FILE=testing/controller_env_overrides/rq3_direct.env \
+  make setup_network create_clients setup_test_data run_experiment \
+       RUN_LABEL=rq3-admission
 ```
 
-The launchers all end in the same `make` invocation
-(`setup_network create_clients setup_test_data run_experiment`), so a run started this
-way is identical in structure to one started by hand.
+A treatment is therefore selected by two inputs: the phase profile in force and the arm
+file named in `OSKEN_ENV_OVERRIDE_FILE`. The profile a campaign ran is shipped in
+`testing/phases_campaigns/` (mapped campaign by campaign in its README), and every run
+folder also carries the profile it executed as `phases_snapshot.json`.
+
+`make run_experiment` drives the load with `TRAFFIC_DRIVER_MODE=open_loop`, the mode
+every campaign ran: one long-lived worker per client namespace holding an in-flight
+window of 1024 requests and draining for 30 s at each phase boundary. The alternative,
+`TRAFFIC_DRIVER_MODE=sync`, issues one `curl` per request and is kept only as a
+regression check.
 
 ## What a run produces
 
-Everything lands in `scripts/testing/metrics/<timestamp>_<label>/`:
+Everything lands in `scripts/testing/metrics/<timestamp>_<label>/`. Passing
+`run_experiment.sh --batch-dir DIR` nests that folder one level deeper, under
+`metrics/DIR/`, so consecutive arms of one campaign can be collected together.
 
 | File | Contents |
 |---|---|
 | `client_requests.csv` | One row per request: latency, endpoint, phase, client, status |
-| `resource_stats.csv` | Per-container CPU, memory, network samples |
-| `controller_stats.csv` | Per-node stats as the controller saw them |
-| `policy_state.csv` | Per-window policy state as the controller recorded it |
-| `elasticity_events.csv` | Scale-up, scale-down, admission and release events |
+| `resource_stats.csv` | Per-LAN window summaries: request count, mean CPU, processing and database latencies |
+| `resource_stats_debug.csv` | Per-container medians per window, plus the consumption timestamp |
+| `per_node_stats.csv` | Per-node CPU and memory samples behind those summaries |
+| `controller_stats.csv` | Controller container CPU and memory, sampled every 5 s |
 | `container_events.csv` | Docker lifecycle events |
+| `elasticity_events.csv` | Scale-up, scale-down and admission events |
+| `run_status.json` | Outcome, timing and per-stage status |
+
+The controller side is recorded per LAN, because each LAN has its own controller:
+
+| File | Contents |
+|---|---|
 | `decision_log_lan{1,2}.csv` | Raw controller decisions per LAN |
-| `per_node_stats.csv` | Aggregated per-node statistics |
+| `telemetry_delivery_log_lan{1,2}.csv` | Summary sequence, arrival and gaps as seen by the consumer |
+| `window_log_lan{1,2}.jsonl` | Aggregator windows before any transport effect |
+| `ack_log_lan{1,2}.jsonl` | The aggregator's acknowledgement of each published window |
+| `admission_log_lan{1,2}.csv` | Readiness admissions and abandonments |
+
+These files carry the per-question evidence. The window log and the delivery log are
+complementary, not redundant: the first is what the platform produced, the second is
+what the controller received, so the difference between them is the transport effect
+under study. The admission log is the readiness-admission record.
+
+The configuration in force is dumped alongside, so a run says what produced it:
+
+| File | Contents |
+|---|---|
 | `phases_snapshot.json` | The phase profile in force |
 | `controller_env_snapshot.env` | The merged controller environment in force |
-| `run_status.json` | Outcome, timing and per-stage status |
+| `aggregator_env_snapshot.env` | The aggregator environment in force |
+
+Transient files also appear and are not analysis inputs: `controller_lan{1,2}.log` (the
+raw `docker logs` capture), `service_logs/` (per-container service logs) and
+`current_phase.txt`.
 
 `metrics/active_run.json` points at the run in progress, which is how a watcher finds
 the live folder without guessing the timestamp.
 
 ## Analysis
 
-The analysers are offline and take a run directory, so they can be run against a copied
-folder:
-
-```bash
-python3 testing/analysis/cli_overview.py       --run-dir metrics/20260101_120000_label
-python3 testing/analysis/cli_phase_summary.py  --run-dir metrics/20260101_120000_label
-python3 testing/analysis/cli_scale_down.py     --run-dir metrics/20260101_120000_label
-python3 tools/metrics_stats.py                 metrics/20260101_120000_label
-```
-
-Per-RQ analysers live under `testing/analysis/rq1/`, `rq2/` and `rq3/`; the RQ1 and RQ2
-scripts carry a development-machine path as their default input directory and need that
-constant pointed at your run folder first.
+The run folder is self-describing: every latency in `client_requests.csv` carries its
+phase and client, every container sample in `resource_stats.csv` carries its timestamp,
+and `controller_env_snapshot.env` and `phases_snapshot.json` record the configuration
+that produced them. The outcome definitions, the contrasts and the statistical tests
+applied to these files are given in the thesis; the analysis scripts themselves are not
+part of this repository.
 
 ## Tearing down
 
@@ -123,3 +160,8 @@ make teardown_clients    # removes client namespaces then runs cleanup.sh -v
 
 `cleanup.sh` removes containers, bridges, veth pairs and the host routes the router
 needs, so a failed run does not leave the next one starting from a dirty host.
+
+`make cleanup_metrics` deletes every run folder under `testing/metrics/` and nothing
+else, which is the quickest way to reclaim disk between campaigns.
+
+Next: [architecture.md](architecture.md) describes the topology the run executes on.

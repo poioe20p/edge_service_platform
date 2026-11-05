@@ -14,18 +14,10 @@ from .config import (
     logger,
 )
 from ..scaling_config import _VIP_WARM_SERVER_SECONDS, _VIP_WARM_STORAGE_SECONDS
-from ..scaling_config import _STORAGE_READ_POLICY
 from ..scaling_config import _BACKEND_SELECTION_SPREAD_EPS
 from ..scaling_config import _BACKEND_SELECTION_SPREAD_MIN_BAND
 from ..scaling_config import _STORAGE_SELECTION_SPREAD_EPS
 from ..scaling_config import _STORAGE_SELECTION_SPREAD_MIN_BAND
-
-# Reads offload to SECONDARY members only.  Non-SECONDARY states (RECOVERING,
-# STARTUP, STARTUP2, ROLLBACK, or stale/None telemetry) are not offload
-# targets: routing reads to them produced NotPrimaryOrSecondary bursts during
-# replica-set reconfigs (measured: 153x in one probe).  The primary serves
-# reads only when no SECONDARY is visible (normal WSM fallback).
-_READY_READ_STATES = frozenset({"SECONDARY"})
 
 
 def _unknown_stats_default():
@@ -84,8 +76,7 @@ def _claim_warm_backend(
     """Check for and claim any warm lease for a backend in the pool.
 
     When multiple warm leases are claimable simultaneously, round-robin
-    across them for fair distribution (v4 fix — was previously
-    max(started_ts), which starved older siblings)."""
+    across them: claiming strictly the oldest would starve its siblings."""
     now = time.monotonic()
 
     with controller._warm_lock:
@@ -130,7 +121,7 @@ def select_server(controller, client_mac: str) -> dict | None:
     Cost_j = w_cpu·(CPU_j/CPU_max) + w_ram·(RAM_j/RAM_max)
            + w_req·(Req_j/Req_max) + w_hops·(Hops_j/Hops_max)
 
-    Spread (RQ2 v4 P2.6/P2.8, `_BACKEND_SELECTION_SPREAD_EPS` > 0): candidates
+    Spread (`_BACKEND_SELECTION_SPREAD_EPS` > 0): candidates
     within eps of the pool minimum form a band and are distributed across
     clients via a stateless deterministic hash, so one selection burst does
     not funnel every client onto a single backend. A live warm claim joins
@@ -303,8 +294,8 @@ def select_storage(
     start when all resource dimensions are 0.0), round-robin across them
     to distribute traffic evenly.  Each domain has its own counter.
 
-    Storage spread band (RQ2 v5 D21b, `_STORAGE_SELECTION_SPREAD_EPS` > 0):
-    mirrors select_server's P2.6/P2.8 band construction — eligible
+    Storage spread band (`_STORAGE_SELECTION_SPREAD_EPS` > 0):
+    mirrors select_server's band construction — eligible
     candidates (finite cost, local member, known IP, slow-start penalty
     fully decayed) within eps of the minimum form a band, floored at
     `_STORAGE_SELECTION_SPREAD_MIN_BAND` with the next-cheapest eligible
@@ -343,27 +334,7 @@ def select_storage(
     tied: list[dict] = []
     scored: list[tuple[float, dict]] = []
 
-    # Read offload: prefer_secondary routes reads away from the PRIMARY onto
-    # SECONDARY members only.  Writes keep the dedicated write client; the
-    # primary serves reads only when no SECONDARY is visible.
-    if _STORAGE_READ_POLICY == "prefer_secondary":
-        has_secondary = any(
-            (controller._storage_stats.get(m) or None) is not None
-            and (controller._storage_stats[m].member_state or "") in _READY_READ_STATES
-            for m in pool
-        )
-    else:
-        has_secondary = False
-
     for mac, entry in pool.items():
-        if has_secondary:
-            st = controller._storage_stats.get(mac)
-            if st is not None and (st.member_state or "") not in _READY_READ_STATES:
-                logger.debug(
-                    "select_storage(%s): prefer_secondary — skipping non-SECONDARY mac=%s state=%s",
-                    domain, mac, (st.member_state or ""),
-                )
-                continue
         stats = controller._storage_stats.get(mac)
 
         _default = _unknown_stats_default()
@@ -418,8 +389,7 @@ def select_storage(
         # penalty fully decayed (recomputed here; a decay crossing between
         # scoring and fill is bounded by one selection).  Cost ties break on
         # MAC, so the cut is deterministic across pool rebuilds (the raw
-        # scored order follows set iteration).  The prefer_secondary filter is
-        # already reflected: `scored` holds post-filter candidates only.
+        # scored order follows set iteration).
         def _band_eligible(mac: str) -> bool:
             return (
                 mac not in controller.peer_hosts

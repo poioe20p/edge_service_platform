@@ -22,7 +22,7 @@ in ``main_n*.py``). When off, no gate exists and Thread 3 registers backends
 immediately (pre-RQ3 behavior, byte-identical).
 
 Owns a native worker daemon thread (blocking HTTP probes). See
-``docs/research_questions/v2/rq3/rq3_preparation.md``.
+``docs/telemetry-and-scaling.md``.
 """
 
 from __future__ import annotations

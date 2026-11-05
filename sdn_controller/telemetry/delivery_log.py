@@ -1,7 +1,9 @@
 """Delivery log + acknowledgement client (RQ1 telemetry delivery semantics).
 
-Shared by ``EventPreservingTelemetrySource``, ``DelayedEventPreservingTelemetrySource``
-and ``PollingTelemetrySource``. Writes one CSV row per delivered window so the
+Shared by every telemetry source that produces a delivery row:
+``EventPreservingTelemetrySource`` (and its ``SampledPushTelemetrySource``
+subclass), ``DelayedEventPreservingTelemetrySource`` and
+``PollingTelemetrySource``. Writes one CSV row per delivered window so the
 RQ1 analyzer can compute delivered/missed windows, delivery delay, and
 information age. Also provides the best-effort producer-side acknowledgement
 via ``POST /ack`` (the thesis "delivery acknowledgement" requirement).

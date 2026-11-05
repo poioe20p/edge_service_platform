@@ -118,8 +118,8 @@ class ControlEventDispatcher:
         """Handle drain_complete control events forwarded by the aggregator.
 
         Routes on ``PendingDrain.node_type`` via
-        :meth:`ElasticityManager.submit_cleanup` so compute and Tier 1
-        selective-sync drains share the same dispatch path.
+        :meth:`ElasticityManager.submit_cleanup` so compute and storage drains
+        share the same dispatch path.
         """
         for event in summary.control_events:
             if event.get("event_type") == "drain_complete":

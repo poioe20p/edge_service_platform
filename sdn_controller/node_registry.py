@@ -16,13 +16,11 @@ from .scaling_config import (
     _NODE_BIRTH_GRACE_S,
     _STORAGE_PERSISTENT_RESERVE_ENABLED,
     _STORAGE_RESERVE_PENDING_WINDOWS,
-    _CROSS_REGION_STORAGE_ENABLED,
 )
 from .elasticity.elasticity import (
     ElasticityManager,
     ScaleDownComputeAlert,
     ScaleDownDataAlert,
-    ScaleDownSelectiveAlert,
 )
 from .elasticity.node_common import NodeInfo
 from .telemetry.models import TelemetrySummary
@@ -46,26 +44,6 @@ class StorageReserveSlot:
     pending_windows_remaining: int = 0
 
 
-@dataclass
-class CrossRegionReserveSlot:
-    """Controller-side state for one cross-region storage reserve.
-
-    Tracks a pre-spawned secondary of the PEER LAN's replica set, placed
-    in THIS LAN to serve cross-region reads locally.  Owned by Thread 2.
-    One slot per consumer LAN (the local LAN).  None when the feature is
-    disabled.
-    """
-    state: str = "NONE"          # NONE | PREPARING | READY_RESERVED
-    mac: str = ""
-    ip: str = ""
-    container_name: str = ""
-    owner_lan: str = ""          # "lan1" or "lan2" — which RS this reserve belongs to
-    rs_name: str = ""            # e.g. "rs_net1" (the REMOTE RS)
-    pending_reason: str = ""
-    prepare_submitted_ts: float = 0.0
-    ready_ts: float = 0.0
-
-
 class DynamicNodeRegistry:
     """Tracks dynamically added nodes for scale-down and absence detection.
 
@@ -82,12 +60,6 @@ class DynamicNodeRegistry:
         self._birth_ts: dict[str, float] = {}
         # Persistent reserve — one slot per LAN, keyed by LAN number.
         self._reserve_slots: dict[int, StorageReserveSlot] = {}
-        # Cross-region reserve — one slot for the peer LAN's RS secondary
-        # placed in this LAN.  None when feature is disabled.
-        self._cross_region_reserve_slot: CrossRegionReserveSlot | None = None
-        # research_q3 stabilized storage retention — MACs held out of VIP_DATA but
-        # still running + syncing (awaiting overload recall or horizon expiry).
-        self._retained_storage_macs: set[str] = set()
 
     # Thread 3 → Thread 2 sync
     def sync(self, elasticity: ElasticityManager) -> None:
@@ -106,7 +78,6 @@ class DynamicNodeRegistry:
             self._last_seen_mono.pop(mac, None)
             self._active.pop(mac, None)
             self._birth_ts.pop(mac, None)
-            self._retained_storage_macs.discard(mac)
             logger.info("[registry] removed MAC %s from tracking after cleanup (name=%s)", mac, name)
 
         for info in elasticity.consume_addition_completions():
@@ -145,7 +116,7 @@ class DynamicNodeRegistry:
                 self._last_seen_mono[mac] = now
                 continue
             info = self._active.get(mac)
-            if info is not None and info.node_type in ("storage", "selective_storage"):
+            if info is not None and info.node_type == "storage":
                 if not storage_evidence:
                     continue
             elif not request_evidence:
@@ -174,28 +145,13 @@ class DynamicNodeRegistry:
         """LIFO lookup for most recently added dynamic node of the given type.
 
         Reserved nodes (``standby_reserved=True``) are skipped — they are
-        not eligible for ordinary LIFO scale-down. Retained storage nodes
-        (``_retained_storage_macs``) are likewise skipped: their removal is
-        owned by the retention state machine, not ordinary scale-down.
+        not eligible for ordinary LIFO scale-down.
         """
         for mac, info in reversed(list(self._active.items())):
             if (info.node_type == node_type and mac in self._dynamic_node_macs
-                    and not info.standby_reserved
-                    and mac not in self._retained_storage_macs):
+                    and not info.standby_reserved):
                 return info
         return None
-
-    def mark_storage_retained(self, mac: str) -> None:
-        """Hold a storage node out of VIP_DATA (retention horizon running)."""
-        self._retained_storage_macs.add(mac)
-
-    def is_storage_retained(self, mac: str) -> bool:
-        """True while the storage node is held in retention."""
-        return mac in self._retained_storage_macs
-
-    def clear_storage_retained(self, mac: str) -> None:
-        """End retention for a storage node (recall re-admitted it, or removed)."""
-        self._retained_storage_macs.discard(mac)
 
     def list_dynamic(self, node_type: str) -> list[NodeInfo]:
         """Return tracked dynamic nodes of the given type in insertion order."""
@@ -209,13 +165,7 @@ class DynamicNodeRegistry:
         """Count dynamic nodes of the given type.
 
         Reserved storage nodes (``standby_reserved=True``) are excluded —
-        they do not count toward active storage thresholds. Retained storage
-        nodes (``_retained_storage_macs``) ARE counted: the node physically
-        exists, keeps syncing, and a recall re-admits it instantly, so
-        counting it keeps scale-up thresholds honest during retention and
-        prevents a premature capacity add (the recall substitutes the add).
-        ``find_last_dynamic`` still skips retained nodes — removal
-        ownership belongs to the retention state machine.
+        they do not count toward active storage thresholds.
 
         When *lan* is provided, only nodes on that LAN are counted.
         """
@@ -233,9 +183,6 @@ class DynamicNodeRegistry:
 
     def get_node_info(self, mac: str) -> NodeInfo | None:
         return self._active.get(mac)
-
-    def is_tracked(self, mac: str) -> bool:
-        return mac in self._dynamic_node_macs
 
     def _ensure_reserve_slot(self, lan: int) -> StorageReserveSlot:
         """Return (creating if necessary) the reserve slot for *lan*."""
@@ -468,7 +415,7 @@ class DynamicNodeRegistry:
         info = self.get_node_info(candidate_mac)
         return info is not None and not info.standby_reserved
 
-    def build_scale_down_alert(self, mac: str, reason: str = "scale_down") -> ScaleDownComputeAlert | ScaleDownDataAlert | ScaleDownSelectiveAlert | None:
+    def build_scale_down_alert(self, mac: str, reason: str = "scale_down") -> ScaleDownComputeAlert | ScaleDownDataAlert | None:
         """Build the appropriate scale-down alert from NodeInfo. Returns None if MAC not tracked.
 
         Reserved nodes (``standby_reserved=True``) do NOT produce ordinary
@@ -494,15 +441,6 @@ class DynamicNodeRegistry:
                 ip=info.ip,
                 reason=reason,
             )
-        elif info.node_type == "selective_storage":
-            return ScaleDownSelectiveAlert(
-                lan=info.lan,
-                network_id=info.network_id,
-                owner_lan=info.owner_lan,
-                container_name=info.name,
-                mac=mac,
-                ip=info.ip,
-            )
         else:
             return ScaleDownDataAlert(
                 lan=info.lan,
@@ -515,62 +453,3 @@ class DynamicNodeRegistry:
                 port=info.port,
                 reason=reason,
             )
-
-    def init_cross_region_reserve_slot(self) -> CrossRegionReserveSlot:
-        """Create and return a fresh cross-region reserve slot.
-
-        Called once at startup if ``_CROSS_REGION_STORAGE_ENABLED`` is set.
-        """
-        self._cross_region_reserve_slot = CrossRegionReserveSlot()
-        logger.info("[cross-region-reserve] slot initialised")
-        return self._cross_region_reserve_slot
-
-    def get_cross_region_reserve_slot(self) -> CrossRegionReserveSlot | None:
-        """Return the cross-region reserve slot, or None if disabled."""
-        return self._cross_region_reserve_slot
-
-    def should_prepare_cross_region_reserve(self) -> bool:
-        slot = self._cross_region_reserve_slot
-        return slot is not None and slot.state == "NONE"
-
-    def mark_cross_region_reserve_prepare_submitted(
-        self, owner_lan: str, rs_name: str,
-    ) -> None:
-        slot = self._cross_region_reserve_slot
-        assert slot is not None
-        slot.state = "PREPARING"
-        slot.owner_lan = owner_lan
-        slot.rs_name = rs_name
-        slot.prepare_submitted_ts = time.monotonic()
-        logger.info(
-            "[cross-region-reserve] prepare_submitted owner=%s rs=%s",
-            owner_lan, rs_name,
-        )
-
-    def mark_cross_region_reserve_ready(
-        self, mac: str, ip: str, container_name: str,
-    ) -> None:
-        slot = self._cross_region_reserve_slot
-        assert slot is not None
-        slot.state = "READY_RESERVED"
-        slot.mac = mac
-        slot.ip = ip
-        slot.container_name = container_name
-        slot.ready_ts = time.monotonic()
-        logger.info(
-            "[cross-region-reserve] ready mac=%s ip=%s name=%s",
-            mac, ip, container_name,
-        )
-
-    def consume_cross_region_reserve(self) -> tuple[str, str, str]:
-        """Activate: return (mac, ip, container_name) and reset slot to NONE."""
-        slot = self._cross_region_reserve_slot
-        assert slot is not None
-        mac, ip, name = slot.mac, slot.ip, slot.container_name
-        owner = slot.owner_lan
-        slot.state = "NONE"
-        slot.mac = slot.ip = slot.container_name = ""
-        logger.info(
-            "[cross-region-reserve] consumed mac=%s owner=%s", mac, owner,
-        )
-        return mac, ip, name

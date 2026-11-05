@@ -54,7 +54,7 @@ graph TB
     OSKEN1 -. OpenFlow .-> BR0
     OSKEN2 -. OpenFlow .-> BR1
     OSKEN1 -. topology .-> OSKEN2
-    OSKEN2 -. coordinator state .-> OSKEN1
+    CTRL -. consumption frames .-> VETH5
     E1 -. telemetry ZMQ .-> A1
     A1 -. aggregated windows .-> OSKEN1
 ```
@@ -74,10 +74,6 @@ static MAC inside its own network namespace; the containers themselves run with
 | test clients | `10.0.0.56-151` | `10.0.1.56-151` | assigned per client |
 | `VIP_SERVER` | `10.0.0.253` | `10.0.1.253` | `aa:bb:cc:dd:ee:01` / `:04` |
 | `VIP_DATA` | `10.0.0.254` | `10.0.1.254` | `aa:bb:cc:dd:ee:02` / `:03` |
-| `VIP_DATA_RECOVERY` | `10.0.0.252` | `10.0.1.252` | `aa:bb:cc:dd:ee:12` / `:13` |
-
-`VIP_DATA_RECOVERY` is a reserved address that no shipped code path consumes — see the
-last section of [request-path.md](request-path.md).
 
 Clients are plain network namespaces with a veth pair on the bridge — no image, no
 container. Their addresses come from the `.56-151` slice of their LAN, and their veth
@@ -98,8 +94,11 @@ Two os-ken controllers, one per bridge, each in its own container on the host ne
 `ovs-vsctl set-controller`. Each controller owns only its own LAN's flows, but the two
 share a topology view: each publishes on `TOPOLOGY_PUB_PORT` (`5559` / `5560`) and
 subscribes to its peer's endpoint, so a backend behind the other LAN is a visible
-candidate for routing. A second pair of ports (`5561` / `5562`) carries coordinator
-state used to serialise cross-LAN decisions.
+candidate for routing. A second pair of ports (`5561` / `5562`) publishes one
+consumption frame per telemetry window. That is not a controller-to-controller channel:
+the host-side resource collector subscribes to it and records when each window reached
+the controller, which is where the consumption timestamp in `resource_stats_debug.csv`
+comes from.
 
 ## Storage
 
@@ -140,13 +139,12 @@ consumes them is described in [telemetry-and-scaling.md](telemetry-and-scaling.m
 |---|---|
 | `docker/edge_server/` | HTTP front end, request lifecycle, feed integrity work, Mongo access |
 | `docker/edge_storage_server/` | MongoDB member plus its own telemetry emitter |
-| `docker/edge_selective_storage/` | Tier 1 selective sync supervisor and forwarder |
 | `docker/local_state_server/` | Telemetry aggregator (window, overload detection, publisher) |
 | `docker/OVS/` | Open vSwitch container entry point |
 | `docker/os-ken/` | Controller runtime image |
 | `docker/ubuntu-nat-router/` | Router base image with `iproute2` for `tc` |
 | `sdn_controller/` | Controller: VIP routing, topology, telemetry, elasticity, gates |
 | `scripts/network/` | Namespace and veth construction, node add/remove, WAN shaping |
-| `scripts/testing/` | Workload phases, launchers, env overrides, analysis |
+| `scripts/testing/` | Workload phases, env overrides, driver, seeding |
 
 Next: [request-path.md](request-path.md) traces a request through this topology.

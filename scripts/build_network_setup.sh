@@ -249,13 +249,8 @@ try {
 echo "Cleaning up network and Docker resources..."
 bash ./cleanup.sh -v
 
-if [[ $? -ne 0 ]]; then
-    echo "Cleanup failed. Aborting build_setup.sh."
-    exit 1
-fi
 
-
-echo "Verifying IPTTables FORWARD policy..."
+echo "Verifying iptables FORWARD policy..."
 FORWARD_POLICY=$(sudo iptables -L FORWARD | grep "Chain FORWARD" | awk '{print $4}')
 if [[ "$FORWARD_POLICY" != "ACCEPT" ]]; then
     echo "FORWARD policy is not ACCEPT. Changing it to ACCEPT..."
@@ -273,10 +268,6 @@ docker run -dit --name ovs --privileged --restart=on-failure \
   -v /lib/modules:/lib/modules \
   ovs-container
 
-if [[ $? -ne 0 ]]; then
-    echo "Failed to start OVS container. Aborting."
-    exit 1
-fi
 sleep 1
 
 
@@ -284,19 +275,11 @@ echo "Starting NAT router container..."
 docker run -dit --name nat-router --privileged --network none --restart=on-failure \
   --log-opt max-size=100m --log-opt max-file=3 ubuntu-nat-router
 
-if [[ $? -ne 0 ]]; then
-    echo "Failed to start NAT router container. Aborting."
-    exit 1
-fi
 sleep 1
 
 
 echo "Building first network (network 1)..."
 bash ./network/build_network_1.sh
-if [[ $? -ne 0 ]]; then
-    echo "Failed to build first network. Aborting."
-    exit 1
-fi
 sleep 15  # allow MongoDB at tight CPU limits time to start
 
 
@@ -349,10 +332,6 @@ fi
 
 echo "Building second network (network 2)..."
 bash ./network/build_network_2.sh
-if [[ $? -ne 0 ]]; then
-    echo "Failed to build second network. Aborting."
-    exit 1
-fi
 sleep 2
 
 
@@ -406,10 +385,6 @@ fi
 
 echo "Configuring router WAN interfaces and port-forwardings..."
 bash ./network/build_router.sh
-if [[ $? -ne 0 ]]; then
-    echo "Failed to configure router. Aborting."
-    exit 1
-fi
 sleep 2
 
 
@@ -466,22 +441,12 @@ docker run -dit --name osken_2 --network host --restart=on-failure \
         --log-config-file /etc/osken/logging.conf \
         sdn_controller.main_n2
 
-if [[ $? -ne 0 ]]; then
-    echo "Failed to start SDN controller container. Aborting."
-    exit 1
-fi
-
 cd "${SCRIPT_DIR}"
 
 
 echo "Pointing OVS switches to the SDN controllers..."
 docker exec ovs ovs-vsctl set-controller ovs-br0 tcp:127.0.0.1:${OSKEN1_PORT}
 docker exec ovs ovs-vsctl set-controller ovs-br1 tcp:127.0.0.1:${OSKEN2_PORT}
-
-if [[ $? -ne 0 ]]; then
-    echo "Failed to point OVS switches to SDN controller. Aborting."
-    exit 1
-fi
 
 
 # VIP ARP replies come from the controller's install_vip_arp_punt_rules (priority=100); a static

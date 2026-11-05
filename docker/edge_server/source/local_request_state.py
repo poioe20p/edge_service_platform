@@ -15,9 +15,6 @@ class LocalRequestEvent:
     content_id: str | None
     user_id: str
     latency_ms: float
-    served_from_tier: int
-    tier1_hit_ratio: float
-    tier1_eligible_reads: int
     relevance: str
     status: str
     tags: tuple[str, ...]
@@ -61,9 +58,6 @@ class LocalRequestState:
             snapshot = list(self._by_content.get(content_id, ()))
         return [self._snapshot(event) for event in snapshot[-limit:]]
 
-    def events_since(self, cutoff_epoch: float) -> list[dict[str, Any]]:
-        return self.events_since_with_truncation(cutoff_epoch)[0]
-
     def events_since_with_truncation(self, cutoff_epoch: float) -> tuple[list[dict[str, Any]], bool]:
         with self._lock:
             truncated = (
@@ -82,9 +76,6 @@ class LocalRequestState:
             "content_id": event.content_id,
             "user_id": event.user_id,
             "latency_ms": event.latency_ms,
-            "served_from_tier": event.served_from_tier,
-            "tier1_hit_ratio": event.tier1_hit_ratio,
-            "tier1_eligible_reads": event.tier1_eligible_reads,
             "relevance": event.relevance,
             "status": event.status,
             "tags": list(event.tags),

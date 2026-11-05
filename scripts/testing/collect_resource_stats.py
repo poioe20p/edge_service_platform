@@ -27,10 +27,8 @@ import time
 
 import zmq
 
-from tier1_stats import TIER1_ALL_COLUMNS, build_tier1_row, peer_lan
-
 # Trimmed main view: raw inputs plus the derived helpers elasticity reasoning
-# needs, with Tier 1 status visible without opening the debug CSV.
+# needs.
 # avg_time_proc_ms / avg_time_db_ms hold the aggregator's MEDIAN (a historical
 # misnomer); storage_latency_signal_ms mirrors the controller's median signal.
 MAIN_FIELDNAMES = [
@@ -48,8 +46,6 @@ MAIN_FIELDNAMES = [
     "server_count",
     "storage_count",
     "avg_repl_lag_ms",
-    "coord_state_owner_lan",
-    "tier1_lifecycle_active_count",
     "conntrack_entries_n1",
     "conntrack_entries_n2",
 ]
@@ -74,7 +70,7 @@ DEBUG_FIELDNAMES = [
     "avg_time_db_write_ms",
     "avg_time_db_cmd_count",
     "consumed_at",
-] + TIER1_ALL_COLUMNS
+]
 
 PER_NODE_FIELDNAMES = [
     "timestamp", "phase", "network_id", "window_end",
@@ -117,7 +113,7 @@ def _domain_avg_cpu(servers: dict) -> float | None:
 
 
 def _domain_p95(values: list[float]) -> float | None:
-    """P95 via linear interpolation (same method as metrics_stats.py)."""
+    """P95 via linear interpolation."""
     if not values:
         return None
     s = sorted(values)
@@ -311,8 +307,9 @@ def main():
     sub2.connect(args.lan2_pub)
     sub2.setsockopt_string(zmq.SUBSCRIBE, "")
 
-    # Coordinator-state subscribers: controllers publish one frame per telemetry
-    # window after evaluate(); the latest frame per network_id is merged into rows.
+    # Consumption subscribers: controllers publish one frame per telemetry
+    # window carrying the instant the window was consumed; the frame is paired
+    # with the row the same window produced.
     coord_sub1 = ctx.socket(zmq.SUB)
     coord_sub1.connect(args.lan1_coord_pub)
     coord_sub1.setsockopt_string(zmq.SUBSCRIBE, "")
@@ -321,12 +318,9 @@ def main():
     coord_sub2.connect(args.lan2_coord_pub)
     coord_sub2.setsockopt_string(zmq.SUBSCRIBE, "")
 
-    # Two indexes over the same frames: _coord_by_window[(network_id, window_end)]
-    # feeds the exact-match consumed_at pairing (in poll mode the frame can arrive
-    # seconds later, so unmatched rows are buffered), while _coord_latest_by_lan
-    # serves Tier 1 ownership lookups and is never used for consumed_at.
+    # Exact-match pairing on (network_id, window_end). In poll mode the frame can
+    # arrive seconds after the telemetry row, so unmatched rows are buffered.
     _coord_by_window: dict[tuple[str, float], dict] = {}
-    _coord_latest_by_lan: dict[str, dict] = {}
 
     # Each entry: (key, main_row, debug_row, summary, phase, ts_str,
     #               network_id, window_end_raw)
@@ -408,8 +402,6 @@ def main():
                     continue
                 lan = frame.get("network_id")
                 we = frame.get("window_end")
-                if lan:
-                    _coord_latest_by_lan[lan] = frame
                 if lan and we is not None:
                     _coord_by_window[(lan, float(we))] = frame
                     # Flush any buffered telemetry row for this frame (poll mode can
@@ -460,15 +452,6 @@ def main():
                     "storage_count":             storage_count,
                     "avg_repl_lag_ms":           avg_repl_lag,
                 }
-                # Tier 1 fields use peer_lan (which LAN owns the copy); consumed_at
-                # uses the SAME lan, matched by window_end for exact pairing.
-                coord_lan = peer_lan(network_id) if network_id in ("lan1", "lan2") else network_id
-                t1_coord = _coord_latest_by_lan.get(coord_lan, {})
-
-                t1 = build_tier1_row(summary, t1_coord)
-                main_row["coord_state_owner_lan"] = t1.get("coord_state_owner_lan", "NONE")
-                main_row["tier1_lifecycle_active_count"] = t1.get("tier1_lifecycle_active_count", 0)
-
                 main_row["conntrack_entries_n1"] = ct_stats.get("conntrack_entries_n1", "")
                 main_row["conntrack_entries_n2"] = ct_stats.get("conntrack_entries_n2", "")
 
@@ -499,8 +482,6 @@ def main():
                 coord_key = (network_id, we_float)
                 matched_coord = _coord_by_window.get(coord_key, {})
                 debug_row["consumed_at"] = matched_coord.get("consumed_at", "")
-
-                debug_row.update(build_tier1_row(summary, t1_coord))
 
                 if matched_coord:
                     writer.writerow(main_row)

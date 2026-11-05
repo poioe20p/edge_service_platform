@@ -4,9 +4,9 @@
 #
 # Usage:
 #   sudo ./run_experiment.sh [--batch-dir batch4] [--run-label c0] [--skip-clients] [--skip-seed] [--skip-snapshot]
-#   sudo ./run_experiment.sh --phases-config phases_custom.json --fault-plan fault_plan.json
+#   sudo ./run_experiment.sh --phases-config phases_custom.json --run-label custom
 #   sudo ./run_experiment.sh --clients-per-lan 6 --seed-content-items 600 --seed-users 100 \
-#       --phases-config testing/phases_override/phases_tier1_smoke.json --run-label tier1_smoke
+#       --phases-config testing/phases.json --run-label rq3sat
 #
 # Flags (all optional):
 #   --batch-dir DIR     Place the run folder under metrics/DIR/ (example: metrics/batch4/20260501_153012_c0)
@@ -17,9 +17,8 @@
 #   --clients-per-lan N  Override the number of client namespaces created per LAN
 #   --seed-content-items N Override the number of content items seeded per LAN
 #   --seed-users N       Override the number of user profiles seeded per LAN
-#   --snapshot-dir DIR   Override snapshot directory (default: REPO_ROOT/data/workload_snapshot)
+#   --snapshot-dir DIR   Override snapshot directory (default: SCRIPT_DIR/data/workload_snapshot)
 #   --phases-config FILE Override the traffic-generator phases file
-#   --fault-plan FILE    Optional fault-injection plan consumed by fault_injector.py
 #   --dry-run            Pass --dry-run to traffic_generator (no real requests)
 # ============================================================================
 
@@ -27,7 +26,6 @@ set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-readonly REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 readonly DEFAULT_CONTROLLER_ENV_SOURCE="${SCRIPTS_DIR}/osken-controller.env"
 readonly CONTROLLER_ENV_BASE_SOURCE="${OSKEN_ENV_FILE:-${DEFAULT_CONTROLLER_ENV_SOURCE}}"
 readonly CONTROLLER_ENV_OVERRIDE_SOURCE="${OSKEN_ENV_OVERRIDE_FILE:-}"
@@ -41,8 +39,8 @@ TEMP_CONTROLLER_ENV_SOURCE=""
 CLIENTS_PER_LAN="${CLIENTS_PER_LAN:-3}"
 
 # Namespace prefixes — produces lan1_client_1, lan1_client_2 … lan2_client_1, lan2_client_2 …
-PREFIX_LAN1="lan1_client_"
-PREFIX_LAN2="lan2_client_"
+PREFIX_LAN1="lan1_client"
+PREFIX_LAN2="lan2_client"
 
 SEED_CONTENT_ITEMS="${SEED_CONTENT_ITEMS:-100}"
 SEED_USERS="${SEED_USERS:-40}"
@@ -65,7 +63,7 @@ LAN1_COORD_PUB="tcp://127.0.0.1:5561"
 LAN2_COORD_PUB="tcp://127.0.0.1:5562"
 
 CONTAINER_EVENTS_INTERVAL="${CONTAINER_EVENTS_INTERVAL:-1.0}"
-CONTAINER_EVENTS_FILTER="${CONTAINER_EVENTS_FILTER:-^(edge_|sel_sync_|nat-router|osken|local_state_)}"
+CONTAINER_EVENTS_FILTER="${CONTAINER_EVENTS_FILTER:-^(edge_|nat-router|osken|local_state_)}"
 
 STATS_PID=""
 
@@ -78,8 +76,6 @@ CONTAINER_EVENTS_PID=""
 
 SERVICE_LOG_PID=""
 
-FAULT_INJECTOR_PID=""
-
 
 SKIP_CLIENTS=false
 SKIP_SEED=false
@@ -88,7 +84,6 @@ DRY_RUN=false
 BATCH_DIR=""
 RUN_LABEL=""
 PHASES_CONFIG_OVERRIDE=""
-FAULT_PLAN=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -110,8 +105,6 @@ while [[ $# -gt 0 ]]; do
         --snapshot-dir=*) SNAPSHOT_DIR="${1#*=}" ;;
         --phases-config)   shift; PHASES_CONFIG_OVERRIDE="$1" ;;
         --phases-config=*) PHASES_CONFIG_OVERRIDE="${1#*=}" ;;
-        --fault-plan)      shift; FAULT_PLAN="$1" ;;
-        --fault-plan=*)    FAULT_PLAN="${1#*=}" ;;
         -h|--help)
             sed -n '/^# Usage/,/^# -----/p' "$0" | grep '^#' | sed 's/^# *//'
             exit 0
@@ -281,7 +274,6 @@ RESOURCE_STATS_OUTPUT="${RUN_DIR}/resource_stats.csv"
 RESOURCE_STATS_DEBUG_OUTPUT="${RUN_DIR}/resource_stats_debug.csv"
 PHASE_FILE="${RUN_DIR}/current_phase.txt"
 
-POLICY_STATE_OUTPUT="${RUN_DIR}/policy_state.csv"
 ELASTICITY_EVENTS_OUTPUT="${RUN_DIR}/elasticity_events.csv"
 
 CONTAINER_EVENTS_OUTPUT="${RUN_DIR}/container_events.csv"
@@ -291,9 +283,6 @@ CONTROLLER_LOG_LAN2="${RUN_DIR}/controller_lan2.log"
 
 SERVICE_LOG_DIR="${RUN_DIR}/service_logs"
 
-FAULT_PLAN_SNAPSHOT_OUTPUT="${RUN_DIR}/fault_plan_snapshot.json"
-FAULT_EVENTS_OUTPUT="${RUN_DIR}/experiment_fault_events.csv"
-
 
 prepare_run_outputs() {
     step "Preparing run output folder"
@@ -301,23 +290,13 @@ prepare_run_outputs() {
     _write_run_status "running" "" "setup"
     [[ -f "$PHASES_CONFIG" ]] || die "Phase config not found: $PHASES_CONFIG"
     [[ -f "$CONTROLLER_ENV_SOURCE" ]] || die "Controller env not found: $CONTROLLER_ENV_SOURCE"
-    if [[ -n "$FAULT_PLAN" ]]; then
-        [[ -f "$FAULT_PLAN" ]] || die "Fault plan not found: $FAULT_PLAN"
-    fi
     cp "$PHASES_CONFIG" "$PHASES_SNAPSHOT_OUTPUT"
     cp "$CONTROLLER_ENV_SOURCE" "$CONTROLLER_ENV_SNAPSHOT_OUTPUT"
-    if [[ -n "$FAULT_PLAN" ]]; then
-        cp "$FAULT_PLAN" "$FAULT_PLAN_SNAPSHOT_OUTPUT"
-    fi
     echo "  Run dir    : ${RUN_DIR}"
     echo "  Batch dir  : ${BATCH_DIR:-<none>}"
     echo "  Run label  : ${RUN_LABEL:-<none>}"
     echo "  Phase copy : ${PHASES_SNAPSHOT_OUTPUT}"
     echo "  Env copy   : ${CONTROLLER_ENV_SNAPSHOT_OUTPUT}"
-    if [[ -n "$FAULT_PLAN" ]]; then
-        echo "  Fault copy : ${FAULT_PLAN_SNAPSHOT_OUTPUT}"
-        echo "  Fault log  : ${FAULT_EVENTS_OUTPUT}"
-    fi
 }
 
 build_client_lists() {
@@ -333,7 +312,7 @@ build_client_lists() {
 
 run_create_clients() {
     step "Creating test client namespaces"
-    local create_script="${REPO_ROOT}/source/scripts/network/clients/create_test_clients.sh"
+    local create_script="${SCRIPTS_DIR}/network/clients/create_test_clients.sh"
     [[ -f "$create_script" ]] || die "Not found: $create_script"
 
     echo "  LAN 1: ${CLIENTS_PER_LAN} clients (prefix: ${PREFIX_LAN1})"
@@ -466,32 +445,6 @@ stop_capture_service_logs() {
 }
 
 
-run_fault_injector() {
-    [[ -z "$FAULT_PLAN" ]] && return 0
-
-    step "Starting fault injector"
-    echo "  Plan     : ${FAULT_PLAN}"
-    echo "  Phase    : ${PHASE_FILE}"
-    echo "  Output   : ${FAULT_EVENTS_OUTPUT}"
-    python3 "${SCRIPT_DIR}/fault_injector.py" \
-        --plan "$FAULT_PLAN" \
-        --phase-file "$PHASE_FILE" \
-        --controller-log-lan1 "$CONTROLLER_LOG_LAN1" \
-        --controller-log-lan2 "$CONTROLLER_LOG_LAN2" \
-        --output "$FAULT_EVENTS_OUTPUT" &
-    FAULT_INJECTOR_PID=$!
-    echo "  Helper PID: ${FAULT_INJECTOR_PID}"
-}
-
-stop_fault_injector() {
-    [[ -z "${FAULT_INJECTOR_PID:-}" ]] && return 0
-    echo; echo "==> Stopping fault injector (PID ${FAULT_INJECTOR_PID})"
-    kill -TERM "$FAULT_INJECTOR_PID" 2>/dev/null || true
-    wait "$FAULT_INJECTOR_PID" 2>/dev/null || true
-    FAULT_INJECTOR_PID=""
-}
-
-
 run_poll_container_events() {
     step "Starting container event poller"
     echo "  Interval : ${CONTAINER_EVENTS_INTERVAL}s"
@@ -522,16 +475,6 @@ run_traffic() {
     echo "  Config       : ${PHASES_CONFIG}"
     echo "  Output       : ${METRICS_OUTPUT}"
 
-    # Fail-fast gate for the open-loop driver (hard requirement for RQ2 and the final RQ
-    # campaigns; see rq2_v2_rework_plan.md Phase 1).
-    if [[ "${TRAFFIC_DRIVER_MODE:-}" == "open_loop" ]]; then
-        echo "  Driver mode  : open_loop (window=${INFLIGHT_WINDOW:-1024}, drain=${DRAIN_S:-30}s)"
-        python3 "${SCRIPT_DIR}/openloop_p1_01_driver_selftest.py" || {
-            echo "ERROR: open-loop driver self-test FAILED — refusing to run the experiment" >&2
-            exit 1
-        }
-    fi
-
     local extra_flags=()
     "$DRY_RUN" && extra_flags+=("--dry-run")
     [[ -n "$RANDOM_SEED" ]] && extra_flags+=("--random-seed" "$RANDOM_SEED")
@@ -559,34 +502,11 @@ generate_elasticity_events() {
     echo "  LAN1 log : ${CONTROLLER_LOG_LAN1}"
     echo "  LAN2 log : ${CONTROLLER_LOG_LAN2}"
     echo "  Output   : ${ELASTICITY_EVENTS_OUTPUT}"
-    python3 "${SCRIPTS_DIR}/tools/parse_elasticity_logs.py" \
+    python3 "${SCRIPT_DIR}/parse_elasticity_logs.py" \
         "$CONTROLLER_LOG_LAN1" \
         "$CONTROLLER_LOG_LAN2" \
         -o "$ELASTICITY_EVENTS_OUTPUT" \
         || echo "  WARNING: elasticity event generation failed (non-fatal)" >&2
-}
-
-generate_policy_state() {
-    step "Reconstructing policy state from run artifacts"
-    echo "  Resource stats  : ${RESOURCE_STATS_OUTPUT}"
-    echo "  Resource debug  : ${RESOURCE_STATS_DEBUG_OUTPUT}"
-    echo "  Per-node stats  : ${RUN_DIR}/per_node_stats.csv"
-    echo "  Container events: ${CONTAINER_EVENTS_OUTPUT}"
-    echo "  Controller env  : ${CONTROLLER_ENV_SNAPSHOT_OUTPUT}"
-    echo "  Elasticity evts : ${ELASTICITY_EVENTS_OUTPUT}"
-    echo "  Controller logs : ${CONTROLLER_LOG_LAN1}, ${CONTROLLER_LOG_LAN2}"
-    echo "  Output          : ${POLICY_STATE_OUTPUT}"
-    python3 "${SCRIPTS_DIR}/tools/reconstruct_policy_state.py" \
-        --resource-stats       "$RESOURCE_STATS_OUTPUT" \
-        --resource-stats-debug "$RESOURCE_STATS_DEBUG_OUTPUT" \
-        --per-node-stats       "${RUN_DIR}/per_node_stats.csv" \
-        --container-events     "$CONTAINER_EVENTS_OUTPUT" \
-        --controller-env       "$CONTROLLER_ENV_SNAPSHOT_OUTPUT" \
-        --elasticity-events    "$ELASTICITY_EVENTS_OUTPUT" \
-        --controller-log-lan1  "$CONTROLLER_LOG_LAN1" \
-        --controller-log-lan2  "$CONTROLLER_LOG_LAN2" \
-        --output               "$POLICY_STATE_OUTPUT" \
-        || echo "  WARNING: policy state reconstruction failed (non-fatal)" >&2
 }
 
 # RQ1 telemetry delivery artifacts — collected BEFORE any external cleanup runs.
@@ -642,24 +562,8 @@ collect_rq3_artifacts() {
     echo "  Admission logs : ${RUN_DIR}/admission_log_lan1.csv, ${RUN_DIR}/admission_log_lan2.csv"
 }
 
-collect_research_q3_artifacts() {
-    step "Collecting research_q3 release artifacts"
-    local _rl1 _rl2
-    _rl1="$(docker exec osken printenv RELEASE_LOG_PATH 2>/dev/null || echo /tmp/release_log.csv)"
-    _rl2="$(docker exec osken_2 printenv RELEASE_LOG_PATH 2>/dev/null || echo /tmp/release_log.csv)"
-    docker cp "osken:${_rl1}"   "${RUN_DIR}/release_log_lan1.csv" 2>/dev/null \
-        || echo "  WARNING: release_log_lan1 unavailable (non-research_q3 run?)" >&2
-    docker cp "osken_2:${_rl2}" "${RUN_DIR}/release_log_lan2.csv" 2>/dev/null \
-        || echo "  WARNING: release_log_lan2 unavailable (non-research_q3 run?)" >&2
-    docker cp "osken:/tmp/rs_evict" "${RUN_DIR}/rs_evict_logs_lan1" 2>/dev/null \
-        || echo "  WARNING: rs_evict_logs_lan1 unavailable" >&2
-    docker cp "osken_2:/tmp/rs_evict" "${RUN_DIR}/rs_evict_logs_lan2" 2>/dev/null \
-        || echo "  WARNING: rs_evict_logs_lan2 unavailable" >&2
-    echo "  Release logs  : ${RUN_DIR}/release_log_lan1.csv, ${RUN_DIR}/release_log_lan2.csv"
-}
-
-# RQ3 v2 validity gates (plan §4.3): min-admissions per LAN; flow-validation exit 1 = hard
-# fail, 2 = coverage < 0.9 degraded; runs AFTER artifact collection, BEFORE run-folder cleanup.
+# RQ3 v2 validity gates (plan §4.3): min-admissions per LAN; runs AFTER artifact
+# collection, BEFORE run-folder cleanup.
 verify_rq3_run() {
     local _snap="${RUN_DIR}/controller_env_snapshot.env"
     [[ -f "$_snap" ]] || { echo "  [rq3] no env snapshot — skipping RQ3 gate"; return 0; }
@@ -672,7 +576,7 @@ verify_rq3_run() {
 
     local _fail=0 _lan _adm _f
     # RQ3 measurement runs are identified by VIP_FLOW_ISOLATION=1; readiness-gate runs that
-    # keep per-client flows (RQ2, the D5 design) must not be held to the flow-validation checks.
+    # keep per-client flows (RQ2, the D5 design) are not held to the flow-isolation checks.
     local _flowiso _rq3_meas
     _flowiso="$(grep -E '^VIP_FLOW_ISOLATION=' "$_snap" | head -1 | cut -d= -f2 || true)"
     _rq3_meas=0
@@ -696,24 +600,6 @@ verify_rq3_run() {
             echo "  [rq3] WARN: admission_log_lan${_lan}.csv missing" >&2
         fi
     done
-
-    # Flow-validation exit codes: 0 = valid, 1 = hard violation, 2 = instrumentation-degraded.
-    if [[ "$_rq3_meas" -eq 1 ]]; then
-        if [[ -f "${RUN_DIR}/client_requests.csv" ]]; then
-            python3 "${REPO_ROOT}/docs/research_questions/v2/rq3/rq3_flow_validation.py" "${RUN_DIR}"
-            local _rc=$?
-            if [[ $_rc -eq 1 ]]; then
-                echo "  [rq3] FAIL: flow-validation hard violation (exit 1)" >&2
-                _fail=1
-            elif [[ $_rc -eq 2 ]]; then
-                echo "  [rq3] DEGRADED: flow-isolation coverage < 0.9 (recorded, not a hard fail)" >&2
-            fi
-        else
-            echo "  [rq3] WARN: client_requests.csv missing — flow-validation skipped" >&2
-        fi
-    else
-        echo "  [rq3] flow-validation skipped (not an RQ3 flow-isolation run)" >&2
-    fi
 
     local _e1 _e2 _dyn _de
     _e1="$(docker exec osken printenv EDGE_APP_READY_EVENT 2>/dev/null || echo 0)"
@@ -766,11 +652,10 @@ echo " Phase file  : ${PHASE_FILE}"
 echo " VIP LAN1    : ${VIP_LAN1}"
 echo " VIP LAN2    : ${VIP_LAN2}"
 echo " Phases cfg  : ${PHASES_CONFIG}"
-echo " Fault plan  : ${FAULT_PLAN:-<none>}"
 echo " Dry-run     : ${DRY_RUN}"
 echo "======================================================"
 
-trap '_write_run_status_failed; stop_fault_injector; stop_capture_service_logs; stop_capture_controller_logs; stop_poll_container_events; stop_sample_controller_stats; stop_collect_stats; cleanup_temp_controller_env' EXIT
+trap '_write_run_status_failed; stop_capture_service_logs; stop_capture_controller_logs; stop_poll_container_events; stop_sample_controller_stats; stop_collect_stats; cleanup_temp_controller_env' EXIT
 
 prepare_run_outputs
 "$SKIP_CLIENTS"  || run_create_clients
@@ -780,36 +665,25 @@ run_collect_stats
 run_sample_controller_stats
 run_capture_controller_logs
 run_capture_service_logs
-run_fault_injector
 run_poll_container_events
 run_traffic
-stop_fault_injector
 stop_poll_container_events
 stop_capture_service_logs
 stop_sample_controller_stats
 stop_collect_stats
 
 generate_elasticity_events
-generate_policy_state
 collect_rq1_artifacts
 collect_rq3_artifacts
-collect_research_q3_artifacts
-python3 "${SCRIPT_DIR}/rq3rel_p4_rs_probe.py" --run-dir "${RUN_DIR}" --label "${RUN_LABEL:-post}" \
-    || echo "  WARNING: rs probe failed" >&2
 verify_rq3_run
 
 step "Experiment complete"
 echo "Results          : ${METRICS_OUTPUT}"
 echo "Resource stats   : ${RESOURCE_STATS_OUTPUT}"
 echo "Resource debug   : ${RESOURCE_STATS_DEBUG_OUTPUT}"
-echo "Policy state     : ${POLICY_STATE_OUTPUT}"
 echo "Elasticity events: ${ELASTICITY_EVENTS_OUTPUT}"
 echo "Container events : ${CONTAINER_EVENTS_OUTPUT}"
 echo "Phase config     : ${PHASES_SNAPSHOT_OUTPUT}"
-if [[ -n "$FAULT_PLAN" ]]; then
-    echo "Fault plan     : ${FAULT_PLAN_SNAPSHOT_OUTPUT}"
-    echo "Fault events   : ${FAULT_EVENTS_OUTPUT}"
-fi
 echo "Controller logs: ${CONTROLLER_LOG_LAN1}"
 echo "               : ${CONTROLLER_LOG_LAN2}"
 echo "Service logs   : ${SERVICE_LOG_DIR}"
@@ -817,6 +691,5 @@ echo "RQ1 window log : ${RUN_DIR}/window_log_lan1.jsonl, ${RUN_DIR}/window_log_l
 echo "RQ1 delivery   : ${RUN_DIR}/telemetry_delivery_log_lan1.csv, ${RUN_DIR}/telemetry_delivery_log_lan2.csv"
 echo "RQ1 decisions  : ${RUN_DIR}/decision_log_lan1.csv, ${RUN_DIR}/decision_log_lan2.csv"
 echo "RQ3 admission  : ${RUN_DIR}/admission_log_lan1.csv, ${RUN_DIR}/admission_log_lan2.csv"
-echo "research_q3 rel: ${RUN_DIR}/release_log_lan1.csv, ${RUN_DIR}/release_log_lan2.csv"
 
 _write_run_status "completed" 0 "idle"

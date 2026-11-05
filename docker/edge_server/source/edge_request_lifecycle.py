@@ -44,14 +44,6 @@ def _current_request_latency_ms() -> float:
     return round((time.monotonic() - started_at) * 1000, 2)
 
 
-def _request_tier1_signal() -> tuple[int, float, int]:
-    eligible_reads = int(getattr(g, "tier1_point_read_count", 0))
-    hit_count = int(getattr(g, "tier1_point_hit_count", 0))
-    if eligible_reads <= 0:
-        return 0, 0.0, 0
-    return int(hit_count > 0), hit_count / eligible_reads, eligible_reads
-
-
 def register_pre_telemetry_request_hooks(app: Flask, config, process_state) -> None:
     @app.before_request
     def _drain_guard():
@@ -114,7 +106,6 @@ def register_post_telemetry_request_hooks(app: Flask, process_state) -> None:
         if not staged or response.status_code >= 400:
             return response
 
-        served_from_tier, tier1_hit_ratio, tier1_eligible_reads = _request_tier1_signal()
         process_state.local_request_state.record(
             process_state.build_local_request_event(
                 timestamp_epoch=time.time(),
@@ -122,9 +113,6 @@ def register_post_telemetry_request_hooks(app: Flask, process_state) -> None:
                 content_id=staged["content_id"],
                 user_id=staged["user_id"],
                 latency_ms=_current_request_latency_ms(),
-                served_from_tier=served_from_tier,
-                tier1_hit_ratio=tier1_hit_ratio,
-                tier1_eligible_reads=tier1_eligible_reads,
                 relevance=staged["relevance"],
                 status=staged["status"],
                 tags=staged["tags"],

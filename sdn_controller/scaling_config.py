@@ -175,7 +175,7 @@ _SCALEUP_POLICY = os.environ.get("SCALEUP_POLICY", "dual")
 
 # RQ2 action budget: hard ceiling on scale-up (spawn) submissions per tier per
 # controller (per LAN). 0 disables enforcement (dual). Scale-down does not
-# consume budget. See docs/research_questions/v2/rq2/rq2_preparation.md.
+# consume budget. See docs/telemetry-and-scaling.md.
 _ACTION_BUDGET_PER_TIER = int(os.environ.get("ACTION_BUDGET_PER_TIER", "4"))
 
 # RQ2 bottleneck classifier margin (D3): |compute_score_norm - storage_score_norm|
@@ -184,15 +184,6 @@ _ACTION_BUDGET_PER_TIER = int(os.environ.get("ACTION_BUDGET_PER_TIER", "4"))
 _BOTTLENECK_CLASSIFY_MARGIN = float(
     os.environ.get("BOTTLENECK_CLASSIFY_MARGIN", "0.05")
 )
-
-# RQ2 ba-strict (sticky commitment): when enabled, once the episode is
-# classified the gate COMMITS to the classified tier and suppresses the other
-# tier even when it fires alone, until relief (score_norm < threshold for
-# STRICT_RELEASE_N consecutive windows). The suppressed fire is still logged
-# (*_fired=1, rejected_action). 0 = current per-window behavior unchanged.
-_BOTTLENECK_STRICT_SINGLE = int(os.environ.get("BOTTLENECK_STRICT_SINGLE", "0"))
-_STRICT_COMMIT_N = int(os.environ.get("STRICT_COMMIT_N", "2"))
-_STRICT_RELEASE_N = int(os.environ.get("STRICT_RELEASE_N", "3"))
 
 # READINESS_PROPAGATION selects compute-backend admission timing:
 #   "off"       → current pre-RQ3 behavior: register into the VIP_SERVER pool
@@ -218,15 +209,6 @@ _READINESS_PROPAGATION = os.environ.get("READINESS_PROPAGATION", "off")
 #                 (periodic discovery; quantization = telemetry cadence).
 # Unknown value → log error + fall back to "both" (deliberate, documented).
 _STORAGE_PROPAGATION = os.environ.get("STORAGE_PROPAGATION", "both")
-
-# STORAGE_READ_POLICY selects how the VIP routes storage READS across the pool:
-#   "wsm"              → current WSM cost selection over the whole pool, incl. the
-#                        primary (DEFAULT; primary wins on 0 lag + lower CPU).
-#   "prefer_secondary" → skip the PRIMARY for read selection when any secondary
-#                        exists (reads offload to replicas; writes still go to the
-#                        primary via the dedicated write client).
-# Unknown value → log error + fall back to "wsm" (deliberate, documented).
-_STORAGE_READ_POLICY = os.environ.get("STORAGE_READ_POLICY", "wsm")
 
 # Per-attempt /ready HTTP timeout (seconds).
 _READINESS_PROBE_TIMEOUT_S = float(os.environ.get("READINESS_PROBE_TIMEOUT_S", "5.0"))
@@ -346,144 +328,3 @@ _VIP_WARM_SERVER_SECONDS = float(
 	os.environ.get("VIP_WARM_SERVER_SECONDS", "45")
 )
 
-# Enables the Tier 1 subsystem end-to-end (see tier1_selective_sync/). 0 = no-op
-# baseline for reproducibility.
-_SS_ENABLED = int(os.environ.get("SS_ENABLED", "0"))
-# Final cap on (owner_lan, collection) hot-doc list after merging per-edge
-# access slices across every edge server in the consumer LAN.
-_SS_HOT_DOC_LIMIT = int(os.environ.get("SS_HOT_DOC_LIMIT", "50"))
-# Guard: don't promote (owner_lan, coll) if the read volume this window is
-# below the floor — prevents promotion on trivial query bursts. Tuned to the
-# observed per-window read counts under the standard `phases.json` workload
-# (cross_region_hotspot phase typically lands in the 15–40 range).
-_SS_MIN_READS_PER_WINDOW = int(os.environ.get("SS_MIN_READS_PER_WINDOW", "14"))
-# Guard: don't promote (owner_lan, coll) if writes > this fraction of ops.
-# Tier 1 replicates reads only; write-heavy collections pay full cost for
-# little benefit.
-_SS_WRITE_RATIO_MAX = float(os.environ.get("SS_WRITE_RATIO_MAX", "0.30"))
-
-# Tier 1 scale-down knobs (consumed by the Tier 1 scale-down evaluator,
-# co-located with the full-replica scale-down path; see
-# docs/operation/elasticy_manager/implementation/tier1_selective_sync/README.md §3)
-#
-# Change Stream replication-lag ceiling. ``lag_s`` is emitted per-collection
-# by the selective-sync supervisor as ``now - change.clusterTime`` at the
-# moment the ForwarderWorker applies the event locally. Exceeding this on
-# *any* collection tears the whole container down (shared mongod + shared
-# remote connection mean one bad lag signal implicates all collections).
-_SS_STALENESS_LIMIT_S = float(os.environ.get("SS_STALENESS_LIMIT_S", "10"))
-# Minimum cross-region hits per window to keep a collection in the container.
-# Falling below this for ``_SS_SCALEDOWN_WINDOW`` windows triggers reconfigure.
-_SS_SCALEDOWN_THRESHOLD = int(os.environ.get("SS_SCALEDOWN_THRESHOLD", "5"))
-_SS_SCALEDOWN_WINDOW    = int(os.environ.get("SS_SCALEDOWN_WINDOW",    "8"))
-
-# PromotionCoordinator-only knobs.
-# Fraction of reads on (owner_lan, coll) that must be served cross-region
-# before the collection is eligible for Tier 1 promotion.
-_SS_PROMOTION_CROSS_REGION_THRESHOLD = float(
-    os.environ.get("SS_PROMOTION_CROSS_REGION_THRESHOLD", "0.4"))
-# Post-teardown dwell time before the same (owner_lan) direction can be
-# promoted again. Prevents thrash when the cross-region predicate is still
-# true on the next window immediately after a drain.
-_SS_COOLDOWN_S = float(os.environ.get("SS_COOLDOWN_S", "90"))
-# Sliding-window debounce on the QoE breach signal — require at least M
-# windows with ``t_db_p95_ms_per_lan[owner_lan] > TAU_DADOS_MS`` out of the
-# most recent N before submitting the first SelectiveSyncAlert for an
-# (owner_lan). Mirrors storage (2-of-5) / compute (3-of-5) scale-up.
-_SS_BREACH_WINDOWS_N = int(os.environ.get("SS_BREACH_WINDOWS_N", "5"))
-_SS_BREACH_WINDOWS_M = int(os.environ.get("SS_BREACH_WINDOWS_M", "2"))
-# Optional TTL on cached docs; 0 disables. Belt-and-suspenders guard.
-_SS_MAX_TTL_S = int(os.environ.get("SS_MAX_TTL_S", "0"))
-
-_CROSS_REGION_STORAGE_ENABLED = int(os.environ.get(
-    "CROSS_REGION_STORAGE_ENABLED", "0"))
-_CROSS_REGION_STORAGE_WARM = int(os.environ.get(
-    "CROSS_REGION_STORAGE_WARM", "0"))
-_MAX_CROSS_REGION_STORAGE = int(os.environ.get(
-    "MAX_CROSS_REGION_STORAGE", "1"))
-
-# Cooldown after cross-region admission/spawn before re-evaluating.
-_CROSS_REGION_STORAGE_COOLDOWN_S = float(os.environ.get(
-    "CROSS_REGION_STORAGE_COOLDOWN_S", "120"))
-# M-of-N sliding window for cross-region DB pressure (mirrors Tier 1
-# breach ring in selective_sync/promotion.py).
-_CROSS_REGION_BREACH_WINDOWS_M = int(os.environ.get(
-    "CROSS_REGION_BREACH_WINDOWS_M", "2"))
-_CROSS_REGION_BREACH_WINDOWS_N = int(os.environ.get(
-    "CROSS_REGION_BREACH_WINDOWS_N", "5"))
-# p95 DB time (ms) threshold per remote LAN for cross-region pressure.
-# Must be set above baseline WAN transit (normal cross-region reads at
-# 260ms WAN ≈ 300–500ms p95), but below saturation (2–10s p95).
-# Default 1000ms catches queuing before connection-pool failures start.
-# Mirrors the same signal Tier 1 uses (TAU_DADOS_MS in
-# selective_sync/hotness.py), but at a cross-region-appropriate level.
-_CROSS_REGION_DB_P95_THRESHOLD_MS = float(os.environ.get(
-    "CROSS_REGION_DB_P95_THRESHOLD_MS", "1000"))
-
-# Minimum cross-region read volume per telemetry window to sustain a
-# cold-started cross-region replica.  When demand drops below this floor,
-# the replica is eligible for scale-down.  Activation uses p95 > threshold;
-# sustainment uses demand volume — two independent signals prevent the
-# control-loop paradox where the replica's presence suppresses p95.
-_CROSS_REGION_MIN_READS_TO_SUSTAIN = int(os.environ.get(
-    "CROSS_REGION_MIN_READS_TO_SUSTAIN", "10"))
-
-# Sliding-window debounce on the sustainment signal — require at least M
-# windows with ``total_reads < _CROSS_REGION_MIN_READS_TO_SUSTAIN`` out of
-# the most recent N before submitting a cross-region scale-down.  Short
-# windows (default 2-of-3) prevent single-window dips from triggering
-# unnecessary scale-down→re-spawn cycles while still responding quickly
-# when demand truly subsides (cooldown reads stay at 0–15 for many windows).
-_CROSS_REGION_SUSTAIN_WINDOWS_M = int(os.environ.get(
-    "CROSS_REGION_SUSTAIN_WINDOWS_M", "2"))
-_CROSS_REGION_SUSTAIN_WINDOWS_N = int(os.environ.get(
-    "CROSS_REGION_SUSTAIN_WINDOWS_N", "3"))
-
-# Minimum cross-region read volume per telemetry window required to
-# activate a cross-region replica (warm standby admission or cold-start
-# spawn).  Prevents spurious spawns during low-load phases (e.g.,
-# baseline) where natural content distribution produces a handful of
-# cross-region reads whose p95 may breach the threshold but whose volume
-# is too low to justify a dedicated replica.  Calibrated from RQ3
-# strategy-comparison v1: baseline shows ~12 xreg reads/window;
-# pressure windows produce 100–300+ per collection.
-_CROSS_REGION_MIN_READS_TO_ACTIVATE = int(os.environ.get(
-    "CROSS_REGION_MIN_READS_TO_ACTIVATE", "50"))
-
-# RELEASE_MECHANISM selects how surplus dynamic capacity is released:
-#   "off"         → current behavior (incumbent release path unchanged) —
-#                   DEFAULT. Canonical / RQ1 / RQ2 runs byte-identical; no
-#                   release log written.
-#   "drained"     → eager-safe release: drain the container, await
-#                   rs.remove confirmation, then teardown.
-#   "immediate"   → safety-boundary ablation: teardown without drain /
-#                   rs.remove confirmation (unsafe teardown, separate arm).
-#   "stabilized"  → retention with recall: compute is quarantined and
-#                   storage is retained out of VIP_DATA for the
-#                   stabilization window; an overload-recall signal
-#                   re-admits either tier; on horizon expiry both tiers
-#                   follow the safe (drained) termination path.
-# Unknown value → log warning + fall back to "off" here at import time so
-# every consumer agrees (release_gate keeps its own defensive fallback).
-_RELEASE_MECHANISM_RAW = os.environ.get("RELEASE_MECHANISM", "off").strip().lower()
-if _RELEASE_MECHANISM_RAW not in ("off", "drained", "immediate", "stabilized"):
-    logger.warning("unknown RELEASE_MECHANISM=%r — falling back to 'off'", _RELEASE_MECHANISM_RAW)
-    _RELEASE_MECHANISM = "off"
-else:
-    _RELEASE_MECHANISM = _RELEASE_MECHANISM_RAW
-
-# Stabilization window (seconds) for the "stabilized" mechanism: a
-# quarantined compute container / retained storage node is released only
-# after it has been held for at least this long. Clocked with
-# time.monotonic() (monotonic, immune to wall-clock jumps); callers pass
-# the timestamp in.
-_RELEASE_STABILIZE_S = float(os.environ.get("RELEASE_STABILIZE_S", "480"))
-
-# Recall hysteresis (K) for the "stabilized" mechanism: at least K of the
-# most recent 5 overload-window samples flagged overloaded recall the
-# retention/quarantine (capacity kept or re-admitted).
-_RELEASE_RECALL_K = int(os.environ.get("RELEASE_RECALL_K", "2"))
-
-# Release log path (per controller / per LAN). Written for every mechanism
-# except "off" — see release_log.py.
-_RELEASE_LOG_PATH = os.environ.get("RELEASE_LOG_PATH", "/tmp/release_log.csv")

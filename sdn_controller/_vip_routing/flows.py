@@ -113,21 +113,19 @@ def install_vip_data_forward_rule(
         parser.OFPActionOutput(backend_port),
     ]
 
+    idle_timeout = _VIP_DATA_IDLE_TIMEOUT
     if per_connection:
         # Idle-expire like per-client flows (a closed connection's flow must
         # clear so its port can be re-pinned), but NEVER hard-expire: an
         # active connection must not be forcibly re-pinned mid-stream.  On
         # idle expiry the next packet packet-ins and the controller reinstalls
         # the SAME backend from the binding map (ingress._handle_vip_data),
-        # never a fresh select.  Idle is env-driven (_VIP_DATA_IDLE_TIMEOUT)
-        # so a connection waiting on a slow, queued backend is not dropped.
-        idle_timeout = _VIP_DATA_IDLE_TIMEOUT
+        # never a fresh select.
         hard_timeout = 0
     else:
         # No delete-before-install: a re-selection yields the same match
         # (eth_src + ipv4_src + VIP fields), and OVS replaces a
         # same-priority/same-match flow in place.
-        idle_timeout = _VIP_DATA_IDLE_TIMEOUT
         hard_timeout = 120
 
     controller._install_flow(
@@ -307,7 +305,7 @@ def install_vip_dnat_snat(
     controller, datapath, in_port, pkt, *,
     client_mac, client_ip, ip_proto, vip_ip, vip_mac,
     real_backend_ip, real_backend_mac,
-    client_port=None, idle_timeout=None, hard_timeout=None,
+    client_port=None,
 ) -> None:
     """Install a DNAT + SNAT flow rule pair and Packet-Out the first packet.
 
@@ -380,8 +378,8 @@ def install_vip_dnat_snat(
     controller._install_flow(
         datapath, priority=200,
         match=dnat_match, actions=dnat_actions,
-        idle_timeout=idle_timeout if idle_timeout is not None else _VIP_IDLE_TIMEOUT,
-        hard_timeout=hard_timeout if hard_timeout is not None else _VIP_HARD_TIMEOUT,
+        idle_timeout=_VIP_IDLE_TIMEOUT,
+        hard_timeout=_VIP_HARD_TIMEOUT,
     )
 
     # eth_dst=client_mac + ipv4_dst=client_ip are critical: without them ALL
@@ -421,8 +419,8 @@ def install_vip_dnat_snat(
     controller._install_flow(
         datapath, priority=200,
         match=snat_match, actions=snat_actions,
-        idle_timeout=idle_timeout if idle_timeout is not None else _VIP_IDLE_TIMEOUT,
-        hard_timeout=hard_timeout if hard_timeout is not None else _VIP_HARD_TIMEOUT,
+        idle_timeout=_VIP_IDLE_TIMEOUT,
+        hard_timeout=_VIP_HARD_TIMEOUT,
     )
 
     # Flow isolation: record the client->backend binding.  Only active with
@@ -461,10 +459,7 @@ def install_vip_dnat_snat(
 
     logger.info(
         "dnat/snat installed: vip=%s -> real=%s (idle=%ds hard=%ds)",
-        vip_ip,
-        real_backend_ip,
-        idle_timeout if idle_timeout is not None else _VIP_IDLE_TIMEOUT,
-        hard_timeout if hard_timeout is not None else _VIP_HARD_TIMEOUT,
+        vip_ip, real_backend_ip, _VIP_IDLE_TIMEOUT, _VIP_HARD_TIMEOUT,
     )
 
     # First packet out now, while the rules above are still propagating.

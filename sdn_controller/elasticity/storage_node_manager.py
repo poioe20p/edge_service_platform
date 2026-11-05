@@ -11,7 +11,6 @@ Covers:
 
 from __future__ import annotations
 
-import json
 import logging
 import os
 import subprocess
@@ -26,14 +25,8 @@ from .node_common import (
     StepTimings,
     _BaseNodeAdder,
 )
-from ..scaling_config import _RELEASE_MECHANISM
 
 logger = logging.getLogger("os_ken.node_manager")
-
-# research_q3 immediate arm: eviction-outcome log dir, plus the last
-# fire-and-forget eviction Popen that later evictions poll (see below).
-_RS_EVICT_DIR = "/tmp/rs_evict"
-_prev_evict_proc: subprocess.Popen | None = None
 
 
 class StorageNodeAdder(_BaseNodeAdder):
@@ -154,10 +147,6 @@ class StorageNodeAdder(_BaseNodeAdder):
         member_host = f"{ip}:{port}"
         primary_host = self._find_rs_primary(primary_container, port)
         if primary_host is None:
-            # research_q3: record which branch was reached so the release mechanisms
-            # can be compared offline; the log is a side effect, silent when off.
-            if _RELEASE_MECHANISM != "off":
-                self._write_eviction_log(name, "primary_not_found")
             if not best_effort_rs_remove:
                 timings.total_s = time.perf_counter() - t_total
                 return RemovalResult(False, name, mac, timings, NodeOperationState.FAILED,
@@ -177,19 +166,12 @@ class StorageNodeAdder(_BaseNodeAdder):
                         "member may still appear in rs.status()",
                         name, member_host,
                     )
-                    if _RELEASE_MECHANISM != "off":
-                        self._write_eviction_log(name, "rs_member_lingers")
-                else:
-                    if _RELEASE_MECHANISM != "off":
-                        self._write_eviction_log(name, "ok")
             else:
                 logger.warning(
                     "[node_remove] rs_remove_non_ok name=%s member=%s — "
                     "proceeding with teardown anyway",
                     name, member_host,
                 )
-                if _RELEASE_MECHANISM != "off":
-                    self._write_eviction_log(name, "rs_remove_non_ok")
 
         t0 = time.perf_counter()
         script_args = [
@@ -217,105 +199,6 @@ class StorageNodeAdder(_BaseNodeAdder):
             logger.info("[node_remove] storage done: container=%s", name)
         else:
             logger.error("[node_remove] storage FAILED: container=%s\nstdout=%s\nstderr=%s",
-                         name, combined_stdout, combined_stderr)
-        return RemovalResult(ok, name, mac, timings, state, combined_stdout, combined_stderr)
-
-    def remove_storage_node_immediate(
-        self,
-        lan: int,
-        name: str,
-        mac: str,
-        ip: str,
-        rs_name: str,
-        primary_container: str,
-        port: int = 27018,
-    ) -> RemovalResult:
-        """research_q3 immediate arm — fire-and-forget eviction + script teardown.
-
-        Mirrors :meth:`remove_storage_node` teardown but never waits for the
-        replica-set eviction: ``rs.remove()`` is launched fire-and-forget
-        against the primary while the script teardown runs concurrently.
-        Evictions are quasi-serialized by polling the previous launch (up to
-        3.0 s) and the overlap is recorded in ``/tmp/rs_evict/<name>.log``
-        for offline analysis.  When the primary cannot be discovered the
-        eviction is skipped (``primary_not_found``) and teardown proceeds;
-        the final success/failure is driven by the teardown script outcome.
-        """
-        global _prev_evict_proc
-        timings = RemovalTimings()
-        t_total = time.perf_counter()
-        combined_stdout = ""
-        combined_stderr = ""
-
-        logger.info("[node_remove] storage_immediate: removing %s (mac=%s ip=%s)", name, mac, ip)
-
-        member_host = f"{ip}:{port}"
-        primary_host = self._find_rs_primary(primary_container, port)
-        if primary_host is None:
-            self._write_eviction_log(name, "primary_not_found")
-        else:
-            # Quasi-serialize evictions: log the overlap with the previous launch and
-            # give it up to 3.0 s to finish against the primary.
-            eviction_overlap = 0
-            if _prev_evict_proc is not None and _prev_evict_proc.poll() is None:
-                eviction_overlap = 1
-                deadline = time.time() + 3.0
-                while _prev_evict_proc.poll() is None and time.time() < deadline:
-                    time.sleep(0.2)
-            self._write_eviction_log(name, "fire_and_forget", eviction_overlap)
-            primary_ip   = primary_host.split(":")[0]
-            primary_port = primary_host.split(":")[-1]
-            try:
-                f = open(f"{_RS_EVICT_DIR}/{name}.log", "a")
-            except OSError:
-                logger.warning(
-                    "[node_remove] cannot open eviction log for %s — treating as rs_remove_non_ok",
-                    name,
-                )
-            else:
-                try:
-                    proc = subprocess.Popen(
-                        [
-                            "docker", "exec", "-i", primary_container,
-                            "mongosh", "--quiet",
-                            "--host", primary_ip, f"--port={primary_port}",
-                            "--eval", f"JSON.stringify(rs.remove('{member_host}'))",
-                        ],
-                        stdout=f, stderr=subprocess.STDOUT, start_new_session=True,
-                    )
-                except OSError:
-                    logger.warning(
-                        "[node_remove] eviction Popen failed for %s — treating as rs_remove_non_ok",
-                        name,
-                    )
-                else:
-                    _prev_evict_proc = proc
-                finally:
-                    f.close()
-
-        t0 = time.perf_counter()
-        script_args = [
-            "--lan",     str(lan),
-            "--name",    name,
-            "--rs-name", rs_name,
-            "--primary", primary_container,
-            "--port",    str(port),
-            "--skip-rs",
-        ]
-        ok, _, _, stdout2, stderr2 = self._run_script(
-            SCRIPTS_DIR / "remove_network_storage_node.sh",
-            script_args,
-        )
-        timings.network_cleanup_s = time.perf_counter() - t0
-        timings.total_s = time.perf_counter() - t_total
-        combined_stdout += stdout2
-        combined_stderr += stderr2
-
-        state = NodeOperationState.DONE if ok else NodeOperationState.FAILED
-        if ok:
-            logger.info("[node_remove] storage_immediate done: container=%s", name)
-        else:
-            logger.error("[node_remove] storage_immediate FAILED: container=%s\nstdout=%s\nstderr=%s",
                          name, combined_stdout, combined_stderr)
         return RemovalResult(ok, name, mac, timings, state, combined_stdout, combined_stderr)
 
@@ -442,23 +325,3 @@ class StorageNodeAdder(_BaseNodeAdder):
                 time.sleep(retry_delay)
         logger.warning("[node_remove] member '%s' still in RS after %d retries", member_host, max_retries)
         return False
-
-    def _write_eviction_log(
-        self,
-        name: str,
-        outcome: str,
-        eviction_overlap: int | None = None,
-    ) -> None:
-        """Append one research_q3 eviction-outcome line to /tmp/rs_evict/<name>.log."""
-        try:
-            os.makedirs(_RS_EVICT_DIR, exist_ok=True)
-            entry = {"container": name, "outcome": outcome, "ts": time.time()}
-            if eviction_overlap is not None:
-                entry["eviction_overlap"] = eviction_overlap
-            with open(f"{_RS_EVICT_DIR}/{name}.log", "a") as f:
-                f.write(json.dumps(entry) + "\n")
-        except OSError:
-            logger.warning(
-                "[node_remove] eviction log write failed for %s (outcome=%s)",
-                name, outcome,
-            )

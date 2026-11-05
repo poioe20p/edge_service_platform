@@ -77,10 +77,10 @@ cost_j = w_cpu·(cpu_j/cpu_max) + w_ram·(ram_j/ram_max)
 | Replication lag | — | `W_STORAGE_LAG=0.2` |
 | Hops | `W_HOPS=0.28` | `W_STORAGE_HOPS=0.3` |
 
-A backend on the peer LAN adds `CROSS_NETWORK_HOP_PENALTY=3` to its hop term, which
-is what keeps a local backend ahead of a remote one unless the local one is badly
-loaded. A backend with no telemetry yet is scored with an unknown-stats default rather
-than being excluded.
+A peer-LAN backend is costed at the sum of the local and peer hop averages — roughly
+twice a local backend's hop count — which is what keeps a local backend ahead of a
+remote one unless the local one is badly loaded. A backend with no telemetry yet is
+scored with an unknown-stats default rather than being excluded.
 
 The `vip_server_pool` is the union of this controller's servers and those learned from
 its peer, so a LAN1 client can be routed to a LAN2 edge server.
@@ -103,6 +103,12 @@ band: all candidates within `eps` of the pool minimum are distributed across cli
 a deterministic hash, with `_BACKEND_SELECTION_SPREAD_MIN_BAND` keeping at least the
 `k` cheapest local units in the band. With `eps = 0` the behaviour is plain argmin with
 round-robin on exact ties.
+
+The storage pool builds the same band under `STORAGE_SELECTION_SPREAD_EPS` and
+`STORAGE_SELECTION_SPREAD_MIN_BAND`, with two differences: a live warm claim returns
+before the band is built, and the pick inside the band is round-robin over the
+per-domain counter rather than a hash. Both storage knobs default to off, so storage
+selection is plain argmin with round-robin on exact ties unless an override enables it.
 
 ## Flow installation
 
@@ -142,9 +148,5 @@ gateway MAC on the way out and relies on OVS port `ROUTER_OVS_PORT` (`3`) to rea
 `tc netem` shaping from `scripts/wan.env`. Internet uplink is not configured, so the
 router is only ever an inter-LAN hop.
 
-## What is not in this path
-
-`VIP_DATA_RECOVERY` (`10.0.0.252` / `10.0.1.252`) is declared in
-`scripts/osken-controller.env` and passed to the edge servers, and the address is
-reserved in the controller's IP allocator, but no shipped code path reads it. Treat it
-as a retired reservation, not as an active mechanism.
+Next: [telemetry-and-scaling.md](telemetry-and-scaling.md) follows what the platform
+observes and decides while it serves that traffic.

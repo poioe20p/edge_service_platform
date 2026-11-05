@@ -33,7 +33,6 @@ Usage:
 	./build_images.sh OVS edge_server edge_storage_server  # Build selected images
 
 Options:
-	-r, --reset NAME   Remove the running/stopped container associated with NAME before rebuilding.
 	-h, --help         Show this help message and exit.
 
 Notes:
@@ -42,7 +41,6 @@ Notes:
 EOF
 }
 
-RESET_TARGETS=()
 POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -50,14 +48,6 @@ while [[ $# -gt 0 ]]; do
 		-h|--help)
 			print_usage
 			exit 0
-			;;
-		-r|--reset)
-			if [[ $# -lt 2 ]]; then
-				error "Option $1 requires a container or image name argument."
-				exit 1
-			fi
-			RESET_TARGETS+=("$2")
-			shift 2
 			;;
 		--)
 			shift
@@ -81,7 +71,6 @@ set -- "${POSITIONAL_ARGS[@]}"
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd "${SCRIPT_DIR}/.." && pwd)
 DOCKER_DIR="${REPO_ROOT}/docker"
-STORAGE_ENV_FILE="${REPO_ROOT}/.env-mongo"
 
 
 
@@ -121,71 +110,11 @@ log "Repository root: $REPO_ROOT"
 log "Docker build context base: $DOCKER_DIR"
 log "Docker command: $DOCKER"
 
-declare -A CONTAINER_NAME_MAP=(
-	["ovs"]="ovs"
-	["ovs-container"]="ovs"
-	["os-ken"]="osken"
-	["osken-controller"]="osken"
-	["edge_server"]="edge_server_n1"
-	["edge_server"]="edge_server_n2"
-	["edge_storage_server"]="edge_storage_server_n1"
-	["edge_storage_server"]="edge_storage_server_n2"
-	["ubuntu-nat-router"]="nat-router"
-	["local_state_server"]="aggregator_n1"
-	["local_state_server"]="aggregator_n2"
-)
-
-resolve_container_name() {
-	local dir_l=${1,,}
-	local tag_l=${2,,}
-	if [[ -n ${CONTAINER_NAME_MAP[$dir_l]:-} ]]; then
-		printf '%s' "${CONTAINER_NAME_MAP[$dir_l]}"
-		return
-	fi
-	if [[ -n ${CONTAINER_NAME_MAP[$tag_l]:-} ]]; then
-		printf '%s' "${CONTAINER_NAME_MAP[$tag_l]}"
-		return
-	fi
-	printf '%s' ""
-}
-
-matches_reset_target() {
-	local target_l=${1,,}
-	local dir_l=${2,,}
-	local tag_l=${3,,}
-	local container_l=${4,,}
-	if [[ $target_l == "$dir_l" || $target_l == "$tag_l" ]]; then
-		return 0
-	fi
-	if [[ -n $container_l && $target_l == "$container_l" ]]; then
-		return 0
-	fi
-	return 1
-}
-
-reset_container() {
-	local target="$1"
-	local container_name="$2"
-	if [[ -z $container_name ]]; then
-		container_name=${target,,}
-	fi
-	if ${DOCKER} ps -a --format '{{.Names}}' | grep -Fxq "$container_name"; then
-		log "Reset requested for '$target': removing container '$container_name'..."
-		${DOCKER} rm -f "$container_name" >/dev/null
-		log "Container '$container_name' removed."
-	else
-		log "Reset requested for '$target', but no container named '$container_name' was found."
-	fi
-}
-
-declare -A RESET_APPLIED=()
-
 IMAGES=(
 	"OVS:ovs-container"
 	"ubuntu-nat-router:ubuntu-nat-router"
 	"edge_server:edge_server"
 	"edge_storage_server:edge_storage_server"
-	"edge_selective_storage:edge_selective_storage"
 	"os-ken:osken-controller"
 	"local_state_server:local_state_server"
 )
@@ -225,19 +154,6 @@ build_count=0
 for entry in "${IMAGES[@]}"; do
 	IFS=":" read -r dir tag <<<"$entry"
 	if should_build "$dir" "$tag" "${SELECTION[@]}"; then
-		container_name=$(resolve_container_name "$dir" "$tag")
-		if ((${#RESET_TARGETS[@]})); then
-			for idx in "${!RESET_TARGETS[@]}"; do
-				target=${RESET_TARGETS[$idx]}
-				if [[ -n ${RESET_APPLIED[$idx]:-} ]]; then
-					continue
-				fi
-				if matches_reset_target "$target" "$dir" "$tag" "$container_name"; then
-					reset_container "$target" "$container_name"
-					RESET_APPLIED[$idx]=1
-				fi
-			done
-		fi
 		build_image "$dir" "$tag"
 		# Use pre-increment to avoid set -e exiting when previous value is 0
 		((++build_count))
@@ -245,14 +161,6 @@ for entry in "${IMAGES[@]}"; do
 		log "Skipping $dir ($tag)"
 	fi
 done
-
-if ((${#RESET_TARGETS[@]})); then
-	for idx in "${!RESET_TARGETS[@]}"; do
-		if [[ -z ${RESET_APPLIED[$idx]:-} ]]; then
-			warn "Reset requested for '${RESET_TARGETS[$idx]}', but no matching image was built."
-		fi
-	done
-fi
 
 if [[ $build_count -eq 0 ]]; then
 	warn "No images selected to build. Check your arguments."

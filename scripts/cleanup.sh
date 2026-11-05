@@ -28,9 +28,8 @@ Options:
 	-n, --network    Clean only network artifacts
 	-d, --docker     Clean only Docker resources (containers, dangling images, networks)
 	-s, --stop-containers  Stop all running containers (no removal)
-	    --images     Remove project images tagged :latest (in addition to selected mode)
+	-i, --images     Remove project images tagged :latest (in addition to selected mode)
 	-v, --volumes            Remove ALL edge_storage_server volumes (static + dynamic)
-	-r, --reset              Remove all containers and all edge_storage_server volumes
 	    --image-filter NAME  Scope stop/remove operations to containers from image NAME
 	-h, --help               Show this help
 EOF
@@ -41,13 +40,7 @@ if [[ ${1-} == "-h" || ${1-} == "--help" ]]; then
 		exit 0
 fi
 
-NAT_IFACE="${NAT_IFACE-}"
-NAT_SUBNET=${NAT_SUBNET:-192.168.100.0/24}
-
-
-
-need_sudo() {
-	if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
+need_sudo() {	if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
 		return 1
 	fi
 	return 0
@@ -75,25 +68,11 @@ ip_safe_del_link() {
 	fi
 }
 
-iptables_safe_delete_nat() {
-	local subnet="$1"; shift
-	local iface="$1"
-	if [[ -z "$iface" ]]; then
-		log "NAT_IFACE not set; skipping NAT rule cleanup."
-		return 0
-	fi
-	if $SUDO iptables -t nat -C POSTROUTING -s "$subnet" -o "$iface" -j MASQUERADE >/dev/null 2>&1; then
-		$SUDO iptables -t nat -D POSTROUTING -s "$subnet" -o "$iface" -j MASQUERADE || warn "Failed to delete NAT rule"
-	else
-		log "NAT rule not present, skipping."
-	fi
-}
-
 network_cleanup() {
 	log "🧹 Cleaning up network artifacts"
 	require_cmd ip
 	# veth pairs to remove (both ends handled by single 'del')
-	local veths=(veth1 veth2 veth3 veth4 veth5 veth6)
+	local veths=(veth1 veth2 veth3 veth4 veth5)
 	for v in "${veths[@]}"; do
 		ip_safe_del_link "$v"
 	done
@@ -106,12 +85,6 @@ network_cleanup() {
 		$SUDO rm -f /var/run/netns/ovs || warn "Failed to remove /var/run/netns/ovs"
 	else
 		log "/var/run/netns/ovs not present, skipping."
-	fi
-
-	if command -v iptables >/dev/null 2>&1; then
-		iptables_safe_delete_nat "$NAT_SUBNET" "$NAT_IFACE"
-	else
-		warn "iptables not available; skipping NAT cleanup."
 	fi
 
 	log "✅ Network cleanup complete."
@@ -242,15 +215,9 @@ images_cleanup() {
 
 list_transient_volumes() {
 	local docker_cli="$1"
-	# Dynamic storage nodes: edge_storage_lanX_dynY(_cs for cross-region).
-	# Selective-sync containers: sel_sync_lanX_dynY.
+	# Dynamic storage nodes: edge_storage_lanX_dynY-data.
 	${docker_cli} volume ls --format '{{.Name}}' 2>/dev/null \
-		| grep -E '^edge_storage_lan[0-9]+_dyn[0-9]+(_cs)?-data$|^sel_sync_lan[0-9]+_dyn[0-9]+-data$' || true
-}
-
-# Kept for backward compatibility with any external callers.
-list_dynamic_storage_volumes() {
-	list_transient_volumes "$1"
+		| grep -E '^edge_storage_lan[0-9]+_dyn[0-9]+-data$' || true
 }
 
 transient_volumes_cleanup() {
@@ -304,53 +271,9 @@ volumes_cleanup() {
 	transient_volumes_cleanup
 }
 
-reset_cleanup() {
-	log "♻️ Performing full reset (containers + edge_storage_server volumes)"
-	local DOCKER
-	DOCKER=$(docker_cmd)
-	if [[ -z "$DOCKER" ]]; then
-		warn "Docker not installed; skipping reset."
-		return 0
-	fi
-
-	local containers
-	if containers=$(${DOCKER} ps -aq 2>/dev/null); then
-		if [[ -n "$containers" ]]; then
-			${DOCKER} container rm -f $containers >/dev/null 2>&1 || warn "Failed to remove one or more containers"
-		else
-			log "No containers to remove."
-		fi
-	else
-		warn "Failed to list containers for reset."
-	fi
-
-	${DOCKER} container rm -f edge_storage_server_n1 edge_storage_server_n2 >/dev/null 2>&1 || true
-
-	local volumes=(edge_storage_server_n1-data edge_storage_server_n2-data)
-	local removed=0
-	for vol in "${volumes[@]}"; do
-		if ${DOCKER} volume inspect "$vol" >/dev/null 2>&1; then
-			if ${DOCKER} volume rm -f "$vol" >/dev/null 2>&1; then
-				log "Removed volume: $vol"
-				((++removed))
-			else
-				warn "Failed to remove volume: $vol"
-			fi
-		else
-			log "Volume not present, skipping: $vol"
-		fi
-	done
-	transient_volumes_cleanup
-
-	if [[ $removed -gt 0 ]]; then
-			log "✅ Reset removed ${removed} edge_storage_server volume(s)."
-	fi
-}
-
 MODE="all"  # all | network | docker
 DO_IMAGES=false
 DO_VOLUMES=false
-DO_RESET=false
 DO_STOP_CONTAINERS=false
 MODE_SELECTED=false
 IMAGE_FILTER=""
@@ -366,8 +289,6 @@ while [[ $# -gt 0 ]]; do
 			DO_IMAGES=true; shift ;;
 		-v|--volumes)
 			DO_VOLUMES=true; shift ;;
-		-r|--reset)
-			DO_RESET=true; shift ;;
 		--image-filter)
 			[[ -z "${2-}" ]] && { error "--image-filter requires an argument"; exit 2; }
 			IMAGE_FILTER="$2"; shift 2 ;;
@@ -409,10 +330,6 @@ fi
 
 if [[ "$DO_VOLUMES" == true ]]; then
 	volumes_cleanup
-fi
-
-if [[ "$DO_RESET" == true ]]; then
-	reset_cleanup
 fi
 
 log "🎯 Cleanup finished ($MODE)."

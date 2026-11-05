@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 import logging
-import time
 
 from flask import Flask, jsonify, request
 
-from platform_cache import set_tier1_manifest
 from vip_data_mongo_runtime import (
     apply_vip_update,
     find_unknown_vip_update_lans,
@@ -87,7 +85,7 @@ def register_control_plane_routes(app: Flask, process_state) -> None:
 
     @app.route("/pool_renew", methods=["POST"])
     def pool_renew():
-        """Renew the read epoch for this edge's own LAN (RQ2 v5, S3.4c).
+        """Renew the read epoch for this edge's own LAN (RQ2).
 
         Called by the controller after a storage admission. Lane mismatch
         (another LAN's request), unknown LAN, and malformed bodies are all
@@ -100,27 +98,3 @@ def register_control_plane_routes(app: Flask, process_state) -> None:
             return jsonify({"error": "unknown or mismatched lan", "lan": lan}), 400
         result = renew_current_epoch(lan, reason=str(body.get("reason", "unspecified")))
         return jsonify(result), 200
-
-    @app.route("/tier1_manifest", methods=["PUT"])
-    def tier1_manifest():
-        """Install / replace / revoke the Tier 1 manifest for an owner_lan."""
-
-        body = request.get_json(force=True) or {}
-        owner_lan = body.get("owner_lan")
-        if not owner_lan:
-            return jsonify({"error": "'owner_lan' is required"}), 400
-        set_tier1_manifest(
-            owner_lan=owner_lan,
-            host=body.get("host"),
-            collections=body.get("collections"),
-        )
-        return jsonify({"ok": True}), 200
-
-    @app.route("/wait_time", methods=["POST"])
-    def post_wait_time():
-        body = request.get_json(silent=True) or {}
-        wait_time_ms = body.get("wait_time_ms")
-        if not isinstance(wait_time_ms, (int, float)):
-            return jsonify({"error": "'wait_time_ms' field must be a number"}), 400
-        time.sleep(wait_time_ms / 1000.0)
-        return jsonify({"message": f"Simulating wait of {wait_time_ms} ms"}), 200

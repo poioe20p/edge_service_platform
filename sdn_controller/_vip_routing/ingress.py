@@ -14,10 +14,19 @@ from ..scaling_config import _VIP_SERVER_PER_CONNECTION
 
 
 def _iter_vip_bindings(controller):
-    yield (controller.vip_server_ip, controller.vip_server_mac, "server")
-    yield (controller.vip_server_n2_ip, controller.vip_server_n2_mac, "server_n2")
-    yield (controller.vip_data_n1_ip, controller.vip_data_n1_mac, "n1")
-    yield (controller.vip_data_n2_ip, controller.vip_data_n2_mac, "n2")
+    """Yield the (vip_ip, vip_mac) pairs this controller answers for."""
+    yield controller.vip_server_ip, controller.vip_server_mac
+    yield controller.vip_server_n2_ip, controller.vip_server_n2_mac
+    yield controller.vip_data_n1_ip, controller.vip_data_n1_mac
+    yield controller.vip_data_n2_ip, controller.vip_data_n2_mac
+
+
+def _find_vip_binding(controller, vip_ip):
+    """Return the (vip_ip, vip_mac) pair matching *vip_ip*, or None."""
+    for binding in _iter_vip_bindings(controller):
+        if binding[0] == vip_ip:
+            return binding
+    return None
 
 
 def snoop_arp(controller, pkt) -> None:
@@ -46,7 +55,7 @@ def handle_vip_packet_in(controller, datapath, in_port, pkt, eth) -> bool:
         if (
             arp_pkt is not None
             and arp_pkt.opcode == arp_lib.ARP_REQUEST
-            and any(arp_pkt.dst_ip == vip_ip for vip_ip, _, _ in _iter_vip_bindings(controller))
+            and _find_vip_binding(controller, arp_pkt.dst_ip) is not None
         ):
             logger.debug("vip ARP request: dpid=%s in_port=%s arp=%s", datapath.id, in_port, arp_pkt)
             return _reply_vip_arp(controller, datapath, in_port, arp_pkt)
@@ -67,33 +76,30 @@ def handle_vip_packet_in(controller, datapath, in_port, pkt, eth) -> bool:
     if ip_proto not in (1, 6, 17):
         return False
 
-    if dst_ip == controller.vip_server_ip:
-        logger.debug("vip server packet-in: dpid=%s in_port=%s ip=%s", datapath.id, in_port, ip_pkt)
-        return _handle_vip_server(controller, datapath, in_port, pkt, src_mac, src_ip, ip_proto)
-    if dst_ip == controller.vip_server_n2_ip:
-        logger.debug("vip server n2 packet-in: dpid=%s in_port=%s ip=%s", datapath.id, in_port, ip_pkt)
-        return _handle_vip_server(controller, datapath, in_port, pkt, src_mac, src_ip, ip_proto)
-    if dst_ip == controller.vip_data_n1_ip:
-        logger.debug("vip data n1 packet-in: dpid=%s in_port=%s ip=%s", datapath.id, in_port, ip_pkt)
-        return _handle_vip_data(controller, datapath, in_port, pkt, src_mac, src_ip, ip_proto, domain="n1")
-    if dst_ip == controller.vip_data_n2_ip:
-        logger.debug("vip data n2 packet-in: dpid=%s in_port=%s ip=%s", datapath.id, in_port, ip_pkt)
-        return _handle_vip_data(controller, datapath, in_port, pkt, src_mac, src_ip, ip_proto, domain="n2")
+    if dst_ip in (controller.vip_server_ip, controller.vip_server_n2_ip):
+        logger.debug("vip server packet-in: dpid=%s in_port=%s ip=%s",
+                     datapath.id, in_port, ip_pkt)
+        return _handle_vip_server(
+            controller, datapath, in_port, pkt, src_mac, src_ip, ip_proto)
+
+    for domain, data_vip in (("n1", controller.vip_data_n1_ip),
+                             ("n2", controller.vip_data_n2_ip)):
+        if dst_ip == data_vip:
+            logger.debug("vip data %s packet-in: dpid=%s in_port=%s ip=%s",
+                         domain, datapath.id, in_port, ip_pkt)
+            return _handle_vip_data(
+                controller, datapath, in_port, pkt, src_mac, src_ip,
+                ip_proto, domain=domain)
 
     return False
 
 
 def _reply_vip_arp(controller, datapath, in_port, arp_req) -> bool:
     """Craft and send an ARP reply for a VIP address request."""
-    vip_ip = None
-    vip_mac = None
-    for candidate_ip, candidate_mac, _ in _iter_vip_bindings(controller):
-        if arp_req.dst_ip == candidate_ip:
-            vip_ip = candidate_ip
-            vip_mac = candidate_mac
-            break
-    if vip_ip is None or vip_mac is None:
+    binding = _find_vip_binding(controller, arp_req.dst_ip)
+    if binding is None:
         return False
+    vip_ip, vip_mac = binding
 
     reply_pkt = packet.Packet()
     reply_pkt.add_protocol(eth_lib.ethernet(
@@ -141,7 +147,6 @@ def _handle_vip_server(controller, datapath, in_port, pkt, src_mac, src_ip, ip_p
         return True
 
     server_mac = server["mac"]
-    logger.debug("vip_server: _mac_to_ip=%s", controller._mac_to_ip)
     server_ip  = controller._mac_to_ip.get(server_mac)
     if server_ip is None:
         logger.warning(
@@ -254,7 +259,6 @@ def _handle_vip_data(controller, datapath, in_port, pkt, src_mac, src_ip, ip_pro
         return True
 
     storage_mac = storage["mac"]
-    logger.debug("vip_data(%s): _mac_to_ip=%s", domain, controller._mac_to_ip)
     storage_ip  = controller._mac_to_ip.get(storage_mac)
     if storage_ip is None:
         logger.warning(
@@ -316,7 +320,7 @@ def _handle_vip_data(controller, datapath, in_port, pkt, src_mac, src_ip, ip_pro
     ct_action = parser.NXActionCT(
         flags=1,
         zone_src=None,
-        zone_ofs_nbits={"n1": 1, "n2": 2}[domain],
+        zone_ofs_nbits=flows._CT_ZONE[domain],
         recirc_table=ofproto.OFPTT_ALL,
         alg=0,
         actions=[
@@ -360,7 +364,7 @@ def install_vip_arp_punt_rules(controller, datapath) -> None:
     parser  = datapath.ofproto_parser
     ofproto = datapath.ofproto
 
-    for vip_ip, _, _ in _iter_vip_bindings(controller):
+    for vip_ip, _ in _iter_vip_bindings(controller):
         match   = parser.OFPMatch(eth_type=0x0806, arp_tpa=vip_ip)
         actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER,
                                           ofproto.OFPCML_NO_BUFFER)]
@@ -380,7 +384,7 @@ def install_vip_punt_rules(controller, datapath) -> None:
     parser  = datapath.ofproto_parser
     ofproto = datapath.ofproto
 
-    for vip_ip, _, _ in _iter_vip_bindings(controller):
+    for vip_ip, _ in _iter_vip_bindings(controller):
         match   = parser.OFPMatch(eth_type=0x0800, ipv4_dst=vip_ip)
         actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER,
                                           ofproto.OFPCML_NO_BUFFER)]

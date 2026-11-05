@@ -21,10 +21,10 @@ HASH_WORK_FACTOR_DEFAULT = 25000
 def resolve_mongo_read_preference() -> str:
     """Map the EDGE_MONGO_READ_PREFERENCE string (lowercased, underscores
     stripped) to a pymongo read-preference mode string. Unknown values fall
-    back to "secondaryPreferred" (the default go-to read path, 2026-08-03);
-    set EDGE_MONGO_READ_PREFERENCE=primary for the pre-fix opt-out. Kept in
-    the config module so both the VIP epoch client and the Tier1 manifest
-    client can import it without a circular dependency."""
+    back to "secondaryPreferred" (the default read path); set
+    EDGE_MONGO_READ_PREFERENCE=primary to pin reads to the primary. Kept in
+    the config module so both the VIP epoch client and the data-path
+    clients can import it without a circular dependency."""
     key = (os.environ.get("EDGE_MONGO_READ_PREFERENCE", "secondaryPreferred").strip()
            .lower().replace("_", ""))
     return _READ_PREF_MAP.get(key, "secondaryPreferred")

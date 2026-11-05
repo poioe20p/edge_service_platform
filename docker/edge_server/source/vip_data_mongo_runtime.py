@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import logging
-import os
 import threading
 import time
-from contextlib import contextmanager
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import Any, Callable, TypeVar
@@ -17,7 +15,6 @@ from pymongo.errors import AutoReconnect, PyMongoError
 from werkzeug.exceptions import BadRequest
 
 from edge_server_config import CONFIG, resolve_mongo_read_preference
-from platform_cache import _owner_lan
 
 _write_clients: dict[str, MongoClient] = {}
 _write_clients_lock = threading.Lock()
@@ -33,7 +30,7 @@ def _get_write_client(lan: str) -> MongoClient:
 
     Double-checked locking protects the lazy-init path from TOCTOU races
     when multiple Flask request threads first enter the write path
-    simultaneously (e.g. during ``storage_hotspot``).
+    simultaneously.
     """
     if lan in _write_clients:
         return _write_clients[lan]
@@ -171,27 +168,6 @@ def _mark_epoch_retiring_locked(state: _LanEpochState, epoch: _MongoEpoch) -> No
     epoch.retire_requested_at = now
     epoch.drain_deadline = now + MONGO_CLIENT_RETIRE_GRACE_S
     state.retiring.append(epoch)
-
-
-def _lease_current_epoch(lan: str) -> _MongoEpoch:
-    state = _get_lan_epoch_state(lan)
-    with state.lifecycle_lock:
-        current = state.current
-        if current is None:
-            vip_ip = state.normal_vip_ip
-            if vip_ip is None:
-                raise StorageVipConfigurationError(f"missing normal VIP mapping for {lan}")
-            current = _new_epoch_locked(
-                state,
-                mode="normal",
-                vip_ip=vip_ip,
-            )
-            state.current = current
-
-        current.lease_count += 1
-        if current.first_lease_at is None:
-            current.first_lease_at = time.monotonic()
-        return current
 
 
 def _get_or_create_epoch_client(lan: str, epoch: _MongoEpoch) -> MongoClient:
@@ -636,7 +612,6 @@ def _run_db_op_once(
     fn: Callable[[Any], T],
 ) -> T:
     g.db_last_lan = lan
-    owner_token = _owner_lan.set(lan)
     t0 = time.monotonic()
     epoch = lease.epoch
     try:
@@ -652,7 +627,6 @@ def _run_db_op_once(
         epoch.recent_failures += 1
         raise
     finally:
-        _owner_lan.reset(owner_token)
         _accumulate_tdados(lan, time.monotonic() - t0)
 
 
@@ -688,40 +662,6 @@ def run_with_request_lease(
             lease.lifecycle = RequestLeaseLifecycle.FAILED
             lease.terminal_reason = f"{op_name}:retries_exhausted"
             raise
-
-
-@contextmanager
-def timed_db(lan: str):
-    """Compatibility context manager for low-level DB access.
-
-    Serving-path MongoDB work should use run_with_request_lease(...) so
-    the explicit operation boundary is tracked instead of a yielded DB handle.
-    """
-
-    g.db_last_lan = lan
-    registry = _get_request_lease_registry()
-    lease = registry.get(lan)
-    if lease is not None and lease.lifecycle == RequestLeaseLifecycle.FAILED:
-        raise PyMongoError(f"request lease already failed for {lan}")
-    if lease is not None and lease.lifecycle == RequestLeaseLifecycle.COMPLETED:
-        raise PyMongoError(f"request lease already completed for {lan}")
-
-    lease = lease or _get_or_bind_request_lease(lan)
-    lease.replay_safe = False
-    owner_token = _owner_lan.set(lan)
-    t0 = time.monotonic()
-    try:
-        epoch = lease.epoch
-        g.db_epoch_context = _snapshot_epoch(epoch)
-        g.db_used_epoch_client = True
-        client = _get_or_create_epoch_client(lan, epoch)
-        yield client[DB_NAME]
-    except AutoReconnect:
-        lease.epoch.last_failure_at = time.monotonic()
-        raise
-    finally:
-        _owner_lan.reset(owner_token)
-        _accumulate_tdados(lan, time.monotonic() - t0)
 
 
 _seed_epoch_states_from_config()

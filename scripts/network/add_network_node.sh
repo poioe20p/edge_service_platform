@@ -12,9 +12,8 @@ declare -A LAN_GATEWAY=( [1]="10.0.0.1" [2]="10.0.1.1" )
 # Service-node veth ranges: LAN1 100-149, LAN2 250-299 (test clients use 150-245 / 300-395).
 declare -A VETH_RANGE_START=( [1]=100 [2]=250 )
 declare -A VETH_RANGE_END=( [1]=149 [2]=299 )
-# .1 = gateway, .252 = VIP_DATA recovery, .253 = VIP_SERVER,
-# .254 = VIP_DATA_N{lan}
-declare -A RESERVED_SUFFIX=( [1]="1 252 253 254" [2]="1 252 253 254" )
+# .1 = gateway, .253 = VIP_SERVER, .254 = VIP_DATA_N{lan}
+declare -A RESERVED_SUFFIX=( [1]="1 253 254" [2]="1 253 254" )
 
 LAN=""
 CONTAINER_NAME=""

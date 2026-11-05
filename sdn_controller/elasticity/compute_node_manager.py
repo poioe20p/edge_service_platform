@@ -34,21 +34,17 @@ logger = logging.getLogger("os_ken.node_manager")
 class PendingDrain:
     """In-progress drain record. Created in Phase A, consumed in Phase B.
 
-    Shared between compute (``node_type="compute"``) and Tier 1 selective-sync
-    (``node_type="selective_storage"``) drain flows. Phase B dispatch in
-    ``ElasticityManager.submit_cleanup`` routes on ``node_type``. Tier 1
-    drains have no OVS veth attached to a DNAT/VIP pool, so ``veth`` is left
-    empty for selective nodes and the script teardown path skips DNAT flush.
+    Created for the compute drain flow; Phase B dispatch in
+    `ElasticityManager.submit_cleanup` routes on `node_type`.
     """
     mac:            str
-    veth:           str            # OVS-side veth name; "unknown" only if discovery failed, "" for selective
+    veth:           str            # OVS-side veth name, always discovered in Phase A
     container_name: str
     lan:            int
     initiated_ts:   float
     drain_signaled: bool = True    # False when drain HTTP call failed but veth is known
     ip:             str  = ""      # for IP release in Phase B cleanup
-    node_type:      str  = "compute"   # "compute" | "selective_storage"
-    owner_lan:      str | None = None   # selective only; source LAN whose data is mirrored
+    node_type:      str  = "compute"
     reason:         str  = "scale_down"  # "scale_down" | "absent" (absent-cleanup holds its slot)
 
 
@@ -153,33 +149,11 @@ class ComputeNodeAdder(_BaseNodeAdder):
             drain_signaled=drain_ok,
         )
 
-    def prepare_immediate(self, lan: int, name: str, mac: str) -> PendingDrain | None:
-        """research_q3 immediate arm — veth discovery without the /drain POST.
-
-        Mirrors :meth:`initiate_drain` Phase A discovery but skips the drain
-        HTTP call entirely (the immediate mechanism tears the container down
-        right away).  Returns ``PendingDrain`` with ``drain_signaled=False``
-        when the veth was found; ``None`` when veth discovery itself fails
-        (the container's netns is already gone).
-        """
-        veth = self._discover_veth(name)
-        if veth is None:
-            logger.warning("[node_remove] cannot discover veth for %s — container netns is gone", name)
-            return None
-
-        return PendingDrain(
-            mac=mac,
-            veth=veth,
-            container_name=name,
-            lan=lan,
-            initiated_ts=time.time(),
-            drain_signaled=False,
-        )
-
     def cleanup_compute_node(self, pending: PendingDrain) -> RemovalResult:
         """Phase B: stop container, flush flows, remove OVS port/veth, docker rm.
 
-        Called after a drain_complete ZMQ event or telemetry-timeout fallback.
+        Called after the drain_complete control event or the failed-drain
+        fallback submits a CleanupComputeAlert.
         The veth was discovered in Phase A and stored in ``pending``; the
         script receives it via ``--veth`` so it can skip nsenter discovery
         (the container's netns is gone once it has exited).
@@ -260,7 +234,6 @@ class ComputeNodeAdder(_BaseNodeAdder):
             "-e", f"EDGE_FLOW_ISOLATION={os.environ.get('EDGE_FLOW_ISOLATION', '0')}",
             "-e", f"EDGE_APP_READY_EVENT={os.environ.get('EDGE_APP_READY_EVENT', '0')}",
             "-e", f"EDGE_READY_PREMATURE_S={os.environ.get('EDGE_READY_PREMATURE_S', '0')}",
-            "-e", f"EDGE_READY_SEMANTIC_LIE_S={os.environ.get('EDGE_READY_SEMANTIC_LIE_S', '0')}",
             "-e", f"EDGE_MONGO_READ_PREFERENCE={os.environ.get('EDGE_MONGO_READ_PREFERENCE', 'secondaryPreferred')}",
             "-e", f"EDGE_MONGO_MAX_POOL_SIZE={os.environ.get('EDGE_MONGO_MAX_POOL_SIZE', '1')}",
             # RQ2 v5 admission-time pool renewal: the controller env is the single

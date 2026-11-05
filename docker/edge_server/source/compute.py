@@ -188,9 +188,6 @@ def compute_service_pressure(
                 "request_rate_rps": 0.0,
                 "latency_mean_ms": 0.0,
                 "latency_p95_ms": 0.0,
-                "tier1_hit_ratio": 0.0,
-                "tier1_eligible_read_count": 0,
-                "tier1_observed_request_count": 0,
                 "top_content_share": 0.0,
                 "pressure_score": 0.0,
                 "pressure_label": "low",
@@ -202,9 +199,6 @@ def compute_service_pressure(
 
     window_seconds = max(window_seconds, 1.0)
     latencies = [float(ev.get("latency_ms", 0.0)) for ev in events]
-    tier1_hit_total = 0.0
-    tier1_eligible_read_count = 0
-    tier1_observed_request_count = 0
 
     content_items: dict[str, dict] = {}
     tags: dict[str, dict] = {}
@@ -213,17 +207,6 @@ def compute_service_pressure(
     for ev in events:
         request_kind = str(ev.get("request_kind", "unknown"))
         request_kind_counts[request_kind] = request_kind_counts.get(request_kind, 0) + 1
-
-        eligible_reads = int(ev.get("tier1_eligible_reads", 0) or 0)
-        if eligible_reads > 0:
-            tier1_observed_request_count += 1
-            tier1_eligible_read_count += eligible_reads
-            tier1_hit_total += eligible_reads * float(
-                ev.get(
-                    "tier1_hit_ratio",
-                    1.0 if str(ev.get("served_from_tier", "0")) == "1" else 0.0,
-                )
-            )
 
         content_id = ev.get("content_id")
         latency = float(ev.get("latency_ms", 0.0))
@@ -304,23 +287,16 @@ def compute_service_pressure(
     request_rate_rps = request_count / window_seconds
     latency_mean_ms = statistics.mean(latencies)
     latency_p95_ms = _percentile(latencies, 0.95)
-    tier1_hit_ratio = (
-        tier1_hit_total / tier1_eligible_read_count
-        if tier1_eligible_read_count > 0
-        else 0.0
-    )
     top_content_share = (top_content[0]["request_count"] / request_count) if top_content else 0.0
 
     rate_component = _normalize(request_rate_rps, 10.0)
     latency_component = _normalize(latency_p95_ms, 150.0)
     concentration_component = _normalize(top_content_share, 0.5)
-    tier1_miss_component = 1.0 - tier1_hit_ratio if tier1_eligible_read_count > 0 else 0.0
 
     pressure_score = (
         0.35 * rate_component
         + 0.30 * latency_component
         + 0.20 * concentration_component
-        + 0.15 * tier1_miss_component
     )
     if pressure_score < 0.35:
         pressure_label = "low"
@@ -337,9 +313,6 @@ def compute_service_pressure(
             "request_rate_rps": round(request_rate_rps, 2),
             "latency_mean_ms": round(latency_mean_ms, 2),
             "latency_p95_ms": round(latency_p95_ms, 2),
-            "tier1_hit_ratio": round(tier1_hit_ratio, 4),
-            "tier1_eligible_read_count": tier1_eligible_read_count,
-            "tier1_observed_request_count": tier1_observed_request_count,
             "top_content_share": round(top_content_share, 4),
             "pressure_score": round(pressure_score, 4),
             "pressure_label": pressure_label,

@@ -34,20 +34,16 @@ class PollingTelemetrySource(TelemetryEventSource):
         endpoints: list[str],
         interval_s: float = 10.0,
         on_update=None,
-        on_topology_update=None,
     ) -> None:
         """
         endpoints:   list of HTTP base URLs to aggregator cache endpoints.
                      Example: ["http://10.0.0.5:5558", "http://10.0.1.5:5558"]
         interval_s:  seconds between poll cycles.
         on_update:   optional callable(summary: TelemetrySummary).
-        on_topology_update: not used by polling source (topology comes via
-                     a separate mechanism); accepted for interface compatibility.
         """
         self._endpoints = endpoints
         self._interval_s = interval_s
         self._on_update = on_update
-        self._on_topology_update = on_topology_update
         self._latest: dict[str, TelemetrySummary] = {}
         # Dedup: fire on_update only when window_seq advances — robust to an
         # aggregator restart resuming window_seq from its durable JSONL.

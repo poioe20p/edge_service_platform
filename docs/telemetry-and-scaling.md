@@ -41,10 +41,11 @@ implement the same `TelemetryEventSource` interface and produce the same
 | `delayed_event_preserving` | `DelayedEventPreservingTelemetrySource` | Same as above, with a configurable delivery delay — models a lagging control plane |
 | `sampled_push` | `SampledPushTelemetrySource` | Push that samples rather than preserving every window |
 
-The three event-based sources write a `DeliveryLog`, which distinguishes a real gap
-(`gap_recovery`: the window aged out or was never delivered) from a window that simply
-had no traffic. That distinction is what makes "the controller never saw this window"
-and "there was nothing to see" separable after the fact.
+Every source except `zmq` writes a `DeliveryLog`, tagged with the delivery mode of the
+arm that produced it. It distinguishes a real gap (`gap_recovery`: the window aged out
+or was never delivered) from a window that simply had no traffic, which is what makes
+"the controller never saw this window" and "there was nothing to see" separable after
+the fact.
 
 ### The aggregator
 
@@ -95,18 +96,19 @@ stateDiagram-v2
 
 ### Choosing what to do
 
-`policy_gate.py` is a pure function from two verdicts to a set of actions, and is where
-the RQ2 arms differ (`SCALEUP_POLICY`):
+`policy_gate.py` is a pure function from two verdicts to a set of actions. Its
+`SCALEUP_POLICY` selects which of the fired tiers become actions:
 
 | Mode | Behaviour |
 |---|---|
-| `dual` (default) | Every fired tier is selected, no budget — the pre-RQ2 behaviour |
+| `dual` (default, and what every shipped arm runs) | Every fired tier is selected, no budget — the pre-RQ2 behaviour |
 | `fixed_compute_first` | Compute only, never storage |
 | `fixed_storage_first` | Storage only, never compute |
 | `bottleneck_aware` | Classify the bottleneck from tier telemetry and select the matching tier |
 
-The gate also applies the per-tier action budget, so a fired tier does not necessarily
-produce an unbounded number of spawns.
+Outside `dual`, the gate also applies a per-tier action budget, so a fired tier does not
+necessarily produce an unbounded number of spawns. `dual` disables the budget, which
+leaves the per-tier caps as the only bound on how far a tier can grow.
 
 ### Admitting a backend
 
@@ -128,11 +130,6 @@ Scale-down is deliberately slower than scale-up and has two guards:
 - **Cooldown after scale-up** (`SCALEDOWN_COMPUTE_COOLDOWN_S`, `SCALEDOWN_STORAGE_COOLDOWN_S`) prevents a fresh node from being retired before it has been used.
 - **Required consecutive windows** (`SCALE_DOWN_COMPUTE_REQUIRED`, `SCALE_DOWN_STORAGE_REQUIRED`) filter out a single quiet window.
 
-`release_gate.py` selects how surplus capacity leaves (`RELEASE_MECHANISM`): `off`
-(incumbent path, gate inactive), `drained` (drain, await `rs.remove` confirmation, then
-teardown), `immediate` (teardown without confirmation) or `stabilized` (hold the surplus
-for `RELEASE_STABILIZE_S` as quarantined capacity that can be recalled).
-
 ## Caps and tunables
 
 The base `scripts/osken-controller.env` carries the defaults; the canonical override
@@ -148,9 +145,10 @@ the campaigns. The values that most affect behaviour:
 | `SCALE_DOWN_COMPUTE_REQUIRED` | — | 9 |
 | `SCALEDOWN_STORAGE_COOLDOWN_S` | 120 | **30** |
 | `SCALE_DOWN_STORAGE_REQUIRED` | 9 | **3** |
-| `SCALEUP_POLICY` | code default `dual` | arm-dependent |
-| `RELEASE_MECHANISM` | code default `off` | `off` |
+| `SCALEUP_POLICY` | code default `dual` | `dual` — no arm changes it |
 
 The base file ships compute scaling disabled (`MAX_DYNAMIC_COMPUTE=0`); every campaign
 raises it through the override. The caps are per LAN and count only dynamic nodes — the
 static `.2` / `.4` / `.5` nodes never count against them.
+
+Next: [running-experiments.md](running-experiments.md) shows how these are set for a run.

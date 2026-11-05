@@ -1,13 +1,12 @@
 # Edge service platform — reproduction artefact
 
-Code accompanying the Master's thesis *Efficient Storage and Resource Management
-in Edge Computing Scenarios* (ISCTE — Master's in Telecommunications and Computer
-Engineering), by Pedro Ojo Oriakhi.
+Code accompanying the Master's thesis *Coordinating Telemetry, Scaling and Readiness
+Admission in Edge Services: When Added Capacity Meets User Demand* (ISCTE — Master's in
+Telecommunications and Computer Engineering), by Pedro Ojo Oriakhi.
 
-The platform is an SDN-controlled set of Dockerised edge servers. A double-VIP
-routing model places requests on edge replicas, a metadata-driven controller
-scales compute and storage nodes and decides what to replicate towards the edge,
-and MongoDB replica sets provide the storage tier.
+The platform is an SDN-controlled set of Dockerised edge servers. A double-VIP routing
+model places requests on edge replicas, a metadata-driven controller scales compute and
+storage nodes, and MongoDB replica sets provide the storage tier.
 
 This repository contains the **code and the configuration needed to rebuild the
 platform and run the experiments**. It does not contain campaign outputs.
@@ -16,13 +15,14 @@ platform and run the experiments**. It does not contain campaign outputs.
 
 | Path | Contents |
 |---|---|
-| `docker/` | Images: edge server, storage server, OVS switch, NAT router, os-ken controller |
-| `sdn_controller/` | Controller: VIP routing, telemetry sources, elasticity managers, admission and release gates |
-| `scripts/` | Entry points: `build_images.sh`, `build_network_setup.sh`, `cleanup.sh`, `Makefile` |
-| `scripts/network/` | Topology construction, node add/remove, WAN latency shaping |
-| `scripts/testing/` | Launch drivers, phase definitions, env overrides, workload corpus, seeding |
-| `scripts/testing/analysis/` | Offline analysers and figure generators; each reads a run directory |
-| `scripts/tools/` | Standalone metric and log utilities |
+| `docker/` | Images: edge server, storage server, telemetry aggregator, OVS switch, NAT router, os-ken controller |
+| `sdn_controller/` | Controller: VIP routing, topology, telemetry sources, scaling policy, admission gates |
+| `scripts/` | Entry points: `build_images.sh`, `build_network_setup.sh`, `test_conectivity.sh`, `cleanup.sh`, `Makefile`, plus the base controller env `osken-controller.env` and the WAN knobs `wan.env` |
+| `scripts/network/` | Topology construction, node add/remove, WAN latency shaping — see its README |
+| `scripts/testing/` | Launch driver, phase definitions, env overrides, workload corpus, seeding — see its README |
+| `scripts/testing/phases_campaigns/` | The exact phase profile each thesis campaign ran |
+| `scripts/testing/controller_env_overrides/` | The arms and fault overlays each campaign was launched with |
+| `scripts/testing/data/` | The request corpus the traffic generator reads |
 
 ## Documentation
 
@@ -30,8 +30,7 @@ platform and run the experiments**. It does not contain campaign outputs.
 |---|---|
 | [docs/architecture.md](docs/architecture.md) | Deployment, addressing, control and data planes |
 | [docs/request-path.md](docs/request-path.md) | Double-VIP routing, backend selection, conntrack NAT |
-| [docs/telemetry-and-scaling.md](docs/telemetry-and-scaling.md) | Telemetry sources, scaling decisions, admission and release |
-| [docs/storage-and-selective-sync.md](docs/storage-and-selective-sync.md) | Tiered placement and Tier 1 selective sync |
+| [docs/telemetry-and-scaling.md](docs/telemetry-and-scaling.md) | Telemetry sources, scaling decisions, admission gates |
 | [docs/running-experiments.md](docs/running-experiments.md) | Phases, configuration, launching, run outputs |
 
 ## Requirements
@@ -40,9 +39,9 @@ platform and run the experiments**. It does not contain campaign outputs.
   `openvswitch-switch`
 - Passwordless `sudo` (`sudo -n`) — the scripts create network namespaces,
   veth pairs and containers
-- Python 3 (`python3`) on the host for seeding and analysis; the controller's
-  own interpreter lives in `docker/os-ken` (Python 3.10, `os-ken==3.1.1`)
-- `matplotlib` for `scripts/testing/analysis/`
+- Python 3 (`python3`) on the host for seeding and for the collectors, with
+  `pymongo`, `pyzmq` and `aiohttp`; the controller's own interpreter
+  lives in `docker/os-ken` (Python 3.10, `os-ken==3.1.1`)
 
 ## Build and run
 
@@ -61,12 +60,12 @@ make teardown_clients                      # remove clients and tear down
 `make run_experiment` are the individual stages; `make setup_test_data` expands to
 `seed_content_items seed_user_profiles create_indexes export_snapshot`.
 
-A run writes its outputs under `scripts/testing/metrics/<timestamp>/`, including a
-snapshot of the controller environment in force. To reproduce a campaign arm, pass
+A run writes its outputs under `scripts/testing/metrics/<timestamp>_<label>/`, including
+a snapshot of the controller environment in force. To reproduce a campaign arm, pass
 the matching override:
 
 ```bash
-OSKEN_ENV_OVERRIDE_FILE=testing/controller_env_overrides/rq2_storage_first.env \
+OSKEN_ENV_OVERRIDE_FILE=testing/controller_env_overrides/rq2v4_mode_stor.env \
   make setup_network create_clients setup_test_data run_experiment RUN_LABEL=rq2-storage
 ```
 
@@ -75,12 +74,14 @@ OSKEN_ENV_OVERRIDE_FILE=testing/controller_env_overrides/rq2_storage_first.env \
 `scripts/osken-controller.env` is the base controller environment and
 `scripts/testing/controller_env_overrides/current_state_integrated.env` the tuned
 override used by every campaign. Both are merged with one arm file from
-`scripts/testing/controller_env_overrides/` via `OSKEN_ENV_OVERRIDE_FILE`; only one
-override is honoured at a time.
+`scripts/testing/controller_env_overrides/` via `OSKEN_ENV_OVERRIDE_FILE`, and one
+fault overlay as well on the RQ3 runs that carry one; see the README there for which
+file belongs to which campaign.
 
-`scripts/testing/phases.json` is the canonical workload phase profile. The extra
-profiles in `scripts/testing/phases_override/` are the ones the `rq1`, `rq3sat` and
-`rq3stor` launchers select explicitly through `PHASES_CONFIG`.
+`scripts/testing/phases.json` is the canonical workload phase profile. The profiles
+the thesis campaigns actually ran are in `scripts/testing/phases_campaigns/`, one file
+per campaign, each copied verbatim from the `phases_snapshot.json` its runs recorded;
+see the README there for the campaign-to-file mapping.
 
 `scripts/testing/data/workload_snapshot/` holds the request corpus
 (`content_items.json`, `user_profiles.json`) that `traffic_generator.py` reads. It
@@ -91,32 +92,28 @@ can be regenerated from a populated database with
 
 - **Campaign outputs.** No metrics directories, run folders or per-client request
   logs are included. Re-running a campaign regenerates them.
+- **Analysis scripts.** The code that computes the reported statistics and the
+  figures is not part of this repository. Each run folder carries the inputs those
+  computations need — per-request latency, per-container samples, the controller's
+  decision, admission and telemetry-delivery logs, and the merged environment — and the
+  metric and test definitions are given in the thesis.
 - **Campaign records.** The experiment plans and post-run analyses that lived under
   `docs/operation/testing/experiment/` in the development repository are not
-  shipped. A number of scripts still carry that path as a default for a campaign
-  record directory or a documentation cross-check; those references resolve to
-  nothing here and the corresponding checks are expected to report a missing
-  reference rather than fail a build.
+  shipped.
 - **The thesis sources and figures.** Those are part of the thesis document, not
   of this artefact.
-- **Development-host paths in a few analysers.** Some of the RQ1 and RQ2 scripts
-  under `scripts/testing/analysis/` carry the development machine's absolute path
-  as the default for their input metrics directory or output graph directory. They
-  take no other configuration, so point those constants at your own run folder
-  before using them. The launchers and the platform itself do not depend on them.
 
 ## Analysis
 
-The analysers take a run directory and are independent of the platform:
-
-```bash
-cd scripts
-python3 testing/analysis/cli_overview.py --run-dir <run-dir>
-python3 testing/analysis/cli_phase_summary.py --run-dir <run-dir>
-```
-
-`scripts/tools/metrics_stats.py <run-dir>` summarises a metrics folder and is the
-entry point used for per-run statistics.
+The run folder is self-describing, so an analysis can be rebuilt from it:
+`client_requests.csv` carries one row per request with its phase, client and status,
+`resource_stats.csv` the per-LAN window summaries, `decision_log_lan{1,2}.csv` and
+`elasticity_events.csv` what the controller saw and decided, and
+`controller_env_snapshot.env` and `phases_snapshot.json` the configuration and phase
+schedule in force. The per-question evidence sits alongside: `window_log_lan{1,2}.jsonl`
+and `telemetry_delivery_log_lan{1,2}.csv` for the telemetry comparisons, and
+`admission_log_lan{1,2}.csv` for the readiness-admission ones. The outcome definitions and the statistical tests applied to these
+files are given in the thesis.
 
 ## Licence
 

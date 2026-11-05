@@ -1,9 +1,8 @@
 import logging
 import os
-import time
 
 import networkx as nx
-from .models import TopologyHostEntry, TopologyLinkEntry, TopologyNetworkSection, TopologySnapshot
+from .models import TopologyHostEntry, TopologyNetworkSection, TopologySnapshot
 import zmq
 from os_ken.base import app_manager
 from os_ken.controller import ofp_event
@@ -52,11 +51,6 @@ class TopologyMixin:
         self._peer_storage_macs_n1: set[str] = set()
         self._peer_storage_macs_n2: set[str] = set()
 
-        # RS role maps (MAC → "primary" / "secondary" / ""), advertised in the
-        # topology snapshot so the peer can target Tier 1 Change Streams.
-        self._local_storage_roles: dict[str, str] = {}
-        self._peer_storage_roles:  dict[str, str] = {}
-
         logger.info(
             "topology mixin init: network=%s interval=%ds heartbeat=%d ticks "
             "server_macs=%s storage_macs_n1=%s storage_macs_n2=%s",
@@ -94,8 +88,6 @@ class TopologyMixin:
 
         # Peer topology — written by on_topology_update() from ZmqTelemetrySource
         self.peer_hosts:       dict = {}   # mac -> {"mac", "dpid", "port_no", "ip"}
-        self.peer_links:       list = []
-        self.peer_switches:    list = []
         self._peer_network_id: str  = ""
         self._topo_correction_needed: bool = False
 
@@ -142,109 +134,6 @@ class TopologyMixin:
             self._local_storage_macs_n1.discard(mac)
         self._rebuild_hop_cache()
 
-    # Storage RS role tracking (Tier 1 selective-sync primary resolution)
-    def update_storage_role(self, mac: str, member_state: str | None) -> None:
-        """Map a storage node's telemetry ``member_state`` to an RS role entry.
-
-        Called from the Thread 2 telemetry callback for every storage server
-        in the local ``TelemetrySummary``. The resulting ``_local_storage_roles``
-        map is advertised in the next topology snapshot so the peer controller
-        can discover the LAN's current RS primary.
-
-        ``"STANDALONE_CACHE"`` (selective-sync containers) maps to ``""`` —
-        it is important these are **never** advertised as RS members so a
-        consumer never points another Tier 1 cursor at them.
-        """
-        if member_state == "PRIMARY":
-            role = "primary"
-        elif member_state == "SECONDARY":
-            role = "secondary"
-        else:
-            role = ""
-        self._local_storage_roles[mac] = role
-
-    def sync_storage_roles(self, storage_servers: dict) -> None:
-        """Rebuild ``_local_storage_roles`` from a ``TelemetrySummary.storage_servers`` map.
-
-        Called once per telemetry window. Clears any entries whose MAC is no
-        longer in the summary (stale after scale-down or container removal),
-        then calls ``update_storage_role`` for each live entry.
-        """
-        self._local_storage_roles = {}
-        for mac, ss in storage_servers.items():
-            self.update_storage_role(mac, getattr(ss, "member_state", None))
-
-    def forget_storage_role(self, mac: str) -> None:
-        """Drop role tracking for ``mac`` (called on node removal)."""
-        self._local_storage_roles.pop(mac, None)
-
-    def resolve_peer_primary(self, peer_network_id: str) -> tuple[str, str] | None:
-        """Return ``(rs_name, "ip:27018")`` for the primary of the peer LAN's RS.
-
-        Two-step resolution that accounts for the real-MAC / virtual-MAC split:
-        ``_peer_storage_roles`` is keyed by **real** Docker MACs (from the RS
-        member-state telemetry), while ``peer_hosts`` is keyed by **virtual**
-        MACs (from OVS topology discovery).  Neither map shares keys with the
-        other, so we confirm primary existence via roles and then resolve the
-        IP via the virtual MAC from ``_peer_storage_macs``.
-
-        Returns ``None`` when no peer primary is known — e.g. the peer
-        controller hasn't published yet, an election is in progress, or the
-        peer is a selective-sync-only LAN.
-
-        ``peer_network_id`` is a LAN id like ``"lan1"`` or ``"lan2"``; the
-        result's ``rs_name`` is ``f"rs_net{N}"`` where N is the LAN number.
-        """
-        try:
-            n = peer_network_id.replace("lan", "")
-            int(n)  # validate
-        except (ValueError, AttributeError):
-            return None
-
-        has_primary = any(role == "primary" for role in self._peer_storage_roles.values())
-        if not has_primary:
-            if self._peer_storage_roles:
-                logger.warning(
-                    "[topology] no primary role in peer storage_roles for %s "
-                    "(roles present: %s)",
-                    peer_network_id,
-                    list(self._peer_storage_roles.items()),
-                )
-            return None
-
-        # Every storage node has one virtual MAC in _peer_storage_macs_n* and an
-        # OVS-discovered entry in peer_hosts.
-        peer_macs = (self._peer_storage_macs_n1
-                     if n == "1" else self._peer_storage_macs_n2)
-        for mac in peer_macs:
-            host = self.peer_hosts.get(mac, {}) or {}
-            ip = host.get("ip")
-            if ip:
-                logger.debug(
-                    "[topology] resolved peer primary for %s via virtual mac=%s ip=%s",
-                    peer_network_id, mac, ip,
-                )
-                return (f"rs_net{n}", f"{ip}:27018")
-            logger.debug(
-                "[topology] peer storage virtual mac=%s found in hosts but "
-                "no IP yet (peer_network=%s)",
-                mac, peer_network_id,
-            )
-
-        logger.warning(
-            "[topology] primary exists in peer storage_roles for %s but "
-            "no virtual storage MAC has an IP in peer_hosts",
-            peer_network_id,
-        )
-        return None
-
-    # Query helpers — also called from Thread 1 scheduling.
-    def get_edge_switch(self, host_mac: str):
-        return self.host_attachment.get(host_mac)
-
-    def get_hops(self, host_mac: str, server_mac: str):
-        return self.hop_cache.get(host_mac, {}).get(server_mac)
-
     def get_next_hop_port(self, edge_dpid: int, client_mac: str, server_mac: str):
         try:
             path = nx.shortest_path(self.net, client_mac, server_mac)
@@ -275,20 +164,16 @@ class TopologyMixin:
         peer_nid = snapshot.network_id
         peer_net = snapshot.networks.get(peer_nid)
         self._peer_network_id = peer_nid
-        if peer_net is not None:
-            self.peer_hosts    = {h.mac: h.model_dump() for h in peer_net.hosts}
-            self.peer_links    = [lnk.model_dump() for lnk in peer_net.links]
-            self.peer_switches = list(peer_net.switches)
-        else:
-            self.peer_hosts    = {}
-            self.peer_links    = []
-            self.peer_switches = []
+        # Replace wholesale so removals propagate.
+        self.peer_hosts = (
+            {h.mac: h.model_dump() for h in peer_net.hosts}
+            if peer_net is not None else {}
+        )
 
         # Replace wholesale so removals propagate
         self._peer_server_macs     = set(snapshot.server_macs)
         self._peer_storage_macs_n1 = set(snapshot.storage_macs_n1)
         self._peer_storage_macs_n2 = set(snapshot.storage_macs_n2)
-        self._peer_storage_roles   = dict(snapshot.storage_roles)
         self._peer_avg_hop_count = snapshot.avg_hop_count
         logger.debug(
             "peer topology updated from %s: %d hosts; peer server_macs=%s storage_n1=%s storage_n2=%s peer_avg_hops=%.2f",
@@ -328,7 +213,8 @@ class TopologyMixin:
                 datapath,
                 priority=0,
                 match=match,
-                actions=[parser.OFPActionOutput(ofproto.OFPP_CONTROLLER, 65535)],
+                actions=[parser.OFPActionOutput(ofproto.OFPP_CONTROLLER,
+                                                ofproto.OFPCML_NO_BUFFER)],
             )
             logger.info("datapath connected: dpid=%s — flushed stale flows, reinstalled table-miss", datapath.id)
 
@@ -355,12 +241,11 @@ class TopologyMixin:
         """
         pass
 
-    def check_link(self, link_in, links_list):
-        """Return True if link_in is not already represented in links_list (deduplication)."""
-        for link in links_list:
-            if link[0] == link_in[0] and link[2] == link_in[2]:
-                return False
-        return True
+    def _check_link(self, link_in, links_list):
+        """True when *link_in* is not already represented in *links_list* (deduplication)."""
+        return not any(
+            link[0] == link_in[0] and link[2] == link_in[2] for link in links_list
+        )
 
     def _get_topology_api_app(self):
         """Lazily resolve the OS-Ken topology switches service."""
@@ -402,9 +287,8 @@ class TopologyMixin:
 
         links_list = get_all_link(topo_api_app) or []
         raw_links = [(link.src.dpid, link.dst.dpid, link.src.port_no) for link in links_list]
-        l = self.links
         for link in raw_links:
-            if self.check_link(link, l):
+            if self._check_link(link, self.links):
                 self.links.append(link)
 
         for link in self.links:
@@ -449,18 +333,15 @@ class TopologyMixin:
                     self._hop_cache_max = hops
             self.hop_cache[host_mac] = per_host
 
-        resolved = sum(
-            1 for h in self.hop_cache.values() for v in h.values() if v is not None
-        )
-        logger.debug("hop cache rebuilt: %d hosts, %d resolved paths", len(self.hop_cache), resolved)
-
         all_hops = [
             v for per_host in self.hop_cache.values()
             for v in per_host.values()
             if v is not None
         ]
+        logger.debug("hop cache rebuilt: %d hosts, %d resolved paths",
+                     len(self.hop_cache), len(all_hops))
         self._avg_hop_count = sum(all_hops) / len(all_hops) if all_hops else 0.0
-        logger.debug("hop cache avg hops: %.2f (from %d resolved paths)", self._avg_hop_count, len(all_hops))
+        logger.debug("hop cache avg hops: %.2f", self._avg_hop_count)
 
 
     def _rebuild_vip_pools(self) -> None:
@@ -546,41 +427,29 @@ class TopologyMixin:
                 TopologyHostEntry(mac=mac, dpid=dpid, port_no=port_no, ip=self._mac_to_ip.get(mac))
                 for mac, (dpid, port_no) in self.host_attachment.items()
             ],
-            links=[
-                TopologyLinkEntry(src_dpid=l[0], src_port_no=l[2], dst_dpid=l[1])
-                for l in self.links
-            ],
-            switches=[sw[1] for sw in self.sws],
         )
         networks: dict[str, TopologyNetworkSection] = {self._network_id: local_section}
         if self._peer_network_id:
+            # Re-advertise the peer's hosts so a third listener sees both networks.
             networks[self._peer_network_id] = TopologyNetworkSection(
                 hosts=[TopologyHostEntry(**h) for h in self.peer_hosts.values()],
-                links=[TopologyLinkEntry(**lnk) for lnk in self.peer_links],
-                switches=self.peer_switches,
             )
         snapshot = TopologySnapshot(
             network_id=self._network_id,
             networks=networks,
-            # Flat local fields for backward-compat with routing code
-            hosts=local_section.hosts,
-            links=local_section.links,
-            switches=local_section.switches,
-            hops=self.hop_cache,
-            ts=time.time(),
             # Advertise this controller's locally-registered backend MACs
             server_macs=list(self._local_server_macs),
             storage_macs_n1=list(self._local_storage_macs_n1),
             storage_macs_n2=list(self._local_storage_macs_n2),
-            storage_roles=dict(self._local_storage_roles),
             avg_hop_count=self._avg_hop_count,
         )
         try:
             self._topo_pub_socket.send_string(snapshot.model_dump_json(), zmq.NOBLOCK)
             logger.info(
-                "Published topology snapshot: network=%s sw=%d links=%d hosts=%d peer_network=%s peer_sw=%d peer_links=%d peer_hosts=%d",
+                "Published topology snapshot: network=%s sw=%d links=%d hosts=%d "
+                "peer_network=%s peer_hosts=%d",
                 self._network_id, len(self.sws), len(self.links), len(self.hosts),
-                self._peer_network_id, len(self.peer_switches), len(self.peer_links), len(self.peer_hosts),
+                self._peer_network_id, len(self.peer_hosts),
             )
         except zmq.Again:
             pass  # no subscriber yet — normal at startup

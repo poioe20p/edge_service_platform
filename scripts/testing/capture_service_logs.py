@@ -108,7 +108,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--filter-regex",
-        default=r"^(edge_server_n[12]|edge_server_lan[12]_dyn\d+|edge_storage_server_n[12]|edge_storage_lan[12]_dyn\d+(?:_cs)?)$",
+        default=r"^(edge_server_n[12]|edge_server_lan[12]_dyn\d+|edge_storage_server_n[12]|edge_storage_lan[12]_dyn\d+)$",
         help="Only capture containers whose names match this regex.",
     )
     parser.add_argument(

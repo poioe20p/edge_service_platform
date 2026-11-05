@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Internet uplink setup is intentionally disabled in this topology.
+# Host-side WAN link for the inter-LAN router: a point-to-point veth (veth5) plus the
+# host routes that make 10.0.0.0/24 and 10.0.1.0/24 reachable through it. There is no
+# Internet uplink in this topology.
 
 set -euo pipefail
 
@@ -11,7 +13,7 @@ PID_ROUTER=${PID_ROUTER:-$(docker inspect -f '{{.State.Pid}}' nat-router)}
 # NOTE: veth1-4 are reserved for build_network_1.sh (OVS bridge ports for LAN1).
 #       veth21-24 are reserved for build_network_2.sh (OVS bridge ports for LAN2).
 echo "Creating veth pair for router WAN..."
-for IFACE in veth5 veth6 veth5-peer veth6-peer; do
+for IFACE in veth5 veth5-peer; do
   if ip link show "$IFACE" >/dev/null 2>&1; then
     sudo ip link del "$IFACE" >/dev/null 2>&1 || true
   fi

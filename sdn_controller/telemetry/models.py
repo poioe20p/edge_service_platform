@@ -12,25 +12,6 @@ from typing import Literal
 from pydantic import BaseModel
 
 
-class EdgeAccessStats(BaseModel):
-    """Per-(owner_lan, collection) hotness slice produced by the aggregator
-    from the wrapped edge-server reads within one telemetry window.
-
-    Emitted by ``source/docker/local_state_server/aggregator.py`` as part of
-    each ``ServerSummary.access`` list. Consumed by
-    ``source/sdn_controller/selective_sync/hotness.py``.
-
-    See ``docs/operation/telemetry/telemetry_overview.md``.
-    """
-    owner_lan: str
-    collection: str
-    total_hits: int
-    cross_region_hits: int
-    # pydantic accepts list[list] here since JSON has no tuple; we keep the
-    # two-element inner shape by convention (doc_id, hits).
-    top_docs: list[tuple[str, int]] = []
-
-
 class ServerSummary(BaseModel):
     avg_time_total_ms: float
     avg_time_db_ms: float
@@ -44,12 +25,6 @@ class ServerSummary(BaseModel):
     avg_time_db_read_ms: float = 0.0
     avg_time_db_write_ms: float = 0.0
     avg_time_db_cmd_count: float = 0.0
-    # Tier 1 selective-sync fields (defaulted empty; populated by the aggregator
-    # from per-request events enriched by the platform_cache wrapper).
-    access: list[EdgeAccessStats] = []
-    t_db_p95_ms_per_lan: dict[str, float] = {}
-    # {owner_lan: {collection: {op_type: count}}} over the window.
-    op_counters: dict[str, dict[str, dict[str, int]]] = {}
     state: Literal["active", "draining"] = "active"
     # True for liveness-only heartbeat entries (zeroed latency fields); routing
     # consumers refresh only the freshness stamp / drain state from these.
@@ -64,19 +39,6 @@ class StorageServerSummary(BaseModel):
     sample_count: int = 0
     last_report_ts: float = 0.0
     member_state: str | None = None
-    # Per-collection lag/resume-token/hot-doc snapshot pushed by the
-    # edge_selective_storage supervisor; merge is last-writer-wins per collection.
-    selective_sync_per_collection: dict[str, "SelectiveSyncCollectionStats"] | None = None
-
-
-class SelectiveSyncCollectionStats(BaseModel):
-    """Per-collection forwarder health for a Tier 1 selective-sync container.
-
-    See ``docs/operation/elasticy_manager/implementation/tier1_selective_sync/telemetry_and_config.md``.
-    """
-    lag_s: float
-    resume_token_age_s: float
-    hot_doc_count: int
 
 
 class DomainSummary(BaseModel):
@@ -103,11 +65,11 @@ class DomainSummary(BaseModel):
 class TelemetrySummary(BaseModel):
     network_id: str
     window_end: float
-    # RQ1 delivery-semantics identity: monotonic per-network window sequence.
-    # None for control-event mini-summaries (drain_complete, rs_secondary_ready).
+    # Window identity: monotonic per-network sequence.  None for control-event
+    # mini-summaries (drain_complete, rs_secondary_ready).
     window_seq: int | None = None
     window_id: str | None = None      # f"{network_id}:{window_seq}"
-    overload: bool = False            # producer-side label (D3)
+    overload: bool = False            # producer-side label
     # False when the window carried no HTTP request samples; controller-side
     # consumers must not treat such windows as lull evidence.
     request_evidence: bool = True

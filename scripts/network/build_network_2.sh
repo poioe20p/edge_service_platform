@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-echo "[v6] STORAGE_CPUS=${STORAGE_CPUS:-UNSET} EDGE_CPUS=${EDGE_CPUS:-UNSET}" >&2
-
 get_container_pid() {
     local container="$1"
     local timeout="${2:-5}"
@@ -42,7 +40,7 @@ for IFACE in veth21 veth22 veth23 veth24 veth21-peer veth22-peer veth23-peer vet
     sudo ip link del "$IFACE" >/dev/null 2>&1 || true
   fi
 done
-# NOTE: veth5 and veth6 are reserved for build_router.sh (router WAN and Internet uplink).
+# NOTE: veth5 is reserved for build_router.sh (router WAN side).
 sudo ip link add veth21 type veth peer name veth21-peer # edge_server_n2
 sudo ip link add veth22 type veth peer name veth22-peer # edge_storage_server_n2
 sudo ip link add veth23 type veth peer name veth23-peer # router LAN side
@@ -78,9 +76,6 @@ docker run -dit --name edge_server_n2 --network none --restart=on-failure \
   --ulimit nofile=65536:65536 \
   -e LAN_ID=lan2 \
   -e OWN_MAC=00:00:00:00:00:05 \
-  -e VIP_DATA_RECOVERY_N1_IP=10.0.0.252 \
-  -e VIP_DATA_RECOVERY_N2_IP=10.0.1.252 \
-  -e VIP_DATA_RECOVERY_SESSION_MAX_AGE_S=35 \
   -e AGGREGATOR_PULL_ADDR=tcp://10.0.1.5:5555 \
   -e LOG_LEVEL=INFO \
   -e HEARTBEAT_ENABLED=true \
@@ -125,11 +120,6 @@ docker run -dit --name aggregator_n2 --network none --restart=on-failure \
   -e WINDOW_LOG_PATH="${WINDOW_LOG_PATH:-/tmp/window_log.jsonl}" \
   -e ACK_LOG_PATH="${ACK_LOG_PATH:-/tmp/ack_log.jsonl}" \
   local_state_server
-
-if [[ $? -ne 0 ]]; then
-    echo "Failed to start application containers. Aborting."
-    exit 1
-fi
 
 PID=$(get_container_pid edge_server_n2)
 PID_ROUTER=$(get_container_pid nat-router)

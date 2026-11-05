@@ -37,7 +37,7 @@ Implementation is delegated to the private _vip_routing package:
 
 import subprocess
 
-from ._vip_routing import config, flows, ingress, selection, state
+from ._vip_routing import config, ingress, state
 
 
 def _verify_conntrack_available():
@@ -131,32 +131,12 @@ class VipRoutingMixin:
         return state.unregister_storage_backend(self, mac, domain)
 
     def drop_backend_caches(self, mac: str) -> None:
-        """Drop cached telemetry stats + discovery for a removed node that never unregistered (reserve/selective)."""
+        """Drop cached telemetry stats + discovery for a removed node that never unregistered (reserve)."""
         return state.drop_backend_caches(self, mac)
-
-    def mark_server_backend_warm(self, mac: str) -> None:
-        """Create a warm lease for a server backend (bypasses cold-start penalty)."""
-        return state.mark_server_backend_warm(self, mac)
 
     def mark_storage_backend_warm(self, mac: str, domain: str) -> None:
         """Create a warm lease for a storage backend (bypasses cold-start penalty)."""
         return state.mark_storage_backend_warm(self, mac, domain)
-
-    def clear_server_backend_warm(self, mac: str) -> None:
-        """Remove the warm lease for a server backend."""
-        return state.clear_server_backend_warm(self, mac)
-
-    def clear_storage_backend_warm(self, mac: str, domain: str) -> None:
-        """Remove the warm lease for a storage backend."""
-        return state.clear_storage_backend_warm(self, mac, domain)
-
-    def select_server(self, client_mac: str) -> dict | None:
-        """Pick the web server with the lowest WSM cost from vip_server_pool."""
-        return selection.select_server(self, client_mac)
-
-    def select_storage(self, domain: str, client_mac: str) -> dict | None:
-        """Pick the storage node with the lowest WSM cost from the domain's pool."""
-        return selection.select_storage(self, domain, client_mac)
 
     def delete_vip_server_client_flows(self, client_ip: str,
                                        client_port: int = 0) -> None:
@@ -167,7 +147,7 @@ class VipRoutingMixin:
         ``client_port`` scopes the delete to the exact connection's flow pair;
         otherwise (default) the per-client binding is used. Handles this
         controller's own per-LAN ``VIP_SERVER`` only (cross-network server
-        flows are out of RQ3 scope — see D8).
+        flows are out of RQ3 scope).
         """
         return state.delete_vip_server_client_flows(self, client_ip, client_port)
 
@@ -186,8 +166,4 @@ class VipRoutingMixin:
     def install_vip_punt_rules(self, datapath) -> None:
         """Punt IPv4 packets destined for VIP addresses to the controller (priority 100)."""
         return ingress.install_vip_punt_rules(self, datapath)
-
-    def _install_vip_dnat_snat(self, datapath, in_port, pkt, **kwargs):
-        """Install a DNAT + SNAT flow rule pair and Packet-Out the first packet."""
-        return flows.install_vip_dnat_snat(self, datapath, in_port, pkt, **kwargs)
 

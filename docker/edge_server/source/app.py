@@ -5,10 +5,10 @@ import time
 
 from flask import Flask, request
 
-from db_monitor import register as _register_db_monitor
+from db_timing_listener import register as _register_db_timing_listener
 
 # Register the pymongo CommandListener before any MongoClient is created.
-_register_db_monitor()
+_register_db_timing_listener()
 
 from control_plane_routes import register_control_plane_routes
 from edge_server_config import CONFIG
@@ -17,7 +17,7 @@ from edge_request_lifecycle import (
     register_post_telemetry_request_hooks,
     register_pre_telemetry_request_hooks,
 )
-from monitoring_workload_routes import register_monitoring_workload_routes
+from workload_routes import register_workload_routes
 from telemetry import init_telemetry, _get_server_mac
 from vip_data_mongo_runtime import (
     snapshot_normal_vip_config,
@@ -34,15 +34,11 @@ log = logging.getLogger(__name__)
 app = Flask(__name__)
 process_state = EdgeServerProcessState(CONFIG)
 
-# RQ3 soundness (default off): while time.time() < this, every workload
-# request returns HTTP 503; 0.0 = inert (from EDGE_READY_SEMANTIC_LIE_S > 0).
-_RQ3_SEMANTIC_LIE_UNTIL = 0.0
-
 # Flask runs after_request hooks in reverse registration order, so the
 # post-telemetry hooks registered last run before telemetry emission.
 register_pre_telemetry_request_hooks(app, CONFIG, process_state)
 register_control_plane_routes(app, process_state)
-register_monitoring_workload_routes(app, CONFIG, process_state)
+register_workload_routes(app, CONFIG, process_state)
 start_epoch_housekeeping()
 init_telemetry(
     app,
@@ -85,22 +81,6 @@ def _add_backend_identity(response):
     return response
 
 
-@app.before_request
-def _rq3_semantic_lie_gate():
-    """RQ3 soundness (default off): deterministic false-claim window.
-
-    While ``EDGE_READY_SEMANTIC_LIE_S`` > 0 and within the window set at
-    bind, every workload request — all paths except the probe paths in
-    ``SKIP_COUNTING_PATHS`` — fails with a well-formed HTTP 503 while /ready
-    keeps answering 200: the readiness predicate itself lies. Registered
-    after the telemetry hooks so request accounting still runs; the normal
-    ``after_request`` path still stamps ``X-Backend-ID``.
-    """
-    if _RQ3_SEMANTIC_LIE_UNTIL and time.time() < _RQ3_SEMANTIC_LIE_UNTIL:
-        if request.path not in SKIP_COUNTING_PATHS:
-            return "rq3_semantic_lie", 503
-
-
 def _emit_request_complete(process_state, client_ip: str, client_port: int,
                            server_mac: str) -> None:
     """Emit a request_complete control event (RQ3 flow isolation).
@@ -124,7 +104,7 @@ def _emit_request_complete(process_state, client_ip: str, client_port: int,
 def _run_app_ready_probe(process_state, config) -> None:
     """RQ3 readiness: mark the app ready after a real MongoDB round-trip.
 
-    The single, testable readiness predicate (D2): /ready returns 200 iff
+    The readiness predicate: /ready returns 200 iff
     ``process_state.app_ready`` is True, set here after a successful
     ``ping`` against the primary within ``READINESS_APP_MAX_S``.
     """
@@ -144,12 +124,12 @@ def _run_app_ready_probe(process_state, config) -> None:
 
 
 def _apply_request_concurrency_bound(server) -> None:
-    """Bound the number of concurrent request threads (2026-09-27).
+    """Bound the number of concurrent request threads.
 
     werkzeug's threaded server spawns one handler thread per connection with
-    NO cap. Under an overload/retry-storm episode (extension rate-15 runs)
-    live threads grew into the thousands -> 43 GB virtual / memcg OOM at the
-    512 MB cap (B-P2r, 2026-09-27: both edges killed, service lost).
+    NO cap. Under an overload or retry-storm episode live threads grew into
+    the thousands, filling the container's memory limit until the edge was
+    killed and service was lost.
 
     The gate acquires a slot in the ACCEPT loop before a handler thread is
     spawned, so excess connections wait in the kernel accept backlog instead
@@ -157,11 +137,10 @@ def _apply_request_concurrency_bound(server) -> None:
     a bounded, faithful reimplementation. ``EDGE_MAX_CONCURRENCY`` (default
     256; 0 disables).
 
-    Fix 3 (2026-09-27): the 1024 cap still allowed ~1024 live threads with
-    8 MB stacks (~300 MB resident) to fill the 512 MB memcg during
-    rq2_ext_b_dbcb_fix2 (n1 OOM-killed 09:10:28; total-vm 8.6 GB; buffer
-    only ~50 MB). Default lowered to 256 and worker stacks shrunk via
-    ``EDGE_THREAD_STACK_SIZE_KB`` (default 1024; 0 = leave process default).
+    A 1024 cap still allowed ~1024 live threads with 8 MB stacks (~300 MB
+    resident) to fill a 512 MB limit, so the default was lowered to 256 and
+    worker stacks shrunk via ``EDGE_THREAD_STACK_SIZE_KB`` (default 1024;
+    0 = leave process default).
     """
     limit = int(os.environ.get("EDGE_MAX_CONCURRENCY", "256"))
     stack_kb = int(os.environ.get("EDGE_THREAD_STACK_SIZE_KB", "1024"))
@@ -304,17 +283,6 @@ if __name__ == "__main__":
         log.info(
             "READINESS_BIND lan=%s premature_s=%d bind_ts=%.3f deferral_s=%.3f",
             CONFIG.lan_id, _premature_s, _t_bind, _t_bind - _t_claim,
-        )
-    _lie_s = 0
-    try:
-        _lie_s = max(0, int(os.environ.get("EDGE_READY_SEMANTIC_LIE_S", "0") or 0))
-    except ValueError:
-        log.warning("EDGE_READY_SEMANTIC_LIE_S is not an int — treating as 0")
-    if _lie_s > 0:
-        _RQ3_SEMANTIC_LIE_UNTIL = _t_bind + _lie_s
-        log.info(
-            "RQ3 semantic lie active: EDGE_READY_SEMANTIC_LIE_S=%d until=%.3f",
-            _lie_s, _RQ3_SEMANTIC_LIE_UNTIL,
         )
     if _premature_s <= 0:
         # Started only after the socket is bound so app_ready cannot precede

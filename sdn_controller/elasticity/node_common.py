@@ -94,11 +94,10 @@ class NodeInfo:
     network_id:        str
     name:              str
     ip:                str
-    node_type:         str   # "compute" | "storage" | "selective_storage"
+    node_type:         str   # "compute" | "storage"
     rs_name:           str = ""
     primary_container: str = ""
     port:              int = 27018
-    owner_lan:         str = ""   # selective_storage or cross-region storage: e.g. "lan1"
     spawn_started_monotonic_s: float = 0.0
     ready_logged: bool = False
     standby_reserved: bool = False  # storage persistent reserve — excluded from VIP & ordinary accounting
@@ -217,7 +216,6 @@ class IpAllocator:
 
     Suffixes 56–105 are reserved for test clients (namespace-based).
     Suffixes 252–254 are reserved for VIPs:
-        .252 recovery VIP_DATA for the LAN
         .253 VIP_SERVER_N1 (LAN1) / VIP_SERVER_N2 (LAN2)
         .254 VIP_DATA_N1 (LAN1) / VIP_DATA_N2 (LAN2)
 
@@ -252,10 +250,3 @@ class IpAllocator:
         if suffix in self._in_use:
             self._in_use.discard(suffix)
             bisect.insort(self._free, suffix)
-
-    def mark_used(self, ip: str) -> None:
-        """Mark an IP as in-use (for static/pre-existing nodes)."""
-        suffix = int(ip.rsplit(".", 1)[1])
-        if suffix in self._free:
-            self._free.remove(suffix)
-        self._in_use.add(suffix)

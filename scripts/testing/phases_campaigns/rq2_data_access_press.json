@@ -1,0 +1,49 @@
+{
+  "phases": [
+    {
+      "name": "baseline",
+      "duration_s": 30,
+      "rate_per_client": 1.0,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 0.1,
+      "mix": {
+        "content_lookup": 0.706,
+        "feed_ranking": 0.294
+      }
+    },
+    {
+      "name": "data_bound_episode",
+      "duration_s": 480,
+      "rate_per_client": 5.0,
+      "cross_region_ratio": 0.0,
+      "hotspot_direction": "",
+      "client_fraction": 1.0,
+      "mix": {
+        "content_lookup": 0.9,
+        "feed_ranking": 0.1
+      }
+    },
+    {
+      "name": "recovery_gap",
+      "duration_s": 60,
+      "rate_per_client": 0.5,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 0.05,
+      "mix": {
+        "content_lookup": 0.706,
+        "feed_ranking": 0.294
+      }
+    },
+    {
+      "name": "demand_drop",
+      "duration_s": 360,
+      "rate_per_client": 1.0,
+      "cross_region_ratio": 0.0,
+      "client_fraction": 0.1,
+      "mix": {
+        "content_lookup": 0.706,
+        "feed_ranking": 0.294
+      }
+    }
+  ]
+}
