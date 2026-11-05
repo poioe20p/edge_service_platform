@@ -1,8 +1,7 @@
 # Edge service platform — reproduction artefact
 
-Code accompanying the Master's thesis *Coordinating Telemetry, Scaling and Readiness
-Admission in Edge Services: When Added Capacity Meets User Demand* (ISCTE — Master's in
-Telecommunications and Computer Engineering), by Pedro Ojo Oriakhi.
+Code accompanying the Master's thesis *Coordinating Telemetry, Scaling and Readiness Admission in Edge Services: When Added Capacity Meets User Demand* (ISCTE — Master's in Telecommunications and Computer
+Engineering), by Pedro Ojo Oriakhi.
 
 The platform is an SDN-controlled set of Dockerised edge servers. A double-VIP routing
 model places requests on edge replicas, a metadata-driven controller scales compute and
